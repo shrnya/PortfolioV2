@@ -1,17 +1,23 @@
-/* Three colours: white paper, black ink, one blue for everything drawn
-   by hand. Blue tints only for highlights and soft fills. The product mocks
-   inside case studies keep their own neutral --app-* set. */
+/* Blue, white and black. The page sits on one brand blue; content lives on
+   white panels where everything drawn by hand is in that same blue.
+   To recolour the whole site, change --brand. The product mocks inside
+   case studies keep their own neutral --app-* set. */
 :root {
-  --paper: #FFFFFF;
-  --sheet: #F4F6FE;
-  --ink: #111318;
-  --muted: #4E525B;
-  --rule: #E2E4EA;
-  --pencil: #2B4BEB;
-  --pencil-soft: #DCE2FD;
-  --marker: #DCE2FD;
-  --marker-ink: #111318;
-  --tape: rgba(43, 75, 235, .14);
+  --brand: #1952D4;
+  --brand-deep: color-mix(in srgb, var(--brand) 80%, #000);
+  --on-brand: #FFFFFF;
+  --on-brand-muted: color-mix(in srgb, #FFFFFF 72%, var(--brand));
+
+  --p-paper: #FFFFFF;
+  --p-sheet: color-mix(in srgb, var(--brand) 6%, #FFFFFF);
+  --p-ink: #0F1730;
+  --p-muted: #4E5568;
+  --p-rule: color-mix(in srgb, var(--brand) 14%, #FFFFFF);
+  --p-pencil: var(--brand);
+  --p-pencil-soft: color-mix(in srgb, var(--brand) 16%, #FFFFFF);
+  --p-marker: color-mix(in srgb, var(--brand) 18%, #FFFFFF);
+  --p-marker-ink: #0F1730;
+  --p-tape: color-mix(in srgb, var(--brand) 16%, transparent);
   --shadow: rgba(17, 19, 24, .14);
 
   --app-bg: #F5F6F8; --app-surface: #FFFFFF; --app-line: #E1E4EA; --app-text: #1D2330;
@@ -31,8 +37,8 @@
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --paper: #0B0D12; --sheet: #141826; --ink: #F2F3F5; --muted: #A3A7B0; --rule: #262A33;
-    --pencil: #8199FF; --pencil-soft: #1E2748; --marker: #26326A; --marker-ink: #F2F3F5; --tape: rgba(129, 153, 255, .18); --shadow: rgba(0, 0, 0, .5);
+    --p-paper: #0D1430; --p-sheet: #131C3E; --p-ink: #EEF1FA; --p-muted: #A9B1C8; --p-rule: #232D52;
+    --p-pencil: color-mix(in srgb, var(--brand) 55%, #FFFFFF); --p-pencil-soft: #1E2A5A; --p-marker: #28377A; --p-marker-ink: #EEF1FA; --p-tape: rgba(129, 153, 255, .18); --shadow: rgba(0, 0, 0, .5);
     --app-bg: #1A1F27; --app-surface: #222833; --app-line: #333B48; --app-text: #E7EAF0; --app-sub: #A3ABB8;
     --app-accent: #8199FF; --app-accent-soft: #26304F; --app-quote: #1C222B; --app-scrim: rgba(0, 0, 0, .6);
     --app-btn: #F2F3F5; --app-btn-ink: #0B0D12; --app-good: #5CC492; --app-warn: #E8A35A;
@@ -40,8 +46,8 @@
   }
 }
 :root[data-theme="dark"] {
-  --paper: #0B0D12; --sheet: #141826; --ink: #F2F3F5; --muted: #A3A7B0; --rule: #262A33;
-  --pencil: #8199FF; --pencil-soft: #1E2748; --marker: #26326A; --marker-ink: #F2F3F5; --tape: rgba(129, 153, 255, .18); --shadow: rgba(0, 0, 0, .5);
+  --p-paper: #0D1430; --p-sheet: #131C3E; --p-ink: #EEF1FA; --p-muted: #A9B1C8; --p-rule: #232D52;
+  --p-pencil: color-mix(in srgb, var(--brand) 55%, #FFFFFF); --p-pencil-soft: #1E2A5A; --p-marker: #28377A; --p-marker-ink: #EEF1FA; --p-tape: rgba(129, 153, 255, .18); --shadow: rgba(0, 0, 0, .5);
   --app-bg: #1A1F27; --app-surface: #222833; --app-line: #333B48; --app-text: #E7EAF0; --app-sub: #A3ABB8;
   --app-accent: #8199FF; --app-accent-soft: #26304F; --app-quote: #1C222B; --app-scrim: rgba(0, 0, 0, .6);
   --app-btn: #F2F3F5; --app-btn-ink: #0B0D12; --app-good: #5CC492; --app-warn: #E8A35A;
@@ -50,9 +56,13 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
+/* Off the panels, everything reads white on blue. */
 body {
+  --paper: var(--brand); --sheet: var(--brand-deep); --ink: var(--on-brand); --muted: var(--on-brand-muted);
+  --rule: color-mix(in srgb, #FFFFFF 28%, transparent); --pencil: var(--on-brand); --pencil-soft: color-mix(in srgb, #FFFFFF 20%, transparent);
+  --marker: color-mix(in srgb, #FFFFFF 24%, transparent); --marker-ink: var(--on-brand); --tape: color-mix(in srgb, #FFFFFF 22%, transparent);
   margin: 0;
-  background-color: var(--paper);
+  background-color: var(--brand);
   color: var(--ink);
   font-family: var(--f-body);
   font-size: 1.0625rem;
@@ -64,10 +74,17 @@ img, svg { max-width: 100%; }
 h1, h2, h3, h4 { font-family: var(--f-display); line-height: 1.12; text-wrap: balance; margin: 0; }
 p { margin: 0; }
 a { color: inherit; }
-:focus-visible { outline: 2px solid var(--pencil); outline-offset: 3px; border-radius: 2px; }
+:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; border-radius: 2px; }
 [hidden] { display: none !important; }
 
 .sheet { max-width: var(--sheet-w); margin-inline: auto; }
+/* a white page laid on the blue */
+.panel, .surface {
+  --paper: var(--p-paper); --sheet: var(--p-sheet); --ink: var(--p-ink); --muted: var(--p-muted); --rule: var(--p-rule);
+  --pencil: var(--p-pencil); --pencil-soft: var(--p-pencil-soft); --marker: var(--p-marker); --marker-ink: var(--p-marker-ink); --tape: var(--p-tape);
+  color: var(--ink);
+}
+.panel { background: var(--paper); border-radius: 8px; padding: clamp(1.25rem, 4vw, 3.5rem); }
 .eyebrow { font-family: var(--f-mono); font-size: .75rem; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
 .hand { font-family: var(--f-hand); color: var(--pencil); line-height: 1.3; }
 mark, .hl {

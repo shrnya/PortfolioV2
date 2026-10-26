@@ -3,31 +3,12 @@ import Base from '../layouts/Base.astro';
 import { line } from '../lib/rough';
 
 const resume = 'https://drive.google.com/file/d/15tVwUM-jkmzby2MVAa0smwRkCzmqHJ-Z/view';
-const roles = [
-  { at: 'Ecolibrium', what: 'Product Designer', when: 'Sep 2025 to now' },
-  { at: 'SustainLab', what: 'Product Design Intern', when: 'Jul to Nov 2024' },
-  { at: 'Kriya', what: 'Architect', when: 'Feb 2022 to Sep 2023' },
-];
-const featured = [
-  {
-    href: '/work/design-system/', img: '/media/ds/after-light.jpg', company: 'Ecolibrium',
-    title: 'A new look that didn’t leave customers behind',
-    tags: ['Design system', 'Theming'],
-  },
-  {
-    href: '/work/sld/', img: '/media/sld/overview.jpg', company: 'Ecolibrium',
-    title: 'Following the power to find the leak',
-    tags: ['Data visualisation', 'End to end'],
-  },
-  {
-    href: '/work/sustainlab/', img: '/media/home/sustainlab.jpg', company: 'SustainLab',
-    title: 'A 284-page law, one question at a time',
-    tags: ['B2B SaaS', 'Dev handoff'],
-  },
-];
-const more = [
-  { href: '/work/spider-club/', title: 'Spider Club of Belgaum', tags: 'Database · Information architecture', status: 'Redesign in progress' },
-  { href: '/work/architecture/', title: 'Architecture and interiors', tags: 'Archive · 2021 to 2023', status: 'See the archive' },
+const work = [
+  { href: '/work/design-system/', img: '/media/ds/after-light.jpg', shot: true, company: 'Ecolibrium', title: 'A new look that didn’t leave customers behind', tags: ['Design system', 'Theming'] },
+  { href: '/work/sld/', img: '/media/sld/overview.jpg', shot: true, company: 'Ecolibrium', title: 'Following the power to find the leak', tags: ['Data viz', 'End to end'] },
+  { href: '/work/sustainlab/', img: '/media/home/sustainlab.jpg', shot: true, company: 'SustainLab', title: 'A 284-page law, one question at a time', tags: ['B2B SaaS', 'Handoff'] },
+  { href: '/work/spider-club/', img: '/media/scob/mockup.jpg', shot: false, company: 'Spider Club of Belgaum', title: 'A home for 55+ local spider species', tags: ['Database', 'IA'] },
+  { href: '/work/architecture/', img: '/media/arch/yurt-built.jpg', shot: false, company: 'Architecture', title: 'The archive: buildings and interiors', tags: ['Gallery'] },
 ];
 const swoop = line(4, 10, 196, 6, 51, 3);
 ---
@@ -38,7 +19,6 @@ const swoop = line(4, 10, 196, 6, 51, 3);
     <ul class="at">
       <li><span class="k">@</span> <b>Ecolibrium</b> Product Designer</li>
       <li><span class="k">prev @</span> <b>SustainLab</b> Product Design Intern</li>
-      <li><span class="k">before that</span> Architect</li>
     </ul>
     <ul class="links">
       <li><a href={resume} rel="noopener">résumé ↗</a></li>
@@ -47,32 +27,23 @@ const swoop = line(4, 10, 196, 6, 51, 3);
     </ul>
   </section>
 
-  <section class="exp sheet" aria-labelledby="exp-h">
-    <h2 id="exp-h" class="eyebrow">Experience</h2>
-    <ul>
-      {roles.map((r) => <li><b>{r.at}</b><span>{r.what}</span><span class="when">{r.when}</span></li>)}
-    </ul>
-  </section>
-
   <section id="work" class="work sheet" aria-labelledby="work-h">
-    <h2 id="work-h" class="eyebrow">Selected work</h2>
-    <ul class="cards">
-      {featured.map((f, i) => (
-        <li class:list={{ big: i === 0 }}>
-          <a href={f.href}>
-            <span class="img"><img src={f.img} alt="" loading={i ? 'lazy' : 'eager'} /></span>
-            <span class="co">{f.company}</span>
-            <span class="t">{f.title}</span>
-            <span class="tags">{f.tags.join(' · ')}</span>
+    <header class="wh">
+      <p class="eyebrow">01</p>
+      <h2 id="work-h">Selected<br />Work.</h2>
+    </header>
+    <ul class="grid">
+      {work.map((w, i) => (
+        <li class:list={[i < 2 ? 'wide' : 'third']}>
+          <a class="card surface" href={w.href}>
+            <span class:list={['pic', { shot: w.shot }]}><img src={w.img} alt="" loading={i < 2 ? 'eager' : 'lazy'} /></span>
+            <span class="cap">
+              <span class="co">{w.company}</span>
+              <span class="t">{w.title}</span>
+              <span class="tags">{w.tags.map((t) => <span>{t}</span>)}</span>
+            </span>
           </a>
         </li>
-      ))}
-    </ul>
-
-    <h2 class="eyebrow more-h">More work</h2>
-    <ul class="index">
-      {more.map((m) => (
-        <li><a href={m.href}><span class="t">{m.title}</span><span class="tags">{m.tags}</span><span class="st hand">{m.status} →</span></a></li>
       ))}
     </ul>
   </section>
@@ -93,32 +64,28 @@ const swoop = line(4, 10, 196, 6, 51, 3);
   .links a { text-decoration: none; border-bottom: 1.5px solid var(--pencil); }
   .links a:hover { color: var(--pencil); }
 
-  .eyebrow { margin: 0 0 1rem; }
-  .exp { padding-block: 1.5rem 0; }
-  .exp ul { list-style: none; margin: 0; padding: 0; border-top: 1.5px solid var(--ink); max-width: 44rem; }
-  .exp li { display: grid; grid-template-columns: minmax(0, 8rem) minmax(0, 1fr) auto; gap: .5rem 1rem; padding: .7rem 0; border-bottom: 1px solid var(--rule); font-size: 1rem; }
-  .exp b { font-family: var(--f-display); }
-  .when { font-family: var(--f-mono); font-size: .8rem; color: var(--muted); padding-top: .15rem; }
-  @media (max-width: 520px) { .exp li { grid-template-columns: minmax(0, 1fr) auto; } .exp li span:not(.when) { grid-column: 1; grid-row: 2; color: var(--muted); } }
-
-  .work { padding-block: 4rem 0; }
-  .cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 2.5rem 2rem; }
-  @media (min-width: 760px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } .cards .big { grid-column: 1 / -1; } }
-  .cards a { display: flex; flex-direction: column; gap: .35rem; text-decoration: none; }
-  .img { display: block; border: 1.5px solid var(--ink); border-radius: 10px; overflow: hidden; background: var(--sheet); margin-bottom: .5rem; transition: transform .25s, box-shadow .25s; }
-  .img img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top left; }
-  @media (min-width: 760px) { .big .img img { aspect-ratio: 16 / 7; } }
-  .cards a:hover .img { transform: translateY(-3px) rotate(-.4deg); box-shadow: 6px 6px 0 var(--pencil); }
-  .co { font-family: var(--f-mono); font-size: .74rem; letter-spacing: .08em; text-transform: uppercase; color: var(--pencil); }
-  .t { font-family: var(--f-display); font-weight: 800; font-size: clamp(1.2rem, 2.4vw, 1.45rem); letter-spacing: -.015em; line-height: 1.2; }
-  .cards a:hover .t, .index a:hover .t { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
-  .tags { font-family: var(--f-mono); font-size: .76rem; color: var(--muted); }
-
-  .more-h { margin-top: 4rem; }
-  .index { list-style: none; margin: 0; padding: 0; border-top: 1.5px solid var(--ink); }
-  .index a { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .2rem 1rem; align-items: baseline; padding: 1rem 0; border-bottom: 1px solid var(--rule); text-decoration: none; }
-  @media (min-width: 760px) { .index a { grid-template-columns: minmax(0, 18rem) minmax(0, 1fr) auto; } }
-  .index .t { font-size: 1.1rem; }
-  .st { font-size: 1.02rem; }
-  @media (max-width: 759px) { .index .tags { grid-column: 1; grid-row: 2; } .index .st { grid-row: 1 / 3; grid-column: 2; align-self: center; font-size: .95rem; } }
+  .work { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.5rem 2rem; padding-block: 2rem 0; }
+  @media (min-width: 900px) { .work { grid-template-columns: minmax(0, 11rem) minmax(0, 1fr); } }
+  .wh h2 { font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 800; letter-spacing: -.03em; line-height: 1; margin-top: .4rem; }
+  .grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; }
+  @media (min-width: 640px) { .grid { grid-template-columns: repeat(6, minmax(0, 1fr)); } .wide { grid-column: span 3; } .third { grid-column: span 2; } }
+  @media (min-width: 640px) and (max-width: 899px) { .third:last-child { grid-column: span 6; } .third { grid-column: span 3; } }
+  .card { position: relative; display: block; height: 100%; min-height: 15rem; background: var(--paper); border-radius: 8px; overflow: hidden; text-decoration: none; }
+  .wide .card { aspect-ratio: 4 / 3; }
+  .third .card { aspect-ratio: 4 / 5; }
+  @media (max-width: 639px) { .wide .card, .third .card { aspect-ratio: 4 / 3; } }
+  .pic { position: absolute; inset: 0; }
+  .pic img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s ease; }
+  .pic.shot { inset: 1.1rem 1.1rem auto; height: 70%; border: 1.5px solid var(--pencil); border-radius: 6px; overflow: hidden; background: var(--sheet); }
+  .pic.shot img { object-position: top left; }
+  .card:hover .pic img { transform: scale(1.03); }
+  .cap {
+    position: absolute; left: 1rem; bottom: 1rem; right: 1rem; max-width: 22rem; display: flex; flex-direction: column; gap: .3rem;
+    background: var(--paper); border: 1.5px solid var(--pencil); padding: .65rem .8rem .7rem; box-shadow: 4px 4px 0 var(--pencil); transition: transform .25s;
+  }
+  .card:hover .cap { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--pencil); }
+  .co { font-family: var(--f-mono); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--pencil); }
+  .t { font-family: var(--f-display); font-weight: 800; font-size: 1.08rem; line-height: 1.2; letter-spacing: -.01em; color: var(--ink); }
+  .tags { display: flex; flex-wrap: wrap; gap: .3rem; }
+  .tags span { font-family: var(--f-mono); font-size: .64rem; letter-spacing: .04em; text-transform: uppercase; color: var(--pencil); border: 1px solid var(--pencil-soft); padding: .05rem .4rem; }
 </style>

@@ -13,7 +13,7 @@ interface Props {
 const { frontmatter: fm } = Astro.props;
 ---
 <Base title={`${fm.title} · Sharanya Jagdeeshchandran`} description={fm.lede} journal>
-  <article class="case sheet">
+  <article class="case sheet panel">
     <a class="back" href="/#work">← All work</a>
     <header class="top">
       <p class="eyebrow">{fm.company}</p>
@@ -49,7 +49,7 @@ const { frontmatter: fm } = Astro.props;
 </Base>
 
 <style>
-  .case { padding-block: 2rem 0; display: flex; flex-direction: column; gap: 2.5rem; }
+  .case { margin-top: .5rem; display: flex; flex-direction: column; gap: 2.5rem; }
   .back { font-family: var(--f-display); font-weight: 600; font-size: .92rem; text-decoration: none; align-self: flex-start; }
   .back:hover { text-decoration: underline; }
   .top { display: flex; flex-direction: column; gap: .9rem; max-width: 50rem; }

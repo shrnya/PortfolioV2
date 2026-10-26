@@ -5,7 +5,7 @@ interface Props { title: string; eyebrow: string; lede: string; facts?: { k: str
 const { title, eyebrow, lede, facts = [], journal = false } = Astro.props;
 ---
 <Base title={`${title} · Sharanya Jagdeeshchandran`} description={lede} journal={journal}>
-  <article class="simple sheet">
+  <article class="simple sheet panel">
     <a class="back" href="/#work">← All work</a>
     <header class="top">
       <p class="eyebrow">{eyebrow}</p>
@@ -23,7 +23,7 @@ const { title, eyebrow, lede, facts = [], journal = false } = Astro.props;
 </Base>
 
 <style>
-  .simple { padding-block: 2rem 0; display: flex; flex-direction: column; gap: 2.5rem; }
+  .simple { margin-top: .5rem; display: flex; flex-direction: column; gap: 2.5rem; }
   .back { font-family: var(--f-display); font-weight: 600; font-size: .92rem; text-decoration: none; align-self: flex-start; }
   .back:hover { text-decoration: underline; }
   .top { display: flex; flex-direction: column; gap: .9rem; max-width: 50rem; }

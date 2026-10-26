@@ -1,115 +1,70 @@
 ---
 import Simple from '../../layouts/Simple.astro';
-import Shot from '../../components/Shot.astro';
-import Say from '../../components/Say.astro';
-import Note from '../../components/Note.astro';
-const facts = [
-  { k: 'Studied', v: 'Five years of architecture school' },
-  { k: 'Practice', v: 'Kriya (2022 to 2023), then my own projects' },
-  { k: 'Before that', v: 'Apprenticeship at Auroville Bamboo Centre, 2021' },
-];
-const projects = [
+const groups = [
   {
-    id: 'hcm', n: 1, title: 'An apartment in Ho Chi Minh City', where: 'Professional practice at Kriya, 2022',
-    meta: [['Size', '1,800 sq ft'], ['Type', 'Apartment renovation'], ['Team', 'Ar. Vinod Mathew, Ar. Dilsha K and me']],
-    role: 'Design development, moodboards, client presentations and communication, material and paint selection, 3D renders and construction drawings.',
-    brief: 'The client wanted a home that felt like his hometown in Kerala, with a luxurious, contemporary feel for entertaining guests. He wanted bigger bedrooms, and didn’t mind losing a room to get them.',
+    id: 'hcm', title: 'Apartment, Ho Chi Minh City', line: 'Kerala at home, in Vietnam. Two bedrooms became one, behind a curved wall. Featured in Elle Decoration Vietnam.', meta: 'Kriya · 2022',
+    pics: [
+      ['hcm-living.jpg', 'Living room'],
+      ['hcm-final.jpg', 'Dining, foyer, pantry, bedroom'],
+      ['hcm-plans.jpg', 'Before and after plans'],
+      ['hcm-before-after.jpg', 'On site'],
+      ['hcm-palette.jpg', 'Two tropical cities, one palette'],
+    ],
   },
   {
-    id: 'ohc', n: 2, title: 'An office for One Hand Clap, Mumbai', where: 'Independent practice, 2023',
-    meta: [['Size', '1,850 sq ft'], ['Type', 'Office interiors'], ['Team', 'Me as the sole designer, with Mr. Sudhesh (contractor)']],
-    role: 'Design development, moodboards, client presentations, material selection, 3D renders and construction drawings.',
-    brief: 'A marketing agency was opening its first office: 65 people, working hybrid. They wanted a “cool” office their young team would actually want to come into, with part of it ready in two weeks.',
+    id: 'ohc', title: 'One Hand Clap office, Mumbai', line: 'A “cool” office for 65 people, part of it ready in two weeks.', meta: 'Independent · 2023',
+    pics: [
+      ['ohc-pegboard.jpg', 'The logo pegboard'],
+      ['ohc-install.jpg', 'Putting it up'],
+      ['ohc-common.jpg', 'Before and now'],
+      ['ohc-foyer.jpg', 'The blue foyer'],
+      ['ohc-plan.jpg', 'Two zones: people and focus'],
+    ],
   },
   {
-    id: 'yurt', n: 3, title: 'A bamboo yurt cottage, Auroville', where: 'Apprenticeship with Auroville Bamboo Centre, 2021',
-    meta: [['Size', '30 sq m'], ['Type', 'Low-cost natural building'], ['Team', 'Ar. Divij Bharadwaj, Ar. Hricha Lahari and me']],
-    role: 'Research, material analysis, prototyping and testing, iteration, presentation.',
-    brief: 'A basic, low-cost cottage with bamboo as the structure, pushing the material to make something both useful and beautiful.',
+    id: 'yurt', title: 'Bamboo yurt, Auroville', line: 'No posts, no beams, tested in 1:10 bamboo models first.', meta: 'Auroville Bamboo Centre · 2021',
+    pics: [
+      ['yurt-built.jpg', 'The frame'],
+      ['yurt-scale.jpg', '1:10 models'],
+      ['yurt-models.jpg', 'Weeks of testing'],
+      ['yurt-render.jpg', 'The finished cottage'],
+    ],
   },
 ];
 ---
 <Simple
-  title="The roots of my design journey"
-  eyebrow="Architecture and interiors · archive"
-  lede="From architecture school to natural buildings and luxury interiors, I learned user-centred thinking and problem solving long before I touched a wireframe."
-  facts={facts}
-  journal
+  title="The archive"
+  eyebrow="Architecture and interiors"
+  lede="Before screens, I designed spaces. A few of them."
 >
-  <p>My design journey is rooted in research, design thinking, a bit of philosophy, and making things work for the people who use them. Here’s a peek at three projects that built the foundation I design on today.</p>
-  <Say seed={12}>What does a bamboo yurt have to do with product design? Probably more than you’d think.</Say>
-
-  <div slot="wide" class="projects">
-    {projects.map((p) => (
-      <section class="proj" id={p.id} aria-labelledby={`${p.id}-h`}>
-        <header class="ph">
-          <p class="eyebrow">{p.n} · {p.where}</p>
-          <h2 id={`${p.id}-h`}>{p.title}</h2>
+  <div slot="wide" class="groups">
+    {groups.map((g) => (
+      <section class="g" id={g.id} aria-labelledby={`${g.id}-h`}>
+        <header>
+          <h2 id={`${g.id}-h`}>{g.title}</h2>
+          <p class="meta">{g.meta}</p>
+          <p class="line">{g.line}</p>
         </header>
-        <div class="pg">
-          <div class="pt">
-            <p class="brief">{p.brief}</p>
-            {p.id === 'hcm' && <>
-              <p>The big move was joining bedrooms two and three, and giving part of that space to the main bedroom as a walk-in wardrobe. A new curved wall made the wardrobe feel like part of the room, with room to walk around it on both sides.</p>
-              <Note>One curved wall, and the whole flow of the home stayed intact.</Note>
-              <p>The team building it on site was in Vietnam and we didn’t share a language, so everything was explained in visuals and precise drawings. The palette took the earthy tones of two tropical cities, with pops of orange and teal.</p>
-              <p>The project was featured in <a href="https://www.elledecoration.vn/homes/vietnam/can-ho-mang-cam-hung-an-do-o-sai-gon" rel="noopener">Elle Decoration Vietnam</a> :)</p>
-            </>}
-            {p.id === 'ohc' && <>
-              <p>I split the office into two zones: one social, for ideas, discussions and clients, and one for focused work. The pantry and cafe fit into the narrow hallway.</p>
-              <p>The colours came from their logo. An industrial-chic look kept the budget in check without giving up on looks, with pops of yellow to keep things playful.</p>
-              <p>They wanted the brand everywhere, so the common area got a big interactive pegboard of their logo, and the entrance became a blue buffer room with a backlit sign.</p>
-              <Note tilt={1}>Two weeks to get part of it ready. No pressure.</Note>
-            </>}
-            {p.id === 'yurt' && <>
-              <p>Bamboo lets you test a structure at small scale, so I built 1:10 bamboo models of the roof, the walls and the whole yurt, week after week.</p>
-              <p>A compression ring at the top and a tension band where the roof meets the wall let the roof span the whole space with no posts or beams inside. It feels open and light, and stands up well to earthquakes and strong wind.</p>
-              <Note>Prototype, test, change it, repeat. Sound familiar?</Note>
-            </>}
-          </div>
-          <dl class="pm">
-            {p.meta.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}
-            <div><dt>My part</dt><dd>{p.role}</dd></div>
-          </dl>
-        </div>
-        {p.id === 'hcm' && <>
-          <Shot src="/media/arch/hcm-living.jpg" alt="The finished living room: warm wood, a tan sofa and big windows" />
-          <Shot src="/media/arch/hcm-plans.jpg" alt="Before and after plans, with bedrooms two and three joined and the curved wardrobe wall" caption="Before and after plans, with the new curved wall." />
-          <Shot src={['/media/arch/hcm-before-after.jpg', '/media/arch/hcm-final.jpg']} alt={['The apartment during construction', 'Finished dining area, entrance foyer, pantry and bedroom']} caption="On site, and finished." />
-          <Shot src="/media/arch/hcm-palette.jpg" alt="Palette of coconut brown, dark wood, grey, cream, red and teal" caption="Two tropical cities in one palette." />
-        </>}
-        {p.id === 'ohc' && <>
-          <Shot src={['/media/arch/ohc-pegboard.jpg', '/media/arch/ohc-install.jpg']} alt={['Grey pegboard wall with the yellow One Hand Clap logo', 'Putting the logo up on the pegboard']} caption="The interactive logo pegboard." />
-          <Shot src="/media/arch/ohc-plan.jpg" alt="Furniture layout plan of the office" caption="Zone one for people, zone two for focus." />
-          <Shot src={['/media/arch/ohc-common.jpg', '/media/arch/ohc-foyer.jpg']} alt={['The common area before and after', 'Backlit sign details and the blue entrance foyer']} caption="Before and now, and the blue foyer." />
-        </>}
-        {p.id === 'yurt' && <>
-          <Shot src="/media/arch/yurt-built.jpg" alt="The bamboo yurt frame standing in the forest" />
-          <Shot src={['/media/arch/yurt-scale.jpg', '/media/arch/yurt-models.jpg']} alt={['Six 1:10 bamboo models on black', 'Grid of photos of the models over weeks of testing']} caption="Weeks of 1:10 models." />
-          <Shot src="/media/arch/yurt-render.jpg" alt="Illustrated render of the finished yurt cottage" />
-        </>}
+        <ul class="gal">
+          {g.pics.map(([src, cap]) => (
+            <li><figure><img src={`/media/arch/${src}`} alt={cap} loading="lazy" /><figcaption class="hand">{cap}</figcaption></figure></li>
+          ))}
+        </ul>
       </section>
     ))}
   </div>
 </Simple>
 
 <style>
-  .projects { display: flex; flex-direction: column; gap: 5rem; }
-  .proj { display: flow-root; border-top: 1.5px solid var(--ink); padding-top: 1.5rem; }
-  .proj > :global(* + *) { margin-top: 1.5rem; }
-  .proj :global(.shot[style*="--cols:1"]) { max-width: 46rem; }
-  .ph { display: flex; flex-direction: column; gap: .4rem; }
-  h2 { font-size: clamp(1.6rem, 3.4vw, 2.3rem); font-weight: 800; letter-spacing: -.02em; }
-  .pg { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.5rem 3.5rem; }
-  @media (min-width: 860px) { .pg { grid-template-columns: minmax(0, 1fr) minmax(0, 18rem); } }
-  .pt { display: flow-root; max-width: var(--col-w); }
-  .pt > :global(* + *) { margin-top: 1rem; }
-  .brief { font-size: 1.15rem; }
-  .pm { margin: 0; display: flex; flex-direction: column; gap: .5rem; align-self: start; }
-  .pm div { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); gap: .75rem; border-top: 1px solid var(--rule); padding-top: .45rem; }
-  dt { font-family: var(--f-mono); font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); padding-top: .2rem; }
-  dd { margin: 0; font-size: .95rem; line-height: 1.45; }
-  /* notes inside the narrow text column sit inline rather than in the gutter */
-  .pt :global(.note) { float: none; width: auto; margin: 1rem 0 0; border-left: 2px solid var(--pencil); padding-left: .8rem; }
-  .pt :global(.note .arw) { display: none; }
+  .groups { display: flex; flex-direction: column; gap: 3.5rem; }
+  .g header { display: flex; flex-direction: column; gap: .25rem; margin-bottom: 1.1rem; max-width: 40rem; }
+  h2 { font-size: clamp(1.35rem, 2.6vw, 1.75rem); font-weight: 800; letter-spacing: -.015em; }
+  .meta { font-family: var(--f-mono); font-size: .74rem; color: var(--muted); }
+  .line { font-size: 1.02rem; }
+  .gal { list-style: none; margin: 0; padding: 0; columns: 3 16rem; column-gap: .9rem; }
+  .gal li { break-inside: avoid; margin-bottom: .9rem; }
+  figure { margin: 0; display: flex; flex-direction: column; gap: .3rem; }
+  img { width: 100%; height: auto; display: block; border-radius: 6px; border: 1px solid var(--rule); }
+  figcaption { font-size: .98rem; }
+  @media (max-width: 520px) { .gal { columns: 2 9rem; column-gap: .6rem; } .gal li { margin-bottom: .6rem; } figcaption { font-size: .9rem; } }
 </style>
