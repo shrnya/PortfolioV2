@@ -1,129 +1,160 @@
 ---
 import Base from '../layouts/Base.astro';
-import SketchToSystem from '../components/SketchToSystem.astro';
-import EntryCard from '../components/EntryCard.astro';
+import Testimonials from '../components/Testimonials.astro';
+import { arrow, line } from '../lib/rough';
 
-const entries = [
+const featured = [
   {
-    n: '01', href: '/work/sustainlab/', status: 'Read the case study',
-    title: 'How do you design for a law that didn’t exist last year?',
-    line: 'At SustainLab, I helped turn a 284-page EU regulation into guided questions that sustainability teams could actually answer.',
-    tags: ['SustainLab', 'B2B SaaS', '2024'],
-  },
-  {
-    n: '02', href: '/work/design-system/', status: 'Read the case study',
+    href: '/work/design-system/', img: '/media/ds/after-light.jpg', company: 'Ecolibrium · 2026',
     title: 'Can a product get a new look without losing the people who know it by heart?',
-    line: 'I rebuilt the design system behind Ecolibrium’s energy platform: the familiar dark theme stayed, and a light one joined it.',
-    tags: ['Ecolibrium', 'Design system', '2026'],
+    line: 'I rebuilt the design system behind SmartSense, Ecolibrium’s energy platform. The familiar dark theme stayed, a light one joined it, and both run on tokens the code can use.',
+    tags: ['Design system', 'Theming', 'Components'],
   },
   {
-    n: '03', href: '/work/sld/', status: 'Read the case study',
+    href: '/work/sld/', img: '/media/sld/overview.jpg', company: 'Ecolibrium · 2026',
     title: 'Where is all that energy actually going?',
-    line: 'I designed, end to end, an interactive map of a building’s power network, so anyone can follow energy from the grid to each machine.',
-    tags: ['Ecolibrium', 'Energy management', '2026'],
+    line: 'I designed, end to end, an interactive map of a building’s power network, so engineers and managers alike can follow energy from the grid to each machine.',
+    tags: ['Data visualisation', 'Complex systems', 'End to end'],
   },
   {
-    n: '04', href: '/work/spider-club/', status: 'Redesign in progress',
-    title: 'What do you do when Google can’t identify the spider you just spotted?',
-    line: 'You build the database yourself. Four years of scattered field research, now 55+ species people can actually browse.',
-    tags: ['Spider Club of Belgaum', 'Information architecture'],
+    href: '/work/sustainlab/', img: '/media/home/sustainlab.jpg', company: 'SustainLab · 2024',
+    title: 'How do you design for a law that didn’t exist last year?',
+    line: 'I helped turn a 284-page EU regulation into guided questions that sustainability teams could actually answer, and reworked how design handed work to developers.',
+    tags: ['B2B SaaS', 'Regulation', 'Dev handoff'],
   },
+];
+const more = [
+  { href: '/work/spider-club/', img: '/media/scob/mockup.jpg', title: 'Spider Club of Belgaum', line: 'A database of 55+ local spider species, built from four years of field research.' },
+  { href: '/work/architecture/', img: '/media/arch/yurt-built.jpg', title: 'Architecture and interiors', line: 'Where it all started: a bamboo yurt, an office in Mumbai and an apartment in Ho Chi Minh City.' },
+];
+const quotes = [
   {
-    n: '05', href: '/work/architecture/', status: 'Peek at my roots',
-    title: 'What does a bamboo yurt in Auroville have to do with product design?',
-    line: 'Probably more than you’d think. Architecture school, natural buildings and luxury interiors taught me user-centred thinking long before I touched a wireframe.',
-    tags: ['Architecture', 'Interiors', '2021 to 2023'],
+    text: 'Sharanya was fantastic to collaborate with! From day one, she brought fresh ideas and a solid eye for detail, always keeping the user front and center in her designs. One of her standout contributions was creating a super helpful template for handing over designs from the UX team to the dev team, which really streamlined our workflow. She’s also a quick learner who was always open to feedback, and her positive attitude made her a great part of the team.',
+    name: 'Soe Y Paing', role: 'UX Designer, SustainLab', photo: '/media/people/soe.jpg', href: 'https://www.linkedin.com/in/soe-yan-paing-21941384/',
   },
-] as const;
+];
+const swoop = line(4, 10, 196, 6, 51, 3);
+const down = arrow(20, 4, 26, 52, 52);
 ---
 <Base title="Sharanya Jagdeeshchandran · Product designer">
   <section class="hero sheet">
-    <div class="intro">
-      <p class="hand hi">Hi, I’m Sharanya ✤</p>
-      <h1>A designer who thrives where design meets <span class="hl">impact</span>.</h1>
-      <p class="lede">Architect turned product designer. I design energy and sustainability software, where the data is dense and the people using it have real decisions to make.</p>
-      <p class="hand now">Now: Ecolibrium. Before that: SustainLab.</p>
-    </div>
-    <SketchToSystem />
+    <p class="hand hi">Hi, I’m Sharanya ✤</p>
+    <h1>A designer who thrives where design meets <span class="imp">impact<svg class="sw boil" viewBox="0 0 200 16" preserveAspectRatio="none" aria-hidden="true"><path d={swoop} /></svg></span>.</h1>
+    <p class="lede">I’m a product designer with a background in architecture. I love untangling complex problems and turning them into products that feel simple to use.</p>
+    <ul class="where">
+      <li><span class="k">Currently at</span> <a href="/work/design-system/"><b>Ecolibrium</b></a>, designing an energy management platform</li>
+      <li><span class="k">Previously at</span> <a href="/work/sustainlab/"><b>SustainLab</b></a>, designing sustainability reporting software</li>
+    </ul>
+    <a class="peek hand" href="#work">see my work<svg class="boil" viewBox="0 0 30 56" aria-hidden="true"><path d={down} /></svg></a>
   </section>
 
   <section id="work" class="work sheet" aria-labelledby="work-h">
     <header class="sec-head">
       <h2 id="work-h">Selected work</h2>
-      <p class="hand">Every project starts with a question.</p>
     </header>
-    <ul class="entries">
-      {entries.map((e) => <EntryCard {...e} tags={[...e.tags]} />)}
+    <ol class="feat">
+      {featured.map((f, i) => (
+        <li class:list={['row', { flip: i % 2 === 1 }]}>
+          <a class="shot" href={f.href} tabindex="-1" aria-hidden="true"><img src={f.img} alt="" loading={i ? 'lazy' : 'eager'} /></a>
+          <div class="txt">
+            <p class="eyebrow">{f.company}</p>
+            <h3><a href={f.href}>{f.title}</a></h3>
+            <p>{f.line}</p>
+            <ul class="tags">{f.tags.map((t) => <li>{t}</li>)}</ul>
+            <a class="go" href={f.href}>Read the case study <span aria-hidden="true">→</span></a>
+          </div>
+        </li>
+      ))}
+    </ol>
+
+    <h2 class="more-h">More of my work</h2>
+    <ul class="more">
+      {more.map((m) => (
+        <li>
+          <a href={m.href}>
+            <img src={m.img} alt="" loading="lazy" />
+            <span class="mt">{m.title} <span aria-hidden="true">→</span></span>
+            <span class="ml">{m.line}</span>
+          </a>
+        </li>
+      ))}
     </ul>
   </section>
 
   <section class="kind sheet" aria-labelledby="kind-h">
     <header class="sec-head">
       <h2 id="kind-h">What it’s like to work with me</h2>
+      <p class="hand">don’t just take my word for it :)</p>
     </header>
-    <p class="kind-intro">Whether it’s brainstorming big ideas or sweating the small details, I try to make work both productive and fun. I like to think I’m a delight to work with, but don’t just take my word for it :)</p>
-    <figure class="quote">
-      <blockquote>“Sharanya was fantastic to collaborate with! From day one, she brought fresh ideas and a solid eye for detail, always keeping the user front and center in her designs. One of her standout contributions was creating a super helpful template for handing over designs from the UX team to the dev team, which really streamlined our workflow. She’s also a quick learner who was always open to feedback, and her positive attitude made her a great part of the team.”</blockquote>
-      <figcaption>
-        <img class="face" src="/media/people/soe.jpg" alt="" width="56" height="56" loading="lazy" />
-        <span><b>Soe Y Paing</b><br />UX Designer, SustainLab</span>
-      </figcaption>
-    </figure>
+    <Testimonials quotes={quotes} />
   </section>
 
   <section id="about" class="about sheet" aria-labelledby="about-h">
-    <div class="label">
-      <img class="me" src="/media/people/sharanya.jpg" alt="Sharanya smiling" width="600" height="600" loading="lazy" />
-      <dl>
-        <div><dt>Trained as</dt><dd>Architect</dd></div>
-        <div><dt>Now</dt><dd>Product designer at Ecolibrium</dd></div>
-        <div><dt>Curious about</dt><dd>Tech that helps the planet</dd></div>
-        <div><dt>Off screen</dt><dd>Spiders, pop culture, quiet water</dd></div>
-      </dl>
-    </div>
+    <img class="me" src="/media/people/sharanya.jpg" alt="Sharanya smiling, holding a small dog" width="700" height="933" loading="lazy" />
     <div class="story">
       <p class="eyebrow">About</p>
       <h2 id="about-h">I’m Sharanya, nice to meet you ✤</h2>
-      <p>I’ve always been drawn to digital design and how quickly it reaches people. In early 2024, after over two years as an architect, a UX workshop got me hooked. By July I was interning at SustainLab, working where tech, design and impact meet, and that confirmed UX was my calling.</p>
-      <p>Today I’m a product designer at Ecolibrium, designing energy management software. Architecture still shapes how I work: I find the structure first, then make it easy to read.</p>
-      <p>I’m curious about how technology can support sustainability, and how design can bridge the digital and the physical.</p>
-      <p>When I’m not solving design problems, I’m catching up on pop culture, geeking out over spiders (yes, web design runs deep), or unwinding by tranquil waters. Always up for a good conversation, a spontaneous adventure or a perfectly timed bad joke :)</p>
+      <p>I spent over two years as an architect before a UX workshop in 2024 pulled me into digital design. I still start every project the way I’d start a building: understand the people, find the structure, then make it easy to use.</p>
+      <p>Off screen, I’m catching up on pop culture or geeking out over spiders (yes, web design runs deep) :)</p>
     </div>
   </section>
 </Base>
 
 <style>
-  .hero { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2.5rem; padding-block: 3rem 2rem; align-items: center; }
-  @media (min-width: 900px) { .hero { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 3.5rem; padding-block: 4.5rem 3rem; } }
-  .intro { display: flex; flex-direction: column; gap: 1.1rem; min-width: 0; }
-  h1 { font-size: clamp(2.3rem, 5.4vw, 3.9rem); font-weight: 800; letter-spacing: -.03em; line-height: 1.02; }
-  .lede { font-size: 1.2rem; line-height: 1.5; max-width: 32rem; }
-  .now { font-size: 1.1rem; }
-  .hi { font-size: 1.5rem; }
+  .hero { display: flex; flex-direction: column; gap: 1.3rem; padding-block: 4rem 3rem; }
+  @media (min-width: 900px) { .hero { padding-block: 6.5rem 4.5rem; } }
+  .hi { font-size: 1.6rem; }
+  h1 { font-size: clamp(2.5rem, 7vw, 5.2rem); font-weight: 800; letter-spacing: -.035em; line-height: 1; max-width: 19ch; }
+  .imp { position: relative; white-space: nowrap; color: var(--pencil); }
+  .sw { position: absolute; left: -2%; bottom: -.12em; width: 104%; height: .25em; overflow: visible; }
+  .sw path { fill: none; stroke: var(--pencil); stroke-width: 3; stroke-linecap: round; }
+  .lede { font-size: clamp(1.15rem, 2vw, 1.35rem); line-height: 1.5; max-width: 36rem; }
+  .where { list-style: none; margin: .2rem 0 0; padding: 0; display: flex; flex-direction: column; gap: .45rem; font-size: 1.05rem; }
+  .where .k { font-family: var(--f-mono); font-size: .74rem; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); margin-right: .35rem; }
+  .where a { text-decoration: none; border-bottom: 1.5px solid var(--pencil); }
+  .where a:hover { color: var(--pencil); }
+  .peek { align-self: flex-start; display: inline-flex; align-items: flex-start; gap: .3rem; margin-top: 1.5rem; font-size: 1.15rem; text-decoration: none; }
+  .peek svg { width: 1.3rem; height: 2.6rem; overflow: visible; }
+  .peek path { fill: none; stroke: var(--pencil); stroke-width: 2; stroke-linecap: round; }
+  @media (prefers-reduced-motion: no-preference) { .peek svg { animation: bob 1.8s ease-in-out infinite; } }
+  @keyframes bob { 50% { transform: translateY(5px); } }
 
   .work, .about, .kind { padding-block: 5rem 0; }
-  .kind-intro { max-width: var(--col-w); margin-bottom: 1.5rem; }
-  .quote { margin: 0; max-width: 46rem; border: 2px solid var(--pencil); border-radius: 18px 22px 20px 16px; padding: 1.4rem 1.5rem; transform: rotate(-.4deg); display: flex; flex-direction: column; gap: 1rem; }
-  .quote blockquote { margin: 0; font-size: 1.12rem; line-height: 1.55; }
-  .quote figcaption { display: flex; align-items: center; gap: .8rem; font-family: var(--f-display); font-size: .92rem; line-height: 1.35; }
-  .face { width: 3.5rem; height: 3.5rem; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--ink); background: var(--sheet); }
-  .sec-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: .5rem 1.5rem; margin-bottom: 1.25rem; }
-  .sec-head h2, .story h2 { font-size: clamp(1.8rem, 3.6vw, 2.5rem); font-weight: 800; letter-spacing: -.02em; }
-  .sec-head .hand { font-size: 1.05rem; }
-  .entries { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0 3rem; margin: 0; padding: 0; }
-  @media (min-width: 860px) { .entries { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .sec-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: .5rem 1.5rem; margin-bottom: 2rem; }
+  .sec-head h2, .story h2, .more-h { font-size: clamp(1.8rem, 3.6vw, 2.5rem); font-weight: 800; letter-spacing: -.02em; }
+  .sec-head .hand { font-size: 1.15rem; }
 
-  .about { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2rem 3.5rem; align-items: start; }
-  @media (min-width: 860px) { .about { grid-template-columns: minmax(0, 18rem) minmax(0, 1fr); } }
-  .label {
-    background: var(--sheet); border: 1.5px solid var(--ink); border-radius: 4px; padding: 1rem 1.1rem 1.1rem;
-    display: flex; flex-direction: column; gap: .8rem; transform: rotate(-1deg); position: relative;
-  }
-  .label::before { content: ""; position: absolute; top: -9px; left: 1.2rem; width: 4.5rem; height: 1.2rem; background: var(--tape); transform: rotate(-4deg); }
-  .me { width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; border-radius: 3px; background: var(--paper); }
-  dl { margin: 0; display: flex; flex-direction: column; gap: .55rem; }
-  dl div { display: grid; grid-template-columns: 6.2rem minmax(0, 1fr); gap: .75rem; border-top: 1px solid var(--rule); padding-top: .5rem; }
-  dt { font-family: var(--f-mono); font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); padding-top: .15rem; }
-  dd { margin: 0; font-family: var(--f-hand); font-size: 1.05rem; line-height: 1.3; }
+  .feat { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4.5rem; }
+  .row { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.5rem 3rem; align-items: center; }
+  @media (min-width: 860px) { .row { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); } .row.flip .shot { order: 2; } }
+  .shot { display: block; border: 1.5px solid var(--ink); border-radius: 10px; overflow: hidden; background: var(--sheet); transition: transform .25s, box-shadow .25s; }
+  .shot img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top left; }
+  .row:hover .shot { transform: rotate(-.6deg) translateY(-3px); box-shadow: 6px 6px 0 var(--pencil); }
+  .row.flip:hover .shot { transform: rotate(.6deg) translateY(-3px); }
+  .txt { display: flex; flex-direction: column; gap: .7rem; min-width: 0; }
+  h3 { font-size: clamp(1.35rem, 2.4vw, 1.75rem); font-weight: 800; letter-spacing: -.015em; line-height: 1.15; }
+  h3 a { text-decoration: none; }
+  h3 a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+  .txt > p:not(.eyebrow) { color: var(--muted); line-height: 1.5; }
+  .tags { display: flex; flex-wrap: wrap; gap: .4rem; margin: 0; padding: 0; list-style: none; }
+  .tags li { font-family: var(--f-mono); font-size: .7rem; letter-spacing: .03em; border: 1px solid var(--rule); border-radius: 999px; padding: .15rem .6rem; color: var(--muted); }
+  .go { font-family: var(--f-hand); font-size: 1.12rem; color: var(--pencil); text-decoration: none; align-self: flex-start; }
+  .go span { display: inline-block; transition: transform .2s; }
+  .row:hover .go span { transform: translateX(5px); }
+
+  .more-h { font-size: clamp(1.3rem, 2.4vw, 1.6rem); margin: 5rem 0 1.25rem; padding-top: 2rem; border-top: 1.5px solid var(--ink); }
+  .more { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.5rem 2rem; }
+  @media (min-width: 640px) { .more { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .more a { display: flex; flex-direction: column; gap: .4rem; text-decoration: none; }
+  .more img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 8px; border: 1px solid var(--rule); transition: transform .25s; }
+  .more a:hover img { transform: rotate(-.8deg); }
+  .mt { font-family: var(--f-display); font-weight: 800; font-size: 1.1rem; }
+  .more a:hover .mt { text-decoration: underline; text-underline-offset: 3px; }
+  .ml { color: var(--muted); font-size: .97rem; line-height: 1.45; }
+
+  .about { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2rem 3.5rem; align-items: center; }
+  @media (min-width: 760px) { .about { grid-template-columns: minmax(0, 17rem) minmax(0, 1fr); } }
+  .me { width: 100%; max-width: 17rem; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 10px; border: 1.5px solid var(--ink); transform: rotate(-1.5deg); }
   .story { display: flex; flex-direction: column; gap: 1rem; max-width: var(--col-w); min-width: 0; }
+  .story p:not(.eyebrow) { font-size: 1.1rem; }
 </style>
