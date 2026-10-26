@@ -1,0 +1,46 @@
+---
+// A page from a field notebook: a leaf, a spider and pencil labels.
+// Nods to the spider that started the Spider Club of Belgaum.
+import { rect, line, ellipse, arrow } from '../../lib/rough';
+import { leaf, spider, stem } from '../../lib/nature';
+const page = rect(40, 26, 330, 252, 21, 1.6);
+const rules = [70, 98, 126, 154, 182, 210, 238].map((y, i) => line(70, y, 352, y, 30 + i, 0.6));
+const rings = [50, 90, 130, 170, 210, 250].map((y, i) => ellipse(40, y, 7, 6, 40 + i, 0.4));
+const l1 = leaf(96, 196, 70, -62, 51, 0.42);
+const l2 = leaf(110, 168, 48, -18, 52, 0.4);
+const st = stem([[86, 250], [92, 220], [96, 196], [110, 168]], 53);
+const sp = spider(268, 132, 1.7, 54);
+const silk = line(268, 30, 268, 112, 55, 0.6);
+const ar = arrow(236, 214, 258, 160, 56);
+const circ = ellipse(268, 140, 46, 42, 57, 2.2);
+---
+<div class="notes surface" aria-hidden="true">
+  <svg class="boil" viewBox="0 0 400 300">
+    <path class="page" d={page} />
+    {rules.map((d) => <path class="rule" d={d} />)}
+    {rings.map((d) => <path d={d} />)}
+    <path d={st} /><path d={l1[0]} /><path d={l1[1]} /><path d={l2[0]} /><path d={l2[1]} />
+    <path class="thin" d={silk} />
+    <path class="fill" d={sp.body} /><path class="fill" d={sp.head} />
+    <path d={sp.body} /><path d={sp.head} />
+    {sp.legs.map((d) => <path d={d} />)}
+    <path class="thin" d={circ} />
+    <path d={ar} />
+    <text x="70" y="58">field notes, no. 1</text>
+    <text x="180" y="236">Araneus viridiventris</text>
+    <text x="180" y="262" class="sm">the one Google couldn’t name</text>
+    <text x="118" y="122" class="sm">leaf, Belgaum</text>
+  </svg>
+</div>
+
+<style>
+  .notes { background: var(--paper); border-radius: 8px; overflow: hidden; }
+  svg { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; }
+  path { fill: none; stroke: var(--pencil); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .page { stroke-width: 1.4; fill: var(--paper); }
+  .rule { stroke: var(--pencil-soft); stroke-width: 1; }
+  .thin { stroke-width: 1.1; }
+  .fill { fill: var(--paper); stroke: none; }
+  text { font-family: var(--f-hand); font-size: 17px; fill: var(--pencil); }
+  .sm { font-size: 14px; }
+</style>

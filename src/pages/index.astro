@@ -1,34 +1,49 @@
 ---
 import Base from '../layouts/Base.astro';
-import { line } from '../lib/rough';
+import Avatar from '../components/home/Avatar.astro';
+import WebPanel from '../components/home/WebPanel.astro';
+import FieldNotes from '../components/home/FieldNotes.astro';
+import Garden from '../components/home/Garden.astro';
+import Cover from '../components/home/Cover.astro';
 
 const resume = 'https://drive.google.com/file/d/15tVwUM-jkmzby2MVAa0smwRkCzmqHJ-Z/view';
 const work = [
-  { href: '/work/design-system/', img: '/media/ds/after-light.jpg', shot: true, company: 'Ecolibrium', title: 'A new look that didn’t leave customers behind', tags: ['Design system', 'Theming'] },
-  { href: '/work/sld/', img: '/media/sld/overview.jpg', shot: true, company: 'Ecolibrium', title: 'Following the power to find the leak', tags: ['Data viz', 'End to end'] },
-  { href: '/work/sustainlab/', img: '/media/home/sustainlab.jpg', shot: true, company: 'SustainLab', title: 'A 284-page law, one question at a time', tags: ['B2B SaaS', 'Handoff'] },
-  { href: '/work/spider-club/', img: '/media/scob/mockup.jpg', shot: false, company: 'Spider Club of Belgaum', title: 'A home for 55+ local spider species', tags: ['Database', 'IA'] },
-  { href: '/work/architecture/', img: '/media/arch/yurt-built.jpg', shot: false, company: 'Architecture', title: 'The archive: buildings and interiors', tags: ['Gallery'] },
+  { href: '/work/design-system/', cover: 'ds', company: 'Ecolibrium', title: 'A new look that didn’t leave customers behind', tags: ['Design system', 'Theming'] },
+  { href: '/work/sld/', cover: 'sld', company: 'Ecolibrium', title: 'Following the power to find the leak', tags: ['Data viz', 'End to end'] },
+  { href: '/work/sustainlab/', cover: 'csrd', company: 'SustainLab', title: 'A 284-page law, one question at a time', tags: ['B2B SaaS', 'Handoff'] },
+  { href: '/work/spider-club/', cover: 'scob', company: 'Spider Club of Belgaum', title: 'A home for 55+ local spider species', tags: ['Database', 'IA'] },
+  { href: '/work/architecture/', cover: 'arch', company: 'Architecture', title: 'The archive: buildings and interiors', tags: ['Gallery'] },
+] as const;
+const roles = [
+  { at: 'Ecolibrium', what: 'Product Designer', when: 'Sep 2025 to now' },
+  { at: 'SustainLab', what: 'Product Design Intern', when: 'Jul to Nov 2024' },
 ];
-const swoop = line(4, 10, 196, 6, 51, 3);
 ---
 <Base title="Sharanya JC · Product designer">
   <section class="hero sheet">
-    <h1>Sharanya <span class="jc">JC<svg class="sw boil" viewBox="0 0 200 16" preserveAspectRatio="none" aria-hidden="true"><path d={swoop} /></svg></span>.</h1>
-    <p class="tag hand">a designer who thrives where design meets impact ✤</p>
-    <ul class="at">
-      <li><span class="k">@</span> <b>Ecolibrium</b> Product Designer</li>
-      <li><span class="k">prev @</span> <b>SustainLab</b> Product Design Intern</li>
-    </ul>
-    <ul class="links">
-      <li><a href={resume} rel="noopener">résumé ↗</a></li>
-      <li><a href="https://www.linkedin.com/in/sharanyajc" rel="noopener">linkedin ↗</a></li>
-      <li><a href="mailto:sharanyajc@gmail.com?subject=Let%27s%20talk">email ↗</a></li>
-    </ul>
+    <aside class="id">
+      <Avatar size="4.2rem" />
+      <h1>Sharanya JC</h1>
+      <p class="line hand">a designer who thrives at the intersection of design and impact</p>
+      <ul class="at">
+        <li><b>Product Designer @Ecolibrium</b></li>
+        <li><span>prev.</span> @SustainLab</li>
+      </ul>
+      <ul class="links">
+        <li><a href={resume} rel="noopener">résumé ↗</a></li>
+        <li><a href="https://www.linkedin.com/in/sharanyajc" rel="noopener">linkedin ↗</a></li>
+        <li><a href="mailto:sharanyajc@gmail.com?subject=Let%27s%20talk">email ↗</a></li>
+      </ul>
+    </aside>
+    <div class="stage">
+      <WebPanel />
+      <div class="fn"><FieldNotes /></div>
+      <div class="gd"><Garden /></div>
+    </div>
   </section>
 
-  <section id="work" class="work sheet" aria-labelledby="work-h">
-    <header class="wh">
+  <section id="work" class="work sheet row" aria-labelledby="work-h">
+    <header class="side">
       <p class="eyebrow">01</p>
       <h2 id="work-h">Selected<br />Work.</h2>
     </header>
@@ -36,7 +51,7 @@ const swoop = line(4, 10, 196, 6, 51, 3);
       {work.map((w, i) => (
         <li class:list={[i < 2 ? 'wide' : 'third']}>
           <a class="card surface" href={w.href}>
-            <span class:list={['pic', { shot: w.shot }]}><img src={w.img} alt="" loading={i < 2 ? 'eager' : 'lazy'} /></span>
+            <span class="pic"><Cover kind={w.cover} /></span>
             <span class="cap">
               <span class="co">{w.company}</span>
               <span class="t">{w.title}</span>
@@ -47,45 +62,70 @@ const swoop = line(4, 10, 196, 6, 51, 3);
       ))}
     </ul>
   </section>
+
+  <section class="exp sheet row" aria-labelledby="exp-h">
+    <header class="side">
+      <p class="eyebrow">02</p>
+      <h2 id="exp-h">Experience.</h2>
+    </header>
+    <div class="body">
+      <ul class="roles">
+        {roles.map((r) => <li><b>{r.at}</b><span>{r.what}</span><span class="when">{r.when}</span></li>)}
+      </ul>
+      <p class="teaser">Before all this I was an architect, and I still think like one. <a href="/about/">More about me →</a></p>
+    </div>
+  </section>
 </Base>
 
 <style>
-  .hero { display: flex; flex-direction: column; gap: 1rem; padding-block: 3.5rem 2.5rem; }
-  @media (min-width: 900px) { .hero { padding-block: 6rem 3.5rem; } }
-  h1 { font-size: clamp(3.2rem, 11vw, 7rem); font-weight: 800; letter-spacing: -.045em; line-height: .95; }
-  .jc { position: relative; color: var(--pencil); }
-  .sw { position: absolute; left: -4%; bottom: -.1em; width: 108%; height: .2em; overflow: visible; }
-  .sw path { fill: none; stroke: var(--pencil); stroke-width: 3; stroke-linecap: round; }
-  .tag { font-size: clamp(1.25rem, 3vw, 1.6rem); }
-  .at { list-style: none; margin: .4rem 0 0; padding: 0; display: flex; flex-direction: column; gap: .3rem; font-family: var(--f-display); font-size: 1.05rem; }
-  .at .k { font-family: var(--f-mono); font-size: .78rem; color: var(--muted); margin-right: .2rem; }
-  .at b { margin-right: .3rem; }
-  .links { list-style: none; margin: .6rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: .4rem 1.4rem; font-family: var(--f-mono); font-size: .9rem; }
-  .links a { text-decoration: none; border-bottom: 1.5px solid var(--pencil); }
-  .links a:hover { color: var(--pencil); }
+  .hero { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.5rem 2rem; padding-block: 1.5rem 0; }
+  @media (min-width: 900px) { .hero { grid-template-columns: minmax(0, 13rem) minmax(0, 1fr); padding-block: 2.5rem 0; } }
+  .id { display: flex; flex-direction: column; gap: .9rem; }
+  h1 { font-size: 1.6rem; font-weight: 800; letter-spacing: -.02em; line-height: 1.05; }
+  .line { font-size: 1.12rem; line-height: 1.3; }
+  .at { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .25rem; font-family: var(--f-mono); font-size: .82rem; }
+  .at b { font-family: var(--f-display); font-size: .95rem; }
+  .at span { color: var(--muted); }
+  .links { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .3rem 1rem; font-family: var(--f-mono); font-size: .82rem; }
+  .links a { text-decoration: none; border-bottom: 1px solid currentColor; }
+  .links a:hover { border-bottom-width: 2px; }
+  @media (max-width: 899px) {
+    .id { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 1rem; align-items: center; }
+    .id :global(.av) { grid-row: span 1; }
+    .id > :not(:first-child):not(h1) { grid-column: 1 / -1; }
+  }
+  .stage { display: grid; grid-template-columns: minmax(0, 1fr); gap: .8rem; }
+  @media (min-width: 640px) { .stage { grid-template-columns: repeat(2, minmax(0, 1fr)); } .gd { grid-column: 1 / -1; } }
+  @media (max-width: 639px) { .fn { display: none; } }
 
-  .work { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.5rem 2rem; padding-block: 2rem 0; }
-  @media (min-width: 900px) { .work { grid-template-columns: minmax(0, 11rem) minmax(0, 1fr); } }
-  .wh h2 { font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 800; letter-spacing: -.03em; line-height: 1; margin-top: .4rem; }
-  .grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; }
+  .row { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.25rem 2rem; padding-block: 4rem 0; }
+  @media (min-width: 900px) { .row { grid-template-columns: minmax(0, 13rem) minmax(0, 1fr); padding-block: 5rem 0; } }
+  .side h2 { font-size: clamp(1.8rem, 3.2vw, 2.3rem); font-weight: 800; letter-spacing: -.03em; line-height: 1; margin-top: .4rem; }
+  .grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: .8rem; }
   @media (min-width: 640px) { .grid { grid-template-columns: repeat(6, minmax(0, 1fr)); } .wide { grid-column: span 3; } .third { grid-column: span 2; } }
-  @media (min-width: 640px) and (max-width: 899px) { .third:last-child { grid-column: span 6; } .third { grid-column: span 3; } }
-  .card { position: relative; display: block; height: 100%; min-height: 15rem; background: var(--paper); border-radius: 8px; overflow: hidden; text-decoration: none; }
-  .wide .card { aspect-ratio: 4 / 3; }
-  .third .card { aspect-ratio: 4 / 5; }
-  @media (max-width: 639px) { .wide .card, .third .card { aspect-ratio: 4 / 3; } }
-  .pic { position: absolute; inset: 0; }
-  .pic img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s ease; }
-  .pic.shot { inset: 1.1rem 1.1rem auto; height: 70%; border: 1.5px solid var(--pencil); border-radius: 6px; overflow: hidden; background: var(--sheet); }
-  .pic.shot img { object-position: top left; }
-  .card:hover .pic img { transform: scale(1.03); }
+  @media (min-width: 640px) and (max-width: 899px) { .third { grid-column: span 3; } .third:last-child { grid-column: span 6; } }
+  .card { position: relative; display: block; height: 100%; background: var(--paper); border-radius: 8px; overflow: hidden; text-decoration: none; aspect-ratio: 4 / 3.4; }
+  .third .card { aspect-ratio: 4 / 4.6; }
+  @media (max-width: 639px) { .card, .third .card { aspect-ratio: 4 / 3.6; } }
+  .pic { position: absolute; inset: .5rem .5rem 34% .5rem; transition: transform .4s ease; }
+  .third .pic { bottom: 38%; }
+  .card:hover .pic { transform: rotate(-1.5deg) scale(1.03); }
   .cap {
-    position: absolute; left: 1rem; bottom: 1rem; right: 1rem; max-width: 22rem; display: flex; flex-direction: column; gap: .3rem;
-    background: var(--paper); border: 1.5px solid var(--pencil); padding: .65rem .8rem .7rem; box-shadow: 4px 4px 0 var(--pencil); transition: transform .25s;
+    position: absolute; left: .9rem; bottom: .9rem; right: .9rem; max-width: 22rem; display: flex; flex-direction: column; gap: .3rem;
+    background: var(--paper); border: 1.5px solid var(--pencil); padding: .6rem .75rem .65rem; box-shadow: 4px 4px 0 var(--pencil); transition: transform .25s, box-shadow .25s;
   }
   .card:hover .cap { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--pencil); }
-  .co { font-family: var(--f-mono); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--pencil); }
-  .t { font-family: var(--f-display); font-weight: 800; font-size: 1.08rem; line-height: 1.2; letter-spacing: -.01em; color: var(--ink); }
+  .co { font-family: var(--f-mono); font-size: .66rem; letter-spacing: .08em; text-transform: uppercase; color: var(--pencil); }
+  .t { font-family: var(--f-display); font-weight: 800; font-size: 1.04rem; line-height: 1.2; letter-spacing: -.01em; color: var(--ink); }
   .tags { display: flex; flex-wrap: wrap; gap: .3rem; }
-  .tags span { font-family: var(--f-mono); font-size: .64rem; letter-spacing: .04em; text-transform: uppercase; color: var(--pencil); border: 1px solid var(--pencil-soft); padding: .05rem .4rem; }
+  .tags span { font-family: var(--f-mono); font-size: .62rem; letter-spacing: .04em; text-transform: uppercase; color: var(--pencil); border: 1px solid var(--pencil-soft); padding: .05rem .4rem; }
+
+  .body { display: flex; flex-direction: column; gap: 1.2rem; max-width: 44rem; }
+  .roles { list-style: none; margin: 0; padding: 0; border-top: 1.5px solid var(--ink); }
+  .roles li { display: grid; grid-template-columns: minmax(0, 9rem) minmax(0, 1fr) auto; gap: .3rem 1rem; padding: .75rem 0; border-bottom: 1px solid var(--rule); }
+  .roles b { font-family: var(--f-display); }
+  .when { font-family: var(--f-mono); font-size: .8rem; color: var(--muted); padding-top: .15rem; }
+  @media (max-width: 520px) { .roles li { grid-template-columns: minmax(0, 1fr) auto; } .roles li span:not(.when) { grid-row: 2; color: var(--muted); } }
+  .teaser { font-size: 1.1rem; }
+  .teaser a { font-family: var(--f-hand); font-size: 1.15rem; white-space: nowrap; }
 </style>

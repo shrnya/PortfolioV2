@@ -1,0 +1,73 @@
+---
+// The home's one playful moment: click to spin a web, ring by ring.
+// When it's done, a spider drops in to say hi.
+import { spokes, ring, spider, leaf } from '../../lib/nature';
+const cx = 214, cy = 150;
+const anchors: [number, number][] = [
+  [214, 22], [300, 30], [372, 70], [388, 150], [366, 232], [296, 278],
+  [214, 286], [128, 280], [58, 236], [36, 150], [62, 70], [130, 28],
+];
+const sp = spokes(cx, cy, anchors, 70);
+const ts = [0.16, 0.24, 0.36, 0.48, 0.6, 0.72, 0.84];
+const rings = ts.map((t, i) => ring(cx, cy, anchors, t, 80 + i));
+const sd = spider(cx, cy - 2, 1.4, 90);
+const leaves = [leaf(392, 292, 52, 210, 102)];
+---
+<div class="web surface" data-web>
+  <button type="button" class="hit" data-spin aria-label="Spin the next ring of the web">
+    <span class="label" data-label>click to spin a web</span>
+    <span class="count" aria-live="polite" data-count>ring 1 of {ts.length}</span>
+  </button>
+  <svg class="boil" viewBox="0 0 400 300" aria-hidden="true">
+    {leaves.map(([o, r]) => <g class="leaf"><path d={o} /><path d={r} /></g>)}
+    {sp.map((d) => <path class="sp" d={d} />)}
+    {rings.map((d, i) => <path class:list={['rg', { on: i === 0 }]} d={d} pathLength="1" />)}
+    <g class="spider">
+      <path class="silk" d={`M${cx} -40V${cy - 8}`} />
+      <path class="fill" d={sd.body} /><path class="fill" d={sd.head} />
+      <path d={sd.body} /><path d={sd.head} />
+      {sd.legs.map((d) => <path d={d} />)}
+    </g>
+  </svg>
+  <p class="hi hand">you spun a web ✤ click to start over</p>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-web]').forEach((w) => {
+    const rings = [...w.querySelectorAll<SVGPathElement>('.rg')];
+    const count = w.querySelector<HTMLElement>('[data-count]')!;
+    const label = w.querySelector<HTMLElement>('[data-label]')!;
+    let n = 1;
+    const show = () => {
+      rings.forEach((r, i) => r.classList.toggle('on', i < n));
+      const done = n >= rings.length;
+      w.classList.toggle('done', done);
+      count.textContent = done ? 'all done!' : `ring ${n} of ${rings.length}`;
+      label.textContent = done ? 'a visitor arrives…' : 'click to spin a web';
+    };
+    w.querySelector('[data-spin]')!.addEventListener('click', () => { n = n >= rings.length ? 1 : n + 1; show(); });
+    show();
+  });
+</script>
+
+<style>
+  .web { position: relative; background: var(--paper); border-radius: 8px; overflow: hidden; }
+  .hit { position: absolute; inset: 0; z-index: 2; background: none; border: 0; padding: 1rem 1.1rem; cursor: pointer; display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; text-align: left; color: var(--pencil); }
+  .label { font-family: var(--f-hand); font-size: clamp(1.15rem, 2.2vw, 1.5rem); letter-spacing: .02em; }
+  .count { font-family: var(--f-mono); font-size: .68rem; letter-spacing: .06em; text-transform: uppercase; border: 1px solid var(--pencil-soft); padding: .1rem .45rem; border-radius: 999px; white-space: nowrap; flex-shrink: 0; background: var(--paper); }
+  .hit:focus-visible { outline: 2px solid var(--pencil); outline-offset: -6px; }
+  svg { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; }
+  path { fill: none; stroke: var(--pencil); stroke-linecap: round; stroke-linejoin: round; }
+  .leaf path { stroke-width: 1.6; }
+  .sp { stroke-width: 1.1; opacity: .85; }
+  .rg { stroke-width: 1.3; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset .9s ease-out; }
+  .rg.on { stroke-dashoffset: 0; }
+  .spider path { stroke-width: 1.6; }
+  .spider .fill { fill: var(--paper); stroke: none; }
+  .spider .silk { stroke-width: 1; }
+  .spider { transform: translateY(-230px); transition: transform 1.2s cubic-bezier(.3, 1.4, .5, 1) .5s; }
+  .done .spider { transform: translateY(0); }
+  .hi { position: absolute; left: 1.1rem; bottom: .8rem; margin: 0; font-size: 1.05rem; opacity: 0; transition: opacity .4s 1.4s; }
+  .done .hi { opacity: 1; }
+  @media (prefers-reduced-motion: reduce) { .rg, .spider, .hi { transition: none; } }
+</style>

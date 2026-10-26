@@ -1,0 +1,26 @@
+---
+// A small drawn Sharanya. Placeholder until her own drawing replaces it.
+import { ellipse, line, poly } from '../../lib/rough';
+interface Props { size?: string; ring?: boolean }
+const { size = '4.5rem', ring = true } = Astro.props;
+const head = ellipse(40, 40, 19, 21, 4, 1.2);
+const hair = poly([[21, 54], [19, 36], [23, 23], [32, 15], [44, 14], [55, 19], [60, 30], [61, 44], [59, 55]], 6, 0.9);
+const fringe = line(26, 32, 53, 21, 7, 1.8);
+const smile = 'M33 48Q40 54 47 48';
+const body = poly([[20, 80], [24, 69], [33, 63], [47, 63], [56, 69], [60, 80]], 9, 1.2);
+const outline = ellipse(40, 40, 37, 37, 12, 1);
+---
+<svg class="av boil" viewBox="0 0 80 80" style={`width:${size};height:${size}`} role="img" aria-label="A drawing of Sharanya">
+  {ring && <path class="bg" d={outline} />}
+  <path class="fill" d={head} />
+  <path d={head} /><path d={hair} /><path d={fringe} /><path d={smile} /><path d={body} />
+  <circle cx="33" cy="41" r="2" /><circle cx="47" cy="41" r="2" />
+</svg>
+
+<style>
+  .av { display: block; overflow: visible; }
+  path { fill: none; stroke: var(--pencil); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .bg { fill: var(--paper); stroke-width: 2; }
+  .fill { fill: var(--paper); stroke: none; }
+  circle { fill: var(--pencil); }
+</style>
