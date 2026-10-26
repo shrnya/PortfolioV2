@@ -16,8 +16,14 @@ const underline = line(2, 6, 118, 4, 7, 2.2);
   </nav>
 </header>
 
+<script>
+  const nav = document.querySelector<HTMLElement>('.nav');
+  if (nav) { const on = () => nav.classList.toggle('stuck', scrollY > 8); addEventListener('scroll', on, { passive: true }); on(); }
+</script>
+
 <style>
-  .nav { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: .75rem 1.5rem; padding-block: 1.4rem .5rem; }
+  .nav { position: sticky; top: 0; z-index: 50; background: var(--brand); box-shadow: 0 0 0 100vmax var(--brand); clip-path: inset(0 -100vmax); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: .75rem 1.5rem; padding-block: .9rem .6rem; }
+  .nav.stuck { border-bottom: 1px solid var(--rule); }
   .mark { text-decoration: none; display: inline-flex; flex-direction: column; gap: 0; }
   .name { font-family: var(--f-display); font-weight: 800; font-size: 1.15rem; letter-spacing: -.01em; }
   .ul { width: 7.4rem; height: .6rem; margin-top: -.1rem; }

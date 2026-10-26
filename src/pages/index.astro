@@ -14,16 +14,12 @@ const work = [
   { href: '/work/spider-club/', cover: 'scob', company: 'Spider Club of Belgaum', title: 'A home for 55+ local spider species', tags: ['Database', 'IA'] },
   { href: '/work/architecture/', cover: 'arch', company: 'Architecture', title: 'The archive: buildings and interiors', tags: ['Gallery'] },
 ] as const;
-const roles = [
-  { at: 'Ecolibrium', what: 'Product Designer', when: 'Sep 2025 to now' },
-  { at: 'SustainLab', what: 'Product Design Intern', when: 'Jul to Nov 2024' },
-];
 ---
 <Base title="Sharanya JC · Product designer">
   <section class="hero sheet">
     <aside class="id">
       <Avatar size="4.2rem" />
-      <h1>Sharanya JC</h1>
+      <h1>hi, I’m Sharanya</h1>
       <p class="line hand">a designer who thrives at the intersection of design and impact</p>
       <ul class="at">
         <li><b>Product Designer @Ecolibrium</b></li>
@@ -63,17 +59,14 @@ const roles = [
     </ul>
   </section>
 
-  <section class="exp sheet row" aria-labelledby="exp-h">
-    <header class="side">
-      <p class="eyebrow">02</p>
-      <h2 id="exp-h">Experience.</h2>
-    </header>
-    <div class="body">
-      <ul class="roles">
-        {roles.map((r) => <li><b>{r.at}</b><span>{r.what}</span><span class="when">{r.when}</span></li>)}
-      </ul>
-      <p class="teaser">Before all this I was an architect, and I still think like one. <a href="/about/">More about me →</a></p>
-    </div>
+  <section class="segue sheet" aria-labelledby="seg-h">
+    <a class="seg surface" href="/about/">
+      <Avatar size="4.5rem" />
+      <span class="q">
+        <h2 id="seg-h">What does building a bamboo yurt in Auroville have to do with product design?</h2>
+        <span class="hand">Probably more than you’d think. Meet the person behind the work →</span>
+      </span>
+    </a>
   </section>
 </Base>
 
@@ -120,12 +113,14 @@ const roles = [
   .tags { display: flex; flex-wrap: wrap; gap: .3rem; }
   .tags span { font-family: var(--f-mono); font-size: .62rem; letter-spacing: .04em; text-transform: uppercase; color: var(--pencil); border: 1px solid var(--pencil-soft); padding: .05rem .4rem; }
 
-  .body { display: flex; flex-direction: column; gap: 1.2rem; max-width: 44rem; }
-  .roles { list-style: none; margin: 0; padding: 0; border-top: 1.5px solid var(--ink); }
-  .roles li { display: grid; grid-template-columns: minmax(0, 9rem) minmax(0, 1fr) auto; gap: .3rem 1rem; padding: .75rem 0; border-bottom: 1px solid var(--rule); }
-  .roles b { font-family: var(--f-display); }
-  .when { font-family: var(--f-mono); font-size: .8rem; color: var(--muted); padding-top: .15rem; }
-  @media (max-width: 520px) { .roles li { grid-template-columns: minmax(0, 1fr) auto; } .roles li span:not(.when) { grid-row: 2; color: var(--muted); } }
-  .teaser { font-size: 1.1rem; }
-  .teaser a { font-family: var(--f-hand); font-size: 1.15rem; white-space: nowrap; }
+  .segue { padding-block: 4.5rem 0; }
+  .seg { display: flex; align-items: center; gap: 1.25rem; padding: clamp(1.25rem, 3vw, 2rem); border-radius: 8px; text-decoration: none; background: var(--paper); transition: transform .2s; }
+  .seg:hover { transform: translateY(-3px); }
+  .seg :global(.av) { flex-shrink: 0; }
+  .q { display: flex; flex-direction: column; gap: .5rem; }
+  .q h2 { font-size: clamp(1.25rem, 2.6vw, 1.7rem); font-weight: 800; letter-spacing: -.02em; color: var(--ink); }
+  .q .hand { font-size: 1.2rem; color: var(--pencil); }
+  .seg:hover .hand { text-decoration: underline; }
+  @media (max-width: 520px) { .seg { flex-direction: column; align-items: flex-start; } }
+  @media (prefers-reduced-motion: reduce) { .seg { transition: none; } }
 </style>
