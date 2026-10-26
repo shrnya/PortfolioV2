@@ -1,0 +1,27 @@
+---
+// A pen note in the margin, part of the Journal layer (hidden in Brief).
+// Hangs in the right gutter on wide screens, sits inline on narrow ones.
+// Wrap a word in <s> to cross it out.
+import { arrow } from '../lib/rough';
+interface Props { tilt?: number }
+const { tilt = -0.8 } = Astro.props;
+const a = arrow(44, 6, 4, 18, 7);
+---
+<aside class="note j-only" data-pen style={`--tilt:${tilt}deg`}>
+  <svg class="arw boil" viewBox="0 0 48 24" aria-hidden="true"><path d={a} pathLength="1" class="ink" /></svg>
+  <slot />
+</aside>
+
+<style>
+  .note {
+    font-family: var(--f-hand); font-size: 1.05rem; line-height: 1.35; color: var(--pencil);
+    border-left: 2px solid var(--pencil); padding: .1rem 0 .1rem .8rem; transform: rotate(var(--tilt)); max-width: 30rem;
+  }
+  .note :global(s) { text-decoration: line-through 2px var(--pencil); opacity: .75; }
+  .arw { display: none; }
+  @media (min-width: 1080px) {
+    .note { float: right; clear: right; width: 13.5rem; margin-right: calc(100% - var(--col-w) - 16rem); margin-top: .3rem; border-left: 0; padding: 0; position: relative; }
+    .arw { display: block; position: absolute; left: -3.4rem; top: -.3rem; width: 3rem; height: 1.5rem; overflow: visible; }
+    .arw path { fill: none; stroke: var(--pencil); stroke-width: 1.5; stroke-linecap: round; }
+  }
+</style>

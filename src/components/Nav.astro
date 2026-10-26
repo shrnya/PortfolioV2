@@ -1,0 +1,30 @@
+---
+import { line } from '../lib/rough';
+const underline = line(2, 6, 118, 4, 7, 2.2);
+---
+<header class="nav sheet">
+  <a class="mark" href="/" aria-label="Sharanya Jagdeeshchandran, home">
+    <span class="name">Sharanya J.C.</span>
+    <svg class="ul boil" viewBox="0 0 120 10" aria-hidden="true"><path d={underline} /></svg>
+  </a>
+  <nav aria-label="Main">
+    <ul>
+      <li><a href="/#work">Work</a></li>
+      <li><a href="/#about">About</a></li>
+      <li><a href="#contact">Let’s talk</a></li>
+    </ul>
+  </nav>
+</header>
+
+<style>
+  .nav { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: .75rem 1.5rem; padding-block: 1.4rem .5rem; }
+  .mark { text-decoration: none; display: inline-flex; flex-direction: column; gap: 0; }
+  .name { font-family: var(--f-display); font-weight: 800; font-size: 1.15rem; letter-spacing: -.01em; }
+  .ul { width: 7.4rem; height: .6rem; margin-top: -.1rem; }
+  .ul path { fill: none; stroke: var(--pencil); stroke-width: 1.6; stroke-linecap: round; }
+  .mark:hover .ul path { stroke-dasharray: 130; animation: draw .6s ease-out; }
+  @keyframes draw { from { stroke-dashoffset: 130; } to { stroke-dashoffset: 0; } }
+  ul { list-style: none; display: flex; flex-wrap: wrap; gap: .25rem 1.25rem; margin: 0; padding: 0; }
+  nav a { font-family: var(--f-display); font-weight: 600; font-size: .95rem; text-decoration: none; padding-block: .2rem; border-bottom: 1.5px solid transparent; }
+  nav a:hover { border-color: var(--ink); }
+</style>

@@ -1,0 +1,53 @@
+---
+// Comic moment for the Journal layer: a drawn me with a speech bubble.
+// Use two or three per case study, at the big turns.
+// The face is a placeholder until Sharanya's own drawing replaces it.
+import { ellipse, line, poly } from '../lib/rough';
+interface Props { flip?: boolean; seed?: number }
+const { flip = false, seed = 1 } = Astro.props;
+const head = ellipse(40, 38, 21, 23, seed + 3, 1.4);
+const hair = poly([[19, 52], [17, 34], [21, 21], [31, 13], [44, 12], [55, 17], [61, 28], [62, 42], [60, 53]], seed + 5, 1);
+const fringe = line(24, 30, 52, 19, seed + 6, 2);
+const smile = 'M32 47Q40 55 48 47';
+const body = poly([[22, 86], [24, 70], [33, 63], [47, 63], [56, 70], [58, 86]], seed + 8, 1.4);
+---
+<figure class:list={['say', 'j-only', { flip }]} data-pen>
+  <svg class="me boil" viewBox="0 0 80 90" aria-hidden="true">
+    <path class="fill" d={head} />
+    <path d={head} pathLength="1" class="ink" />
+    <path d={hair} pathLength="1" class="ink" />
+    <path d={fringe} pathLength="1" class="ink" />
+    <circle class="eye" cx="33" cy="39" r="2" /><circle class="eye" cx="47" cy="39" r="2" />
+    <path d={smile} pathLength="1" class="ink" />
+    <path d={body} pathLength="1" class="ink" />
+  </svg>
+  <blockquote class="bubble"><slot /></blockquote>
+</figure>
+
+<style>
+  .say { margin: 1.6rem 0; display: flex; align-items: flex-end; gap: .9rem; max-width: var(--col-w); }
+  .say.flip { flex-direction: row-reverse; margin-left: auto; }
+  .me { width: 5.4rem; height: 6.1rem; flex: none; overflow: visible; }
+  .me path { fill: none; stroke: var(--pencil); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .me .fill { fill: var(--paper); stroke: none; }
+  .eye { fill: var(--pencil); }
+  .bubble {
+    position: relative; margin: 0 0 2.6rem; padding: .75rem 1rem; max-width: 26rem;
+    font-family: var(--f-hand); font-size: 1.15rem; line-height: 1.35; color: var(--ink);
+    background: var(--paper); border: 2px solid var(--pencil); border-radius: 18px 22px 20px 16px; transform: rotate(-1deg);
+    transform-origin: 0 100%;
+  }
+  .bubble::before, .bubble::after { content: ""; position: absolute; bottom: 8px; width: 18px; height: 16px; clip-path: polygon(100% 0, 0 100%, 100% 70%); }
+  .bubble::before { left: -18px; background: var(--pencil); }
+  .bubble::after { left: -14px; bottom: 10px; width: 15px; height: 12px; background: var(--paper); }
+  .flip .bubble { transform: rotate(1deg); transform-origin: 100% 100%; }
+  .flip .bubble::before, .flip .bubble::after { clip-path: polygon(0 0, 100% 100%, 0 70%); left: auto; }
+  .flip .bubble::before { right: -18px; }
+  .flip .bubble::after { right: -14px; }
+  @media (prefers-reduced-motion: no-preference) {
+    :global(html[data-mode="journal"]) .say[data-pen] .bubble { opacity: 0; transition: opacity .25s .35s, transform .35s .35s cubic-bezier(.3, 1.6, .5, 1); transform: rotate(-1deg) scale(.6); }
+    :global(html[data-mode="journal"]) .say[data-pen].flip .bubble { transform: rotate(1deg) scale(.6); }
+    :global(html[data-mode="journal"]) .say[data-pen].in .bubble { opacity: 1; transform: rotate(-1deg); }
+    :global(html[data-mode="journal"]) .say[data-pen].flip.in .bubble { transform: rotate(1deg); }
+  }
+</style>

@@ -1,0 +1,220 @@
+---
+// Prototype 1 for the SustainLab case study: three layers of regulatory
+// guidance on a CSRD data request. Reconstructed with invented content.
+// Ported from sustainlab/prototypes/guidance-panel.html.
+---
+<div class="gp wide">
+
+<div class="controls">
+    <div class="seg" role="group" aria-label="Compare">
+      <button type="button" data-mode="before" aria-pressed="false">Before: search the PDF</button>
+      <button type="button" data-mode="after" aria-pressed="true">After: layered guidance</button>
+    </div>
+    <ul class="depths" aria-label="Guidance layers">
+      <li id="d1" class="on"><span class="pin">1</span>Description</li>
+      <li id="d2" class="on"><span class="pin">2</span>The paragraph</li>
+      <li id="d3"><span class="pin">3</span>Full CSRD info</li>
+    </ul>
+  </div>
+
+  <div class="app" id="app" data-mode="after" data-panel="closed">
+    <div class="app-top">
+      <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="crumbs">Inbox › <b>FY2024 climate data request</b></span>
+    </div>
+    <div class="req">
+      <div class="who"><b>Head of Sustainability</b><span>Example Manufacturing Co.</span></div>
+      <div class="when"><span>Q2 2025</span><b>Deadline: 24 July 2025</b></div>
+      <span class="convo" aria-hidden="true">Open conversation <span class="dot">1</span></span>
+    </div>
+    <div class="app-body">
+      <aside class="rail" aria-label="Section progress">
+        <div><div class="k">Current section</div><div class="sec">Energy</div></div>
+        <div class="k">Previously answered</div>
+        <ol>
+          <li>Which activities describe your energy use?</li>
+          <li>Which sites are in scope?</li>
+          <li class="na">Do you operate in a high climate impact sector? <em>Not relevant</em></li>
+          <li>When did you switch energy provider?</li>
+        </ol>
+      </aside>
+
+      <form class="main" onsubmit="return false">
+        <p class="q">7. What was your company's total energy consumption in 2024?</p>
+        <div class="desc">
+          <div class="desc-h"><span class="pin" aria-hidden="true">1</span><span class="lbl">Description</span></div>
+          <p>Report all the energy your own operations used during the year, from every source: fuel burned on site, electricity, heat and cooling you bought, and anything you generated yourself.</p>
+          <div class="excerpt" id="excerpt">
+            <div class="desc-h"><span class="pin" aria-hidden="true">2</span><span class="src">Paragraph information · ESRS E1-5, para 37</span></div>
+            <p>The undertaking shall disclose its total energy consumption related to own operations in MWh, disaggregated into energy from fossil sources, from nuclear sources and from renewable sources, with renewable sources further broken down by fuel, purchased energy and self-generated energy.</p>
+            <button class="more" type="button" id="more" aria-controls="panel" aria-expanded="false">Show more ↗</button>
+          </div>
+        </div>
+        <div class="inputs">
+          <input id="val" inputmode="decimal" placeholder="Value" aria-label="Total energy consumption value">
+          <select id="unit" aria-label="Unit"><option>Select unit</option><option>MWh</option><option>GJ</option><option>kWh</option></select>
+        </div>
+        <div class="foot">
+          <button type="button" class="b-ghost" tabindex="-1">Previous</button>
+          <button type="button" class="b-ghost" tabindex="-1">Save draft</button>
+          <button type="button" class="b-solid" tabindex="-1">Next</button>
+        </div>
+      </form>
+    </div>
+
+    <aside class="panel" id="panel" aria-labelledby="p-title" tabindex="-1">
+      <div class="p-head"><span style="display:flex;gap:.5rem;align-items:center"><span class="pin" aria-hidden="true">3</span><b>CSRD info</b></span><button class="close" type="button" id="p-close" aria-label="Close CSRD info">×</button></div>
+      <div class="p-body">
+        <h3 id="p-title">E1-5 · Total energy consumption</h3>
+        <details open><summary>Paragraph information</summary><div class="c">
+          <q>The undertaking shall provide information on its energy consumption and mix.</q>
+          <p>Total consumption in MWh, split into fossil, nuclear and renewable sources. Renewable energy is broken down further into fuels, purchased energy and self-generated energy.</p>
+          <p>ESRS E1 · para 35 to 37</p>
+        </div></details>
+        <details><summary>Application requirements</summary><div class="c">
+          <p>Count only energy consumed by your own operations.</p>
+          <p>Avoid double counting: if you burn gas to generate your own electricity, count the gas, not the electricity as well.</p>
+          <p>Report in MWh, even if your meters use other units.</p>
+        </div></details>
+        <details><summary>Additional references</summary><div class="c">
+          <p>Companies in high climate impact sectors must also report energy intensity per net revenue.</p>
+          <p>This figure feeds your Scope 1 and Scope 2 emissions in E1-6.</p>
+        </div></details>
+        <details><summary>Footnotes</summary><div class="c">
+          <p>Fossil sources include coal, crude oil and petroleum products, natural gas and other fossil fuels.</p>
+        </div></details>
+        <details><summary>Relation to other standards</summary><div class="c">
+          <p>GRI 302-1, Energy consumption within the organisation. If you already report to GRI, much of this answer can be reused.</p>
+        </div></details>
+      </div>
+    </aside>
+
+    <div class="pdf" id="pdf" hidden>
+      <div class="pdf-win" role="dialog" aria-modal="true" aria-labelledby="pdf-t">
+        <div class="pdf-bar"><b id="pdf-t">ESRS Set 1, Delegated Regulation (EU) 2023/2772.pdf</b><span>p. 1 of 284</span></div>
+        <div class="pdf-page" aria-hidden="true">
+          <div class="ln" style="width:62%"></div><div class="ln"></div><div class="ln" style="width:94%"></div><div class="ln" style="width:88%"></div><div class="ln"></div><div class="ln" style="width:70%"></div><div class="ln" style="width:96%"></div><div class="ln" style="width:81%"></div><div class="ln"></div><div class="ln" style="width:55%"></div>
+        </div>
+        <div class="pdf-search"><span>Find:</span><span class="box">"energy consumption"</span><span>1 of 47 matches</span><button class="pdf-back" type="button" id="pdf-back">Back to my answer</button></div>
+      </div>
+    </div>
+  </div>
+  <div class="why">
+    <div><h4><span class="pin" aria-hidden="true">1</span>Plain language first</h4><p>Most questions can be answered from the description alone, so nobody has to read legislation to get started.</p></div>
+    <div><h4><span class="pin" aria-hidden="true">2</span>The exact paragraph, inline</h4><p>When the answer has to be right, the cited paragraph sits right under the question, with its reference, so people can check their answer against the law.</p></div>
+    <div><h4><span class="pin" aria-hidden="true">3</span>Everything else, on demand</h4><p>Application requirements, footnotes and links to other standards stay in a side panel, grouped the way the regulation is structured, and folded away until someone needs them.</p></div>
+  </div>
+</div>
+
+<style>
+.gp{display:flex;flex-direction:column;gap:1.5rem}
+.controls{display:flex;flex-wrap:wrap;align-items:center;gap:.75rem 1.25rem}
+.seg{display:inline-flex;border:1.5px solid var(--ink);border-radius:999px;overflow:hidden}
+.seg button{font-family:var(--f-display);font-weight:600;font-size:.88rem;border:0;background:transparent;color:var(--ink);padding:.4rem 1rem;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.depths{display:flex;flex-wrap:wrap;gap:.4rem 1rem;font-family:var(--f-hand);color:var(--muted);font-size:1rem;padding:0;margin:0;list-style:none}
+.depths li{display:flex;align-items:center;gap:.35rem;transition:color .2s}
+.depths li.on{color:var(--pencil);font-weight:700}
+
+
+/* ---------- product mock ---------- */
+.app{font-family:var(--f-app);font-size:.88rem;line-height:1.45;color:var(--app-text);background:var(--app-bg);border:1px solid var(--app-line);border-radius:10px;overflow:hidden;box-shadow:0 18px 40px -24px rgba(16,24,40,.35);position:relative}
+.app-top{display:flex;align-items:center;gap:.75rem;padding:.6rem 1rem;background:var(--app-surface);border-bottom:1px solid var(--app-line)}
+.dots{display:flex;gap:5px}.dots i{width:9px;height:9px;border-radius:50%;background:var(--app-line);display:block}
+.crumbs{font-size:.8rem;color:var(--app-sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.crumbs b{color:var(--app-text);font-weight:600}
+.req{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem 2rem;padding:.75rem 1.25rem;background:var(--app-surface);border-bottom:1px solid var(--app-line);font-size:.82rem}
+.req .who b{display:block;font-weight:600;font-size:.88rem}
+.req .who span,.req .when span{color:var(--app-sub)}
+.req .when b{display:block;font-weight:500}
+.convo{margin-left:auto;font:500 .8rem var(--f-app);color:var(--app-text);background:transparent;border:1px solid var(--app-line);border-radius:6px;padding:.35rem .7rem;display:inline-flex;gap:.4rem;align-items:center}
+.convo .dot{background:var(--app-accent);color:var(--app-surface);font-size:.65rem;font-weight:600;border-radius:999px;padding:0 .35rem}
+.app-body{display:grid;grid-template-columns:minmax(0,15rem) minmax(0,1fr);min-height:31rem}
+.rail{background:var(--app-surface);border-right:1px solid var(--app-line);padding:1rem;display:flex;flex-direction:column;gap:.9rem;min-width:0}
+.rail .k{font-size:.75rem;color:var(--app-sub)}
+.rail .sec{font-weight:600}
+.rail ol{margin:0;padding-left:1.1rem;display:flex;flex-direction:column;gap:.55rem;color:var(--app-sub);font-size:.8rem}
+.rail ol li.na{opacity:.6}
+.main{padding:1.4rem 1.5rem 0;display:flex;flex-direction:column;gap:1rem;min-width:0}
+.q{font-size:1.05rem;font-weight:600;display:flex;gap:.5rem;align-items:flex-start}
+.desc{border-top:1px solid var(--app-line);padding-top:.85rem;display:flex;flex-direction:column;gap:.75rem}
+.desc-h{display:flex;align-items:center;gap:.5rem}
+.desc-h .lbl{font-style:italic;font-weight:500}
+.excerpt{background:var(--app-quote);border-radius:6px;padding:.75rem .9rem;display:flex;flex-direction:column;gap:.35rem;transition:box-shadow .2s}
+.excerpt.lit{box-shadow:0 0 0 2px var(--app-accent)}
+.excerpt .src{font-family:var(--f-mono);font-size:.72rem;color:var(--app-sub)}
+.excerpt p{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.app[data-mode="before"] .excerpt > p,.app[data-mode="before"] .excerpt > .desc-h{display:none}
+.more{align-self:flex-start;font:500 .82rem var(--f-app);color:var(--app-accent);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+.inputs{display:flex;flex-wrap:wrap;gap:.6rem;padding-top:.25rem}
+.inputs input,.inputs select{font:inherit;color:var(--app-text);background:var(--app-surface);border:1px solid var(--app-line);border-radius:6px;padding:.5rem .65rem;width:11rem;max-width:100%}
+.foot{margin-top:auto;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:.5rem;padding:1rem 0 1.1rem;border-top:1px solid var(--app-line)}
+.foot button{font:500 .82rem var(--f-app);border-radius:6px;padding:.45rem 1rem;cursor:default}
+.b-ghost{background:var(--app-surface);color:var(--app-text);border:1px solid var(--app-line)}
+.b-solid{background:var(--app-btn);color:var(--app-btn-ink);border:1px solid var(--app-btn)}
+
+/* the CSRD info panel: overlays the right edge, like the original */
+.panel{position:absolute;top:0;right:0;bottom:0;width:min(24rem,100%);background:var(--app-surface);border-left:1px solid var(--app-line);box-shadow:-18px 0 40px -24px rgba(16,24,40,.45);transform:translateX(102%);transition:transform .32s cubic-bezier(.2,.7,.2,1);display:flex;flex-direction:column;visibility:hidden}
+.app[data-panel="open"] .panel{transform:none;visibility:visible}
+.p-head{display:flex;justify-content:space-between;align-items:center;padding:.8rem 1.1rem;border-bottom:2px solid var(--app-accent)}
+.p-head b{font-weight:600}
+.close{border:0;background:transparent;color:var(--app-sub);font:400 1.35rem/1 var(--f-app);cursor:pointer;padding:.1rem .35rem;border-radius:4px}
+.close:hover{background:var(--app-bg);color:var(--app-text)}
+.p-body{overflow:auto;padding:1rem 1.1rem 1.4rem;display:flex;flex-direction:column;gap:.3rem}
+.p-body h3{font-size:1rem;font-weight:600;margin:0 0 .5rem}
+details{border-bottom:1px solid var(--app-line)}
+summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:.5rem;padding:.7rem 0;font-weight:500;font-size:.92rem}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"";width:.5rem;height:.5rem;border-right:1.5px solid var(--app-sub);border-bottom:1.5px solid var(--app-sub);transform:rotate(45deg);margin-right:.2rem;transition:transform .2s}
+details[open] summary::after{transform:rotate(-135deg)}
+details .c{padding:0 0 .9rem;color:var(--app-sub);font-size:.84rem;display:flex;flex-direction:column;gap:.45rem}
+details .c q{color:var(--app-text);quotes:none}
+
+/* before: the PDF takes over */
+.pdf{position:absolute;inset:0;background:var(--app-scrim);display:grid;place-items:center;padding:1.2rem}
+.pdf-win{width:min(40rem,100%);background:var(--app-surface);border-radius:8px;overflow:hidden;box-shadow:0 20px 50px -20px rgba(0,0,0,.5);display:flex;flex-direction:column;max-height:100%}
+.pdf-bar{display:flex;justify-content:space-between;align-items:center;gap:.5rem;padding:.55rem .9rem;border-bottom:1px solid var(--app-line);font-size:.78rem;color:var(--app-sub)}
+.pdf-bar b{color:var(--app-text);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.pdf-page{padding:1.2rem 1.4rem;display:flex;flex-direction:column;gap:.55rem}
+.pdf-page .ln{height:.55rem;background:var(--app-line);border-radius:2px}
+.pdf-search{display:flex;gap:.5rem;align-items:center;padding:.6rem .9rem;border-top:1px solid var(--app-line);font-size:.8rem;color:var(--app-sub);flex-wrap:wrap}
+.pdf-search .box{border:1px solid var(--app-line);border-radius:5px;padding:.25rem .5rem;font-family:var(--f-mono);font-size:.75rem;color:var(--app-text)}
+.pdf-back{font:600 .8rem var(--f-app);background:var(--app-accent);color:var(--app-surface);border:0;border-radius:6px;padding:.4rem .75rem;cursor:pointer}
+
+@media (max-width:760px){
+  .app-body{grid-template-columns:minmax(0,1fr)}
+  .rail{display:none}
+  .main{padding-inline:1rem}
+  .convo{margin-left:0}
+}
+
+.why{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.25rem}
+@media (max-width:760px){.why{grid-template-columns:minmax(0,1fr)}}
+.why div{border-top:2px solid var(--ink);padding-top:.7rem;display:flex;flex-direction:column;gap:.35rem;font-size:.97rem;line-height:1.5;min-width:0}
+.why h4{margin:0;font-family:var(--f-display);font-size:1.02rem;font-weight:800;display:flex;gap:.5rem;align-items:center}
+</style>
+
+<script>
+(function(){
+  var app=document.getElementById('app'),panel=document.getElementById('panel'),pdf=document.getElementById('pdf'),more=document.getElementById('more'),ex=document.getElementById('excerpt');
+  function depth(open){document.getElementById('d3').classList.toggle('on',open);ex.classList.toggle('lit',open)}
+  function openPanel(){
+    if(app.dataset.mode==='before'){pdf.hidden=false;document.getElementById('pdf-back').focus();return}
+    app.dataset.panel='open';more.setAttribute('aria-expanded','true');depth(true);
+    setTimeout(function(){panel.focus({preventScroll:true})},60);
+  }
+  function closePanel(){app.dataset.panel='closed';more.setAttribute('aria-expanded','false');depth(false);more.focus()}
+  function closePdf(){pdf.hidden=true;more.focus()}
+  more.addEventListener('click',function(){app.dataset.panel==='open'?closePanel():openPanel()});
+  document.getElementById('p-close').addEventListener('click',closePanel);
+  document.getElementById('pdf-back').addEventListener('click',closePdf);
+  document.addEventListener('keydown',function(e){if(e.key!=='Escape')return;if(!pdf.hidden)closePdf();else if(app.dataset.panel==='open')closePanel()});
+  document.querySelectorAll('button[data-mode]').forEach(function(b){b.addEventListener('click',function(){
+    app.dataset.mode=b.dataset.mode;pdf.hidden=true;if(app.dataset.panel==='open')closePanel();
+    var before=b.dataset.mode==='before';
+    more.textContent=before?'Open the regulation PDF ↗':'Show more ↗';
+    document.getElementById('d2').classList.toggle('on',!before);
+    document.querySelectorAll('button[data-mode]').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});
+  })});
+})();
+</script>

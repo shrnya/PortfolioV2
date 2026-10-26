@@ -1,0 +1,199 @@
+---
+// Homepage hero figure: a rough sketch of an energy dashboard with the
+// finished interface underneath. Dragging the handle tidies one into the other.
+// Both layers share one 400 x 300 viewBox so every box lines up.
+import { rect, ellipse, poly, arrow, line, chart } from '../lib/rough';
+import Bird from './Bird.astro';
+
+const load = [42, 40, 38, 37, 39, 46, 61, 78, 88, 92, 95, 97, 94, 96, 99, 101, 98, 90, 82, 74, 66, 58, 51, 47];
+const plot = chart(load, 28, 140, 194, 122, 20, 110);
+const end = plot.pts[plot.pts.length - 1];
+const area = `${plot.d}L222 262L28 262Z`;
+
+const tiles = [16, 142, 268];
+const sk = {
+  tiles: tiles.map((x, i) => rect(x, 42, 116, 54, 20 + i, 1.8)),
+  chartBox: rect(16, 108, 216, 176, 31, 2),
+  flowBox: rect(244, 108, 140, 176, 32, 2),
+  squiggles: [0, 1, 2, 3, 4].map((k) =>
+    poly(Array.from({ length: 13 }, (_, i) => [34 + i * 15, 210 - k * 12 + Math.sin(i * (0.9 + k * 0.35) + k) * (14 + k * 3)] as [number, number]), 40 + k, 1.8)),
+  nodes: [[314, 140, 22], [314, 176, 28], [278, 212, 18], [350, 212, 18], [278, 248, 18], [350, 248, 18]].map(([x, y, r], i) => ellipse(x, y, r, 10, 50 + i)),
+  links: [arrow(314, 151, 314, 164, 60), arrow(304, 187, 284, 201, 61), arrow(324, 187, 345, 201, 62), arrow(278, 223, 278, 236, 63), arrow(350, 223, 350, 236, 64)],
+  strike: line(14, 17, 92, 15, 70, 1),
+  circle: ellipse(361, 70, 20, 12, 71),
+  note1: arrow(118, 160, 92, 196, 72),
+};
+---
+<figure class="fig">
+  <div class="perch"><Bird /></div>
+  <div class="stage" style="--p: 50%">
+    <svg class="layer system" viewBox="0 0 400 300" aria-hidden="true">
+      <rect class="s-bg" width="400" height="300" />
+      <rect class="s-bar" width="400" height="30" />
+      <text class="s-t" x="16" y="19.5">Plant 2 · Today</text>
+      <rect class="s-chip" x="296" y="8" width="88" height="15" rx="7.5" />
+      <text class="s-chip-t" x="340" y="18.6" text-anchor="middle">3 open alerts</text>
+
+      <g>
+        <rect class="s-card" x="16" y="42" width="116" height="54" rx="6" />
+        <text class="s-k" x="26" y="58">Energy today</text>
+        <text class="s-v" x="26" y="84">1,284<tspan class="s-u" dx="3">kWh</tspan></text>
+        <rect class="s-card" x="142" y="42" width="116" height="54" rx="6" />
+        <text class="s-k" x="152" y="58">Peak load</text>
+        <text class="s-v" x="152" y="84">312<tspan class="s-u" dx="3">kW at 14:10</tspan></text>
+        <rect class="s-card" x="268" y="42" width="116" height="54" rx="6" />
+        <text class="s-k" x="278" y="58">Open alerts</text>
+        <text class="s-v" x="278" y="84">3<tspan class="s-u warn" dx="4">2 high priority</tspan></text>
+      </g>
+
+      <rect class="s-card" x="16" y="108" width="216" height="176" rx="6" />
+      <text class="s-k strong" x="28" y="125">Load today, kW</text>
+      {[140, 180.7, 221.3, 262].map((y) => <line class="s-grid" x1="28" x2="222" y1={y} y2={y} />)}
+      <path class="s-area" d={area} />
+      <path class="s-line" d={plot.d} />
+      <circle class="s-dot" cx={end[0]} cy={end[1]} r="3.2" />
+      <text class="s-ax" x="28" y="276">00:00</text>
+      <text class="s-ax" x="125" y="276" text-anchor="middle">12:00</text>
+      <text class="s-ax" x="222" y="276" text-anchor="end">Now</text>
+
+      <rect class="s-card" x="244" y="108" width="140" height="176" rx="6" />
+      <text class="s-k strong" x="254" y="125">Where power goes</text>
+      <g class="s-links">
+        <path d="M314 148V168M314 186V196H280V204M314 196H350V204M280 222V232M350 222V232" />
+      </g>
+      <path class="s-path" d="M314 148V168M314 186V196H280V204M280 222V232" />
+      {[
+        [314, 139, 52, 'Grid', true], [314, 177, 70, 'Transformer', true], [280, 213, 50, 'DB-1', true],
+        [350, 213, 50, 'DB-2', false], [280, 241, 50, 'HVAC', true], [350, 241, 50, 'Lighting', false],
+      ].map(([x, y, w, label, on]) => (
+        <g class:list={['s-node', { on }]}>
+          <rect x={(x as number) - (w as number) / 2} y={(y as number) - 9} width={w} height="18" rx="4" />
+          <text x={x} y={(y as number) + 3.2} text-anchor="middle">{label}</text>
+        </g>
+      ))}
+      <text class="s-ax" x="254" y="274">Tracing the HVAC branch</text>
+    </svg>
+
+    <svg class="layer sketch boil" viewBox="0 0 400 300" aria-hidden="true">
+      <rect class="k-bg" width="400" height="300" />
+      <text class="k-ink" x="16" y="20">dashboard v1</text>
+      <path class="k-strike" d={sk.strike} />
+      <text class="k-pen" x="104" y="20">what does the facility manager need first?</text>
+      {sk.tiles.map((d) => <path class="k-box" d={d} />)}
+      <text class="k-ink" x="26" y="76">kWh? per day?</text>
+      <text class="k-ink" x="152" y="76">peak... when?</text>
+      <text class="k-ink" x="278" y="76">alerts</text>
+      <path class="k-circ" d={sk.circle} />
+      <text class="k-pen" x="330" y="90">this first!</text>
+
+      <path class="k-box" d={sk.chartBox} />
+      {sk.squiggles.map((d) => <path class="k-sq" d={d} />)}
+      <text class="k-pen" x="104" y="132">12 lines. which one matters?</text>
+      <path class="k-arrow" d={sk.note1} />
+
+      <path class="k-box" d={sk.flowBox} />
+      {sk.nodes.map((d) => <path class="k-sq" d={d} />)}
+      {sk.links.map((d) => <path class="k-sq" d={d} />)}
+      <text class="k-ink sm" x="314" y="143" text-anchor="middle">grid</text>
+      <text class="k-ink sm" x="314" y="179" text-anchor="middle">transf.</text>
+      <text class="k-ink sm" x="278" y="251" text-anchor="middle">HVAC</text>
+      <text class="k-pen" x="250" y="276">where does power leak?</text>
+    </svg>
+
+    <div class="handle" aria-hidden="true"><span class="knob">‹ ›</span></div>
+    <input class="range" id="sketch-range" type="range" min="0" max="100" step="any" value="50" aria-label="Drag to turn the rough sketch into the finished interface" />
+  </div>
+  <figcaption>
+    <span class="hand">← the product</span>
+    <span class="cap">Drag the line. Every project starts as a rough sketch.</span>
+    <span class="hand">the sketch →</span>
+  </figcaption>
+</figure>
+
+<style>
+  .fig { margin: 0; display: flex; flex-direction: column; gap: .7rem; min-width: 0; position: relative; }
+  .perch { position: absolute; z-index: 5; top: -4.15rem; right: 10%; }
+  .stage {
+    position: relative; aspect-ratio: 4 / 3; max-width: 100%;
+    background: var(--paper); border-radius: 6px; overflow: hidden;
+    border: 1.5px solid var(--ink); box-shadow: 6px 6px 0 var(--pencil-soft);
+    transform: rotate(-.6deg);
+  }
+  .layer { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .system { clip-path: inset(0 calc(100% - var(--p)) 0 0); }
+  .sketch { clip-path: inset(0 0 0 var(--p)); }
+
+  /* system layer: neutral product palette */
+  .s-bg { fill: var(--app-bg); }
+  .s-bar, .s-card { fill: var(--app-surface); }
+  .s-card { stroke: var(--app-line); }
+  .s-t { font: 600 10.5px var(--f-app); fill: var(--app-text); }
+  .s-chip { fill: var(--app-accent-soft); }
+  .s-chip-t { font: 600 8.5px var(--f-app); fill: var(--app-accent); }
+  .s-k { font: 500 8.5px var(--f-app); fill: var(--app-sub); }
+  .s-k.strong { fill: var(--app-text); font-weight: 600; }
+  .s-v { font: 600 18px var(--f-app); fill: var(--app-text); font-variant-numeric: tabular-nums; }
+  .s-u { font: 500 8px var(--f-app); fill: var(--app-sub); }
+  .s-u.warn { fill: var(--app-warn); }
+  .s-grid { stroke: var(--app-line); stroke-width: .8; }
+  .s-area { fill: var(--app-accent-soft); }
+  .s-line { fill: none; stroke: var(--app-accent); stroke-width: 1.8; }
+  .s-dot { fill: var(--app-accent); stroke: var(--app-surface); stroke-width: 1.5; }
+  .s-ax { font: 400 7.5px var(--f-app); fill: var(--app-sub); }
+  .s-links path { fill: none; stroke: var(--app-line); stroke-width: 1.4; }
+  .s-path { fill: none; stroke: var(--app-accent); stroke-width: 2; }
+  .s-node rect { fill: var(--app-surface); stroke: var(--app-line); }
+  .s-node.on rect { fill: var(--app-accent-soft); stroke: var(--app-accent); }
+  .s-node text { font: 500 7.5px var(--f-app); fill: var(--app-text); }
+
+  /* sketch layer: pen and pencil */
+  .k-bg { fill: var(--paper); }
+  .k-box, .k-sq, .k-strike, .k-arrow, .k-circ { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .k-box { stroke: var(--ink); stroke-width: 1.1; opacity: .8; }
+  .k-sq { stroke: var(--ink); stroke-width: 1; opacity: .7; }
+  .k-strike { stroke: var(--ink); stroke-width: 1.4; }
+  .k-arrow, .k-circ { stroke: var(--pencil); stroke-width: 1.4; }
+  .k-ink { font: 400 11px var(--f-hand); fill: var(--ink); }
+  .k-ink.sm { font-size: 8.5px; }
+  .k-pen { font: 700 10.5px var(--f-hand); fill: var(--pencil); }
+
+  .handle { position: absolute; z-index: 2; top: 0; bottom: 0; left: var(--p); width: 0; border-left: 2px solid var(--ink); pointer-events: none; }
+  .knob {
+    position: absolute; top: 50%; left: 0; transform: translate(-50%, -50%);
+    width: 2.4rem; height: 2.4rem; border-radius: 50%; display: grid; place-items: center;
+    background: var(--sheet); color: var(--ink); border: 2px solid var(--ink);
+    font: 800 .95rem/1 var(--f-display); letter-spacing: .05em; box-shadow: 0 6px 14px -8px var(--shadow);
+  }
+  .range { position: absolute; z-index: 4; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: ew-resize; }
+  .range:focus-visible + .knob, .stage:has(.range:focus-visible) .knob { outline: 2px solid var(--pencil); outline-offset: 3px; }
+
+  figcaption { display: flex; justify-content: space-between; align-items: baseline; gap: .5rem 1rem; flex-wrap: wrap; }
+  figcaption .hand { font-size: 1rem; }
+  .cap { font-family: var(--f-mono); font-size: .72rem; color: var(--muted); text-align: center; flex: 1 1 14rem; order: 3; }
+  @media (min-width: 640px) { .cap { order: 0; } }
+</style>
+
+<script>
+  const stage = document.querySelector<HTMLElement>('.fig .stage');
+  const range = document.querySelector<HTMLInputElement>('#sketch-range');
+  if (stage && range) {
+    const set = (v: number) => { stage.style.setProperty('--p', v + '%'); range.value = String(v); };
+    range.addEventListener('input', () => set(Number(range.value)));
+    // One sweep on load: start nearly all sketch, settle at half and half.
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      let touched = false;
+      range.addEventListener('pointerdown', () => (touched = true), { once: true });
+      range.addEventListener('keydown', () => (touched = true), { once: true });
+      const from = 94, to = 50, dur = 1500, t0 = performance.now() + 500;
+      set(from);
+      const tick = (t: number) => {
+        if (touched) return;
+        const k = Math.min(1, Math.max(0, (t - t0) / dur));
+        const e = k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+        set(Math.round((from + (to - from) * e) * 10) / 10);
+        if (k < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }
+  }
+</script>

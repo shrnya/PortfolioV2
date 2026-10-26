@@ -1,0 +1,19 @@
+---
+interface Props { n: number; of: number; title: string }
+const { n, of, title } = Astro.props;
+---
+<div class="decision">
+  <p class="eyebrow">Decision {n} of {of}</p>
+  <h3>{title}</h3>
+  <div class="call"><slot name="call" /></div>
+  <slot />
+</div>
+
+<style>
+  .decision { display: flow-root; padding-top: 1.25rem; border-top: 1px solid var(--rule); }
+  .decision > :global(* + *) { margin-top: 1rem; }
+  .decision > :global(:not(p, aside, h3, .call, .eyebrow, .draft)) { clear: right; }
+  h3 { font-size: 1.4rem; font-weight: 800; letter-spacing: -.01em; }
+  .decision > :global(p) { max-width: var(--col-w); }
+  .call { font-weight: 600; font-size: 1.12rem; line-height: 1.5; max-width: var(--col-w); }
+</style>

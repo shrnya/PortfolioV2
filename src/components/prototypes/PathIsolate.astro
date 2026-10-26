@@ -1,0 +1,151 @@
+---
+// SLD demo: a small facility energy network. Nodes show their health,
+// and choosing one isolates the path its power takes from the sources.
+// Invented facility and values; the real product is in the recordings.
+type Node = { id: string; label: string; kind: string; x: number; y: number; w: number; kw: number; status: 'ok' | 'warn' | 'off'; alerts: number; parents: string[] };
+const nodes: Node[] = [
+  { id: 'grid', label: 'Utility grid', kind: 'Source', x: 300, y: 28, w: 104, kw: 3200, status: 'ok', alerts: 0, parents: [] },
+  { id: 'solar', label: 'Solar PV', kind: 'Source', x: 130, y: 28, w: 90, kw: 200, status: 'ok', alerts: 0, parents: [] },
+  { id: 'dg1', label: 'DG-1', kind: 'Source', x: 470, y: 28, w: 76, kw: 0, status: 'off', alerts: 0, parents: [] },
+  { id: 'main', label: 'Main incomer', kind: 'Breaker', x: 300, y: 100, w: 116, kw: 3385, status: 'ok', alerts: 0, parents: ['grid', 'solar', 'dg1'] },
+  { id: 'tr1', label: 'Transformer 1', kind: 'Transformer', x: 190, y: 172, w: 122, kw: 2140, status: 'warn', alerts: 1, parents: ['main'] },
+  { id: 'tr2', label: 'Transformer 2', kind: 'Transformer', x: 420, y: 172, w: 122, kw: 1180, status: 'ok', alerts: 0, parents: ['main'] },
+  { id: 'db1', label: 'DB-1', kind: 'Distribution board', x: 110, y: 244, w: 72, kw: 1460, status: 'ok', alerts: 0, parents: ['tr1'] },
+  { id: 'db2', label: 'DB-2', kind: 'Distribution board', x: 270, y: 244, w: 72, kw: 640, status: 'ok', alerts: 0, parents: ['tr1'] },
+  { id: 'db3', label: 'DB-3', kind: 'Distribution board', x: 440, y: 244, w: 72, kw: 1150, status: 'ok', alerts: 0, parents: ['tr2'] },
+  { id: 'ahu3', label: 'AHU-3', kind: 'Air handling unit', x: 60, y: 312, w: 76, kw: 410, status: 'warn', alerts: 2, parents: ['db1'] },
+  { id: 'ch1', label: 'Chiller-1', kind: 'Chiller', x: 160, y: 312, w: 86, kw: 1020, status: 'ok', alerts: 0, parents: ['db1'] },
+  { id: 'light', label: 'Lighting', kind: 'Lighting circuit', x: 270, y: 312, w: 86, kw: 640, status: 'ok', alerts: 0, parents: ['db2'] },
+  { id: 'ups', label: 'UPS', kind: 'UPS', x: 400, y: 312, w: 66, kw: 1150, status: 'ok', alerts: 0, parents: ['db3'] },
+  { id: 'pump', label: 'Pumps', kind: 'Pump set', x: 490, y: 312, w: 76, kw: 0, status: 'off', alerts: 0, parents: ['db3'] },
+];
+const byId = Object.fromEntries(nodes.map((n) => [n.id, n]));
+const H = 22;
+const edges = nodes.flatMap((n) => n.parents.map((p) => {
+  const a = byId[p], mid = (a.y + n.y) / 2;
+  return { id: `${p}-${n.id}`, from: p, to: n.id, d: `M${a.x} ${a.y + H / 2}V${mid}H${n.x}V${n.y - H / 2}`, status: n.status === 'off' || a.status === 'off' ? 'off' : n.id === 'ahu3' ? 'warn' : 'ok' };
+}));
+const data = JSON.stringify(nodes.map(({ id, label, kind, kw, status, alerts, parents }) => ({ id, label, kind, kw, status, alerts, parents })));
+---
+<div class="pi wide" data-nodes={data}>
+  <div class="app">
+    <div class="bar">
+      <span class="t">Facility energy network</span>
+      <span class="legend"><i class="s ok"></i>Active <i class="s warn"></i>Needs attention <i class="s off"></i>Disconnected</span>
+    </div>
+    <div class="body">
+      <div class="canvas">
+        <svg viewBox="0 0 600 336" role="group" aria-label="Energy network diagram. Choose a node to isolate its path.">
+          <g class="edges">
+            {edges.map((e) => <path class={`e ${e.status}`} d={e.d} data-from={e.from} data-to={e.to} />)}
+          </g>
+          {nodes.map((n) => (
+            <g class={`n ${n.status}`} data-id={n.id} tabindex="0" role="button" aria-label={`${n.label}, ${n.status === 'warn' ? 'needs attention' : n.status === 'off' ? 'disconnected' : 'active'}`}>
+              <rect x={n.x - n.w / 2} y={n.y - H / 2} width={n.w} height={H} rx="5" />
+              <circle cx={n.x - n.w / 2 + 10} cy={n.y} r="3.2" />
+              <text x={n.x - n.w / 2 + 18} y={n.y + 3.6}>{n.label}</text>
+              {n.alerts > 0 && <text class="badge" x={n.x + n.w / 2 - 8} y={n.y + 3.6} text-anchor="middle">⚠</text>}
+            </g>
+          ))}
+        </svg>
+      </div>
+      <aside class="side" aria-live="polite">
+        <p class="kind" id="pi-kind"></p>
+        <p class="name" id="pi-name"></p>
+        <p class="pill" id="pi-status"></p>
+        <dl>
+          <div><dt>Load now</dt><dd id="pi-kw"></dd></div>
+          <div><dt>Open alerts</dt><dd id="pi-alerts"></dd></div>
+          <div><dt>Fed from</dt><dd id="pi-path"></dd></div>
+        </dl>
+        <button type="button" id="pi-clear">Show the whole network</button>
+      </aside>
+    </div>
+  </div>
+  <p class="hand cap">Click any box. Everything off its path fades away.</p>
+</div>
+
+<style>
+  .pi { display: flex; flex-direction: column; gap: .6rem; }
+  .pi { --ok: #1E9A5A; --warn: #E07A12; --off: #A2A8B3; }
+  .app { font-family: var(--f-app); color: var(--app-text); background: var(--app-surface); border: 1px solid var(--app-line); border-radius: 10px; overflow: hidden; }
+  .bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: .4rem 1rem; padding: .6rem 1rem; border-bottom: 1px solid var(--app-line); font-size: .8rem; }
+  .bar .t { font-weight: 600; font-size: .88rem; }
+  .legend { display: flex; align-items: center; gap: .35rem; color: var(--app-sub); flex-wrap: wrap; }
+  .legend .s { width: .9rem; height: 0; border-top: 2.5px dashed; display: inline-block; margin-left: .5rem; }
+  .legend .s.ok { border-top-color: var(--ok); } .legend .s.warn { border-top-color: var(--warn); } .legend .s.off { border-top-color: var(--off); }
+  .body { display: grid; grid-template-columns: minmax(0, 1fr); }
+  @media (min-width: 760px) { .body { grid-template-columns: minmax(0, 1fr) 15rem; } }
+  .canvas { background: var(--app-bg); padding: .75rem; overflow-x: auto; }
+  .canvas svg { display: block; width: 100%; min-width: 520px; height: auto; }
+
+  .e { fill: none; stroke-width: 2; stroke-dasharray: 5 4; transition: opacity .25s; }
+  .e.ok { stroke: var(--ok); } .e.warn { stroke: var(--warn); } .e.off { stroke: var(--off); stroke-dasharray: 2 4; }
+  @media (prefers-reduced-motion: no-preference) { .e.ok, .e.warn { animation: flow 1s linear infinite; } }
+  @keyframes flow { to { stroke-dashoffset: -9; } }
+  .n { cursor: pointer; transition: opacity .25s; outline: none; }
+  .n rect { fill: var(--app-surface); stroke: var(--app-line); stroke-width: 1.2; }
+  .n.warn rect { fill: color-mix(in srgb, var(--warn) 12%, var(--app-surface)); stroke: var(--warn); }
+  .n circle { fill: var(--ok); } .n.warn circle { fill: var(--warn); } .n.off circle { fill: var(--off); }
+  .n text { font: 500 10px var(--f-app); fill: var(--app-text); }
+  .n .badge { fill: var(--warn); font-size: 10px; }
+  .n:hover rect, .n:focus-visible rect { stroke: var(--app-accent); stroke-width: 2; }
+  .n.sel rect { stroke: var(--app-accent); stroke-width: 2.4; }
+  .isolating .n:not(.on), .isolating .e:not(.on) { opacity: .14; }
+
+  .side { border-top: 1px solid var(--app-line); padding: 1rem; display: flex; flex-direction: column; gap: .5rem; font-size: .84rem; }
+  @media (min-width: 760px) { .side { border-top: 0; border-left: 1px solid var(--app-line); } }
+  .kind { color: var(--app-sub); font-size: .75rem; }
+  .name { font-weight: 600; font-size: 1.05rem; }
+  .pill { align-self: flex-start; font-size: .72rem; font-weight: 600; padding: .1rem .55rem; border-radius: 999px; background: color-mix(in srgb, var(--ok) 14%, transparent); color: var(--ok); }
+  .pill.warn { background: color-mix(in srgb, var(--warn) 16%, transparent); color: var(--warn); }
+  .pill.off { background: color-mix(in srgb, var(--off) 20%, transparent); color: var(--app-sub); }
+  dl { margin: .3rem 0 0; display: flex; flex-direction: column; gap: .45rem; }
+  dl div { display: flex; flex-direction: column; gap: .05rem; }
+  dt { color: var(--app-sub); font-size: .72rem; }
+  dd { margin: 0; font-variant-numeric: tabular-nums; }
+  #pi-clear { margin-top: auto; align-self: flex-start; font: 500 .8rem var(--f-app); color: var(--app-accent); background: none; border: 0; padding: .3rem 0; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+  .cap { font-size: 1rem; }
+</style>
+
+<script>
+  type N = { id: string; label: string; kind: string; kw: number; status: string; alerts: number; parents: string[] };
+  const root = document.querySelector<HTMLElement>('.pi');
+  if (root) {
+    const nodes: N[] = JSON.parse(root.dataset.nodes!);
+    const by = Object.fromEntries(nodes.map((n) => [n.id, n]));
+    const svg = root.querySelector('svg')!;
+    const $ = (id: string) => root.querySelector('#' + id)!;
+    const up = (id: string, acc = new Set<string>()) => { acc.add(id); by[id].parents.forEach((p) => up(p, acc)); return acc; };
+    const chain = (id: string): string => {
+      const p = by[id].parents;
+      if (!p.length) return '';
+      if (p.length > 1) return p.map((x) => by[x].label).join(', ');
+      const rest = chain(p[0]);
+      return by[p[0]].label + (rest ? ' ← ' + rest : '');
+    };
+    const pick = (id: string | null) => {
+      svg.classList.toggle('isolating', !!id);
+      const on = id ? up(id) : new Set<string>();
+      svg.querySelectorAll<SVGGElement>('.n').forEach((g) => { g.classList.toggle('on', on.has(g.dataset.id!)); g.classList.toggle('sel', g.dataset.id === id); });
+      svg.querySelectorAll<SVGPathElement>('.e').forEach((e) => e.classList.toggle('on', on.has(e.dataset.from!) && on.has(e.dataset.to!)));
+      const n = id ? by[id] : null;
+      $('pi-kind').textContent = n ? n.kind : 'Whole facility';
+      $('pi-name').textContent = n ? n.label : 'All 14 nodes';
+      const st = $('pi-status');
+      const s = n ? n.status : 'warn';
+      st.className = 'pill ' + s;
+      st.textContent = n ? (s === 'warn' ? 'Needs attention' : s === 'off' ? 'Disconnected' : 'Healthy') : '2 need attention';
+      $('pi-kw').textContent = n ? (n.kw ? n.kw.toLocaleString('en') + ' kW' : 'No load') : '3,385 kW';
+      $('pi-alerts').textContent = n ? String(n.alerts) : '3';
+      $('pi-path').textContent = n ? (chain(n.id) || 'This is a source') : 'Pick a node to trace it';
+      ($('pi-clear') as HTMLElement).hidden = !id;
+    };
+    svg.querySelectorAll<SVGGElement>('.n').forEach((g) => {
+      g.addEventListener('click', () => pick(g.dataset.id!));
+      g.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(g.dataset.id!); } });
+    });
+    $('pi-clear').addEventListener('click', () => pick(null));
+    pick('ahu3');
+  }
+</script>

@@ -1,0 +1,42 @@
+---
+// Design system illustration 3: checking the built components against the spec.
+// Example rows only; real findings are not shown.
+const rows = [
+  { part: 'Button height', spec: '36', built: '36', ok: true },
+  { part: 'Card padding', spec: '16', built: '12', ok: false },
+  { part: 'Table label size', spec: '12', built: '10', ok: false },
+  { part: 'Chart colour order', spec: 'chart-1 to 6', built: 'chart-1 to 6', ok: true },
+  { part: 'Alert chip, high', spec: 'status-critical', built: 'red-500', ok: false },
+];
+---
+<div class="br wide">
+  <div class="scroll">
+    <table>
+      <thead><tr><th scope="col">Component</th><th scope="col">In the design</th><th scope="col">In the build</th><th scope="col"><span class="sr">Result</span></th></tr></thead>
+      <tbody>
+        {rows.map((r) => (
+          <tr class:list={{ flag: !r.ok }}>
+            <th scope="row">{r.part}</th><td>{r.spec}</td><td>{r.built}</td>
+            <td class="res">{r.ok ? <span class="ok">matches</span> : <span class="no">flagged</span>}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <p class="hand cap">Example rows. The real list was longer.</p>
+</div>
+
+<style>
+  .br { display: flex; flex-direction: column; gap: .6rem; max-width: 40rem; }
+  .scroll { overflow-x: auto; position: relative; }
+  table { width: 100%; border-collapse: collapse; font-family: var(--f-mono); font-size: .82rem; }
+  th, td { text-align: left; padding: .55rem .7rem .55rem 0; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+  thead th { font-weight: 500; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border-bottom: 1.5px solid var(--ink); }
+  tbody th { font-family: var(--f-body); font-weight: 600; font-size: .95rem; }
+  .flag td:nth-child(3) { text-decoration: underline wavy var(--pencil); text-underline-offset: 4px; }
+  .res { font-family: var(--f-hand); font-size: .98rem; }
+  .ok { color: var(--muted); }
+  .no { color: var(--pencil); font-weight: 700; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .cap { font-size: 1rem; }
+</style>

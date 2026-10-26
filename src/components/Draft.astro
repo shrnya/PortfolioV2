@@ -1,0 +1,18 @@
+---
+// A note to Sharanya about something to confirm before launch.
+// Shown while drafting; build with PUBLIC_DRAFTS=false to hide them all.
+const show = import.meta.env.PUBLIC_DRAFTS !== 'false';
+interface Props { inline?: boolean }
+const { inline = false } = Astro.props;
+const Tag = inline ? 'span' : 'p';
+---
+{show && <Tag class:list={['draft', { inline }]}><span class="tag">To confirm</span> <slot /></Tag>}
+
+<style>
+  .draft {
+    font-family: var(--f-hand); font-size: 1rem; line-height: 1.35; color: var(--pencil);
+    border: 1.5px dashed var(--pencil); border-radius: 6px; padding: .5rem .75rem; max-width: var(--col-w);
+  }
+  .draft.inline { display: inline; padding: .05rem .4rem; border-radius: 4px; }
+  .tag { margin-right: .35rem; font-family: var(--f-mono); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; }
+</style>
