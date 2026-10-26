@@ -1,160 +1,124 @@
 ---
 import Base from '../layouts/Base.astro';
-import Testimonials from '../components/Testimonials.astro';
-import { arrow, line } from '../lib/rough';
+import { line } from '../lib/rough';
 
+const resume = 'https://drive.google.com/file/d/15tVwUM-jkmzby2MVAa0smwRkCzmqHJ-Z/view';
+const roles = [
+  { at: 'Ecolibrium', what: 'Product Designer', when: 'Sep 2025 to now' },
+  { at: 'SustainLab', what: 'Product Design Intern', when: 'Jul to Nov 2024' },
+  { at: 'Kriya', what: 'Architect', when: 'Feb 2022 to Sep 2023' },
+];
 const featured = [
   {
-    href: '/work/design-system/', img: '/media/ds/after-light.jpg', company: 'Ecolibrium · 2026',
-    title: 'Can a product get a new look without losing the people who know it by heart?',
-    line: 'I rebuilt the design system behind SmartSense, Ecolibrium’s energy platform. The familiar dark theme stayed, a light one joined it, and both run on tokens the code can use.',
-    tags: ['Design system', 'Theming', 'Components'],
+    href: '/work/design-system/', img: '/media/ds/after-light.jpg', company: 'Ecolibrium',
+    title: 'A new look that didn’t leave customers behind',
+    tags: ['Design system', 'Theming'],
   },
   {
-    href: '/work/sld/', img: '/media/sld/overview.jpg', company: 'Ecolibrium · 2026',
-    title: 'Where is all that energy actually going?',
-    line: 'I designed, end to end, an interactive map of a building’s power network, so engineers and managers alike can follow energy from the grid to each machine.',
-    tags: ['Data visualisation', 'Complex systems', 'End to end'],
+    href: '/work/sld/', img: '/media/sld/overview.jpg', company: 'Ecolibrium',
+    title: 'Following the power to find the leak',
+    tags: ['Data visualisation', 'End to end'],
   },
   {
-    href: '/work/sustainlab/', img: '/media/home/sustainlab.jpg', company: 'SustainLab · 2024',
-    title: 'How do you design for a law that didn’t exist last year?',
-    line: 'I helped turn a 284-page EU regulation into guided questions that sustainability teams could actually answer, and reworked how design handed work to developers.',
-    tags: ['B2B SaaS', 'Regulation', 'Dev handoff'],
+    href: '/work/sustainlab/', img: '/media/home/sustainlab.jpg', company: 'SustainLab',
+    title: 'A 284-page law, one question at a time',
+    tags: ['B2B SaaS', 'Dev handoff'],
   },
 ];
 const more = [
-  { href: '/work/spider-club/', img: '/media/scob/mockup.jpg', title: 'Spider Club of Belgaum', line: 'A database of 55+ local spider species, built from four years of field research.' },
-  { href: '/work/architecture/', img: '/media/arch/yurt-built.jpg', title: 'Architecture and interiors', line: 'Where it all started: a bamboo yurt, an office in Mumbai and an apartment in Ho Chi Minh City.' },
-];
-const quotes = [
-  {
-    text: 'Sharanya was fantastic to collaborate with! From day one, she brought fresh ideas and a solid eye for detail, always keeping the user front and center in her designs. One of her standout contributions was creating a super helpful template for handing over designs from the UX team to the dev team, which really streamlined our workflow. She’s also a quick learner who was always open to feedback, and her positive attitude made her a great part of the team.',
-    name: 'Soe Y Paing', role: 'UX Designer, SustainLab', photo: '/media/people/soe.jpg', href: 'https://www.linkedin.com/in/soe-yan-paing-21941384/',
-  },
+  { href: '/work/spider-club/', title: 'Spider Club of Belgaum', tags: 'Database · Information architecture', status: 'Redesign in progress' },
+  { href: '/work/architecture/', title: 'Architecture and interiors', tags: 'Archive · 2021 to 2023', status: 'See the archive' },
 ];
 const swoop = line(4, 10, 196, 6, 51, 3);
-const down = arrow(20, 4, 26, 52, 52);
 ---
-<Base title="Sharanya Jagdeeshchandran · Product designer">
+<Base title="Sharanya JC · Product designer">
   <section class="hero sheet">
-    <p class="hand hi">Hi, I’m Sharanya ✤</p>
-    <h1>A designer who thrives where design meets <span class="imp">impact<svg class="sw boil" viewBox="0 0 200 16" preserveAspectRatio="none" aria-hidden="true"><path d={swoop} /></svg></span>.</h1>
-    <p class="lede">I’m a product designer with a background in architecture. I love untangling complex problems and turning them into products that feel simple to use.</p>
-    <ul class="where">
-      <li><span class="k">Currently at</span> <a href="/work/design-system/"><b>Ecolibrium</b></a>, designing an energy management platform</li>
-      <li><span class="k">Previously at</span> <a href="/work/sustainlab/"><b>SustainLab</b></a>, designing sustainability reporting software</li>
+    <h1>Sharanya <span class="jc">JC<svg class="sw boil" viewBox="0 0 200 16" preserveAspectRatio="none" aria-hidden="true"><path d={swoop} /></svg></span>.</h1>
+    <p class="tag hand">a designer who thrives where design meets impact ✤</p>
+    <ul class="at">
+      <li><span class="k">@</span> <b>Ecolibrium</b> Product Designer</li>
+      <li><span class="k">prev @</span> <b>SustainLab</b> Product Design Intern</li>
+      <li><span class="k">before that</span> Architect</li>
     </ul>
-    <a class="peek hand" href="#work">see my work<svg class="boil" viewBox="0 0 30 56" aria-hidden="true"><path d={down} /></svg></a>
+    <ul class="links">
+      <li><a href={resume} rel="noopener">résumé ↗</a></li>
+      <li><a href="https://www.linkedin.com/in/sharanyajc" rel="noopener">linkedin ↗</a></li>
+      <li><a href="mailto:sharanyajc@gmail.com?subject=Let%27s%20talk">email ↗</a></li>
+    </ul>
+  </section>
+
+  <section class="exp sheet" aria-labelledby="exp-h">
+    <h2 id="exp-h" class="eyebrow">Experience</h2>
+    <ul>
+      {roles.map((r) => <li><b>{r.at}</b><span>{r.what}</span><span class="when">{r.when}</span></li>)}
+    </ul>
   </section>
 
   <section id="work" class="work sheet" aria-labelledby="work-h">
-    <header class="sec-head">
-      <h2 id="work-h">Selected work</h2>
-    </header>
-    <ol class="feat">
+    <h2 id="work-h" class="eyebrow">Selected work</h2>
+    <ul class="cards">
       {featured.map((f, i) => (
-        <li class:list={['row', { flip: i % 2 === 1 }]}>
-          <a class="shot" href={f.href} tabindex="-1" aria-hidden="true"><img src={f.img} alt="" loading={i ? 'lazy' : 'eager'} /></a>
-          <div class="txt">
-            <p class="eyebrow">{f.company}</p>
-            <h3><a href={f.href}>{f.title}</a></h3>
-            <p>{f.line}</p>
-            <ul class="tags">{f.tags.map((t) => <li>{t}</li>)}</ul>
-            <a class="go" href={f.href}>Read the case study <span aria-hidden="true">→</span></a>
-          </div>
-        </li>
-      ))}
-    </ol>
-
-    <h2 class="more-h">More of my work</h2>
-    <ul class="more">
-      {more.map((m) => (
-        <li>
-          <a href={m.href}>
-            <img src={m.img} alt="" loading="lazy" />
-            <span class="mt">{m.title} <span aria-hidden="true">→</span></span>
-            <span class="ml">{m.line}</span>
+        <li class:list={{ big: i === 0 }}>
+          <a href={f.href}>
+            <span class="img"><img src={f.img} alt="" loading={i ? 'lazy' : 'eager'} /></span>
+            <span class="co">{f.company}</span>
+            <span class="t">{f.title}</span>
+            <span class="tags">{f.tags.join(' · ')}</span>
           </a>
         </li>
       ))}
     </ul>
-  </section>
 
-  <section class="kind sheet" aria-labelledby="kind-h">
-    <header class="sec-head">
-      <h2 id="kind-h">What it’s like to work with me</h2>
-      <p class="hand">don’t just take my word for it :)</p>
-    </header>
-    <Testimonials quotes={quotes} />
-  </section>
-
-  <section id="about" class="about sheet" aria-labelledby="about-h">
-    <img class="me" src="/media/people/sharanya.jpg" alt="Sharanya smiling, holding a small dog" width="700" height="933" loading="lazy" />
-    <div class="story">
-      <p class="eyebrow">About</p>
-      <h2 id="about-h">I’m Sharanya, nice to meet you ✤</h2>
-      <p>I spent over two years as an architect before a UX workshop in 2024 pulled me into digital design. I still start every project the way I’d start a building: understand the people, find the structure, then make it easy to use.</p>
-      <p>Off screen, I’m catching up on pop culture or geeking out over spiders (yes, web design runs deep) :)</p>
-    </div>
+    <h2 class="eyebrow more-h">More work</h2>
+    <ul class="index">
+      {more.map((m) => (
+        <li><a href={m.href}><span class="t">{m.title}</span><span class="tags">{m.tags}</span><span class="st hand">{m.status} →</span></a></li>
+      ))}
+    </ul>
   </section>
 </Base>
 
 <style>
-  .hero { display: flex; flex-direction: column; gap: 1.3rem; padding-block: 4rem 3rem; }
-  @media (min-width: 900px) { .hero { padding-block: 6.5rem 4.5rem; } }
-  .hi { font-size: 1.6rem; }
-  h1 { font-size: clamp(2.5rem, 7vw, 5.2rem); font-weight: 800; letter-spacing: -.035em; line-height: 1; max-width: 19ch; }
-  .imp { position: relative; white-space: nowrap; color: var(--pencil); }
-  .sw { position: absolute; left: -2%; bottom: -.12em; width: 104%; height: .25em; overflow: visible; }
+  .hero { display: flex; flex-direction: column; gap: 1rem; padding-block: 3.5rem 2.5rem; }
+  @media (min-width: 900px) { .hero { padding-block: 6rem 3.5rem; } }
+  h1 { font-size: clamp(3.2rem, 11vw, 7rem); font-weight: 800; letter-spacing: -.045em; line-height: .95; }
+  .jc { position: relative; color: var(--pencil); }
+  .sw { position: absolute; left: -4%; bottom: -.1em; width: 108%; height: .2em; overflow: visible; }
   .sw path { fill: none; stroke: var(--pencil); stroke-width: 3; stroke-linecap: round; }
-  .lede { font-size: clamp(1.15rem, 2vw, 1.35rem); line-height: 1.5; max-width: 36rem; }
-  .where { list-style: none; margin: .2rem 0 0; padding: 0; display: flex; flex-direction: column; gap: .45rem; font-size: 1.05rem; }
-  .where .k { font-family: var(--f-mono); font-size: .74rem; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); margin-right: .35rem; }
-  .where a { text-decoration: none; border-bottom: 1.5px solid var(--pencil); }
-  .where a:hover { color: var(--pencil); }
-  .peek { align-self: flex-start; display: inline-flex; align-items: flex-start; gap: .3rem; margin-top: 1.5rem; font-size: 1.15rem; text-decoration: none; }
-  .peek svg { width: 1.3rem; height: 2.6rem; overflow: visible; }
-  .peek path { fill: none; stroke: var(--pencil); stroke-width: 2; stroke-linecap: round; }
-  @media (prefers-reduced-motion: no-preference) { .peek svg { animation: bob 1.8s ease-in-out infinite; } }
-  @keyframes bob { 50% { transform: translateY(5px); } }
+  .tag { font-size: clamp(1.25rem, 3vw, 1.6rem); }
+  .at { list-style: none; margin: .4rem 0 0; padding: 0; display: flex; flex-direction: column; gap: .3rem; font-family: var(--f-display); font-size: 1.05rem; }
+  .at .k { font-family: var(--f-mono); font-size: .78rem; color: var(--muted); margin-right: .2rem; }
+  .at b { margin-right: .3rem; }
+  .links { list-style: none; margin: .6rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: .4rem 1.4rem; font-family: var(--f-mono); font-size: .9rem; }
+  .links a { text-decoration: none; border-bottom: 1.5px solid var(--pencil); }
+  .links a:hover { color: var(--pencil); }
 
-  .work, .about, .kind { padding-block: 5rem 0; }
-  .sec-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: .5rem 1.5rem; margin-bottom: 2rem; }
-  .sec-head h2, .story h2, .more-h { font-size: clamp(1.8rem, 3.6vw, 2.5rem); font-weight: 800; letter-spacing: -.02em; }
-  .sec-head .hand { font-size: 1.15rem; }
+  .eyebrow { margin: 0 0 1rem; }
+  .exp { padding-block: 1.5rem 0; }
+  .exp ul { list-style: none; margin: 0; padding: 0; border-top: 1.5px solid var(--ink); max-width: 44rem; }
+  .exp li { display: grid; grid-template-columns: minmax(0, 8rem) minmax(0, 1fr) auto; gap: .5rem 1rem; padding: .7rem 0; border-bottom: 1px solid var(--rule); font-size: 1rem; }
+  .exp b { font-family: var(--f-display); }
+  .when { font-family: var(--f-mono); font-size: .8rem; color: var(--muted); padding-top: .15rem; }
+  @media (max-width: 520px) { .exp li { grid-template-columns: minmax(0, 1fr) auto; } .exp li span:not(.when) { grid-column: 1; grid-row: 2; color: var(--muted); } }
 
-  .feat { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4.5rem; }
-  .row { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.5rem 3rem; align-items: center; }
-  @media (min-width: 860px) { .row { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); } .row.flip .shot { order: 2; } }
-  .shot { display: block; border: 1.5px solid var(--ink); border-radius: 10px; overflow: hidden; background: var(--sheet); transition: transform .25s, box-shadow .25s; }
-  .shot img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top left; }
-  .row:hover .shot { transform: rotate(-.6deg) translateY(-3px); box-shadow: 6px 6px 0 var(--pencil); }
-  .row.flip:hover .shot { transform: rotate(.6deg) translateY(-3px); }
-  .txt { display: flex; flex-direction: column; gap: .7rem; min-width: 0; }
-  h3 { font-size: clamp(1.35rem, 2.4vw, 1.75rem); font-weight: 800; letter-spacing: -.015em; line-height: 1.15; }
-  h3 a { text-decoration: none; }
-  h3 a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
-  .txt > p:not(.eyebrow) { color: var(--muted); line-height: 1.5; }
-  .tags { display: flex; flex-wrap: wrap; gap: .4rem; margin: 0; padding: 0; list-style: none; }
-  .tags li { font-family: var(--f-mono); font-size: .7rem; letter-spacing: .03em; border: 1px solid var(--rule); border-radius: 999px; padding: .15rem .6rem; color: var(--muted); }
-  .go { font-family: var(--f-hand); font-size: 1.12rem; color: var(--pencil); text-decoration: none; align-self: flex-start; }
-  .go span { display: inline-block; transition: transform .2s; }
-  .row:hover .go span { transform: translateX(5px); }
+  .work { padding-block: 4rem 0; }
+  .cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 2.5rem 2rem; }
+  @media (min-width: 760px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } .cards .big { grid-column: 1 / -1; } }
+  .cards a { display: flex; flex-direction: column; gap: .35rem; text-decoration: none; }
+  .img { display: block; border: 1.5px solid var(--ink); border-radius: 10px; overflow: hidden; background: var(--sheet); margin-bottom: .5rem; transition: transform .25s, box-shadow .25s; }
+  .img img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top left; }
+  @media (min-width: 760px) { .big .img img { aspect-ratio: 16 / 7; } }
+  .cards a:hover .img { transform: translateY(-3px) rotate(-.4deg); box-shadow: 6px 6px 0 var(--pencil); }
+  .co { font-family: var(--f-mono); font-size: .74rem; letter-spacing: .08em; text-transform: uppercase; color: var(--pencil); }
+  .t { font-family: var(--f-display); font-weight: 800; font-size: clamp(1.2rem, 2.4vw, 1.45rem); letter-spacing: -.015em; line-height: 1.2; }
+  .cards a:hover .t, .index a:hover .t { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+  .tags { font-family: var(--f-mono); font-size: .76rem; color: var(--muted); }
 
-  .more-h { font-size: clamp(1.3rem, 2.4vw, 1.6rem); margin: 5rem 0 1.25rem; padding-top: 2rem; border-top: 1.5px solid var(--ink); }
-  .more { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.5rem 2rem; }
-  @media (min-width: 640px) { .more { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-  .more a { display: flex; flex-direction: column; gap: .4rem; text-decoration: none; }
-  .more img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 8px; border: 1px solid var(--rule); transition: transform .25s; }
-  .more a:hover img { transform: rotate(-.8deg); }
-  .mt { font-family: var(--f-display); font-weight: 800; font-size: 1.1rem; }
-  .more a:hover .mt { text-decoration: underline; text-underline-offset: 3px; }
-  .ml { color: var(--muted); font-size: .97rem; line-height: 1.45; }
-
-  .about { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2rem 3.5rem; align-items: center; }
-  @media (min-width: 760px) { .about { grid-template-columns: minmax(0, 17rem) minmax(0, 1fr); } }
-  .me { width: 100%; max-width: 17rem; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 10px; border: 1.5px solid var(--ink); transform: rotate(-1.5deg); }
-  .story { display: flex; flex-direction: column; gap: 1rem; max-width: var(--col-w); min-width: 0; }
-  .story p:not(.eyebrow) { font-size: 1.1rem; }
+  .more-h { margin-top: 4rem; }
+  .index { list-style: none; margin: 0; padding: 0; border-top: 1.5px solid var(--ink); }
+  .index a { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .2rem 1rem; align-items: baseline; padding: 1rem 0; border-bottom: 1px solid var(--rule); text-decoration: none; }
+  @media (min-width: 760px) { .index a { grid-template-columns: minmax(0, 18rem) minmax(0, 1fr) auto; } }
+  .index .t { font-size: 1.1rem; }
+  .st { font-size: 1.02rem; }
+  @media (max-width: 759px) { .index .tags { grid-column: 1; grid-row: 2; } .index .st { grid-row: 1 / 3; grid-column: 2; align-self: center; font-size: .95rem; } }
 </style>

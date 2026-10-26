@@ -1,0 +1,46 @@
+---
+import Base from '../layouts/Base.astro';
+import Testimonials from '../components/Testimonials.astro';
+
+const quotes = [
+  {
+    text: 'Sharanya was fantastic to collaborate with! From day one, she brought fresh ideas and a solid eye for detail, always keeping the user front and center in her designs. One of her standout contributions was creating a super helpful template for handing over designs from the UX team to the dev team, which really streamlined our workflow. She’s also a quick learner who was always open to feedback, and her positive attitude made her a great part of the team.',
+    name: 'Soe Y Paing', role: 'UX Designer, SustainLab', photo: '/media/people/soe.jpg', href: 'https://www.linkedin.com/in/soe-yan-paing-21941384/',
+  },
+];
+---
+<Base title="About · Sharanya JC" description="Sharanya JC, product designer and former architect.">
+  <section class="about sheet" aria-labelledby="about-h">
+    <img class="me" src="/media/people/sharanya.jpg" alt="Sharanya smiling, holding a small dog" width="700" height="933" />
+    <div class="story">
+      <p class="hand hi">hi there ✤</p>
+      <h1 id="about-h">I’m Sharanya, nice to meet you.</h1>
+      <p>I spent over two years as an architect before a UX workshop in 2024 pulled me into digital design. A few months later I was interning at SustainLab, and I haven’t looked back.</p>
+      <p>Today I’m a product designer at Ecolibrium. I still start every project the way I’d start a building: understand the people, find the structure, then make it easy to use.</p>
+      <p>Off screen, I’m catching up on pop culture or geeking out over spiders (yes, web design runs deep) :)</p>
+    </div>
+  </section>
+
+  <section class="kind sheet" aria-labelledby="kind-h">
+    <header class="sec-head">
+      <h2 id="kind-h">What it’s like to work with me</h2>
+      <p class="hand">don’t just take my word for it :)</p>
+    </header>
+    <Testimonials quotes={quotes} />
+  </section>
+</Base>
+
+<style>
+  .about { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2rem 3.5rem; align-items: center; padding-block: 3rem 0; }
+  @media (min-width: 760px) { .about { grid-template-columns: minmax(0, 20rem) minmax(0, 1fr); padding-block: 5rem 0; } }
+  .me { width: 100%; max-width: 20rem; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 10px; border: 1.5px solid var(--ink); transform: rotate(-1.5deg); }
+  @media (max-width: 759px) { .me { max-width: 14rem; } }
+  .story { display: flex; flex-direction: column; gap: 1rem; max-width: var(--col-w); min-width: 0; }
+  .hi { font-size: 1.4rem; }
+  h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 800; letter-spacing: -.03em; line-height: 1.05; }
+  .story p:not(.hand) { font-size: 1.12rem; }
+  .kind { padding-block: 5rem 0; }
+  .sec-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: .5rem 1.5rem; margin-bottom: 1.5rem; }
+  .sec-head h2 { font-size: clamp(1.6rem, 3.4vw, 2.3rem); font-weight: 800; letter-spacing: -.02em; }
+  .sec-head .hand { font-size: 1.15rem; }
+</style>
