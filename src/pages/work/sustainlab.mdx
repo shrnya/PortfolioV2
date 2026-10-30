@@ -1,0 +1,91 @@
+---
+layout: ../../layouts/CaseStudy.astro
+title: A 284-page law, one question at a time
+entry: "01"
+company: SustainLab
+lede: Designing the CSRD module at SustainLab, where companies prepared reports under a brand new EU sustainability law.
+meta:
+  - { k: Role, v: Product design intern }
+  - { k: When, v: July to November 2024 }
+  - { k: Team, v: "A design team of three (Pauline, Soe and me), working with product, engineering and in-house sustainability experts" }
+  - { k: My part, v: "User flows and UI for the CSRD module, core flows for an Organization feature, design in UAT, a new developer handoff template" }
+summary:
+  - "<b>The problem:</b> CSRD runs to 284 pages and over 1,000 data points, and it kept changing while we built."
+  - "<b>What I did:</b> designed flows and screens that turn each requirement into a guided question, with the law close at hand."
+  - "<b>Beyond screens:</b> represented design in company-wide testing and reworked how design handed work to developers."
+next: { title: "What do you do when Google can’t identify your spider?", status: "", href: "/work/spider-club/" }
+disclaimer: Reconstructed for this portfolio. No SustainLab interface, branding or client data is shown. The example company, request, tickets and figures are invented, and the regulation wording is paraphrased from ESRS E1. The handoff template follows the structure of the original.
+---
+import Note from '../../components/Note.astro';
+import Say from '../../components/Say.astro';
+import Circle from '../../components/Circle.astro';
+import Draft from '../../components/Draft.astro';
+import Decision from '../../components/Decision.astro';
+import GuidancePanel from '../../components/prototypes/GuidancePanel.astro';
+import Handoff from '../../components/prototypes/Handoff.astro';
+
+<div class="j-only"><Draft>Journal notes are in my words for now, built only from what you've told me. Rewrite any of them in yours.</Draft></div>
+
+<Say seed={2}>One week in, I was flung into the deep end of the pool.</Say>
+
+<h2><span class="no">1 · The setting</span>A law nobody had finished reading</h2>
+
+<Note>The sustainability experts did the hardest translation work. I designed the place it lived.</Note>
+
+The Corporate Sustainability Reporting Directive (CSRD) asks large companies in the EU to report on their environmental and social impact. In 2024 it was new, long and still moving. The standards behind it ran to <Circle seed={4}>284 pages</Circle> and more than 1,000 data points.
+
+The people filling in a report were sustainability managers, data reporters, and colleagues from other departments asked for data. Most were meeting the law for the first time, with a deadline.
+
+I joined mid-build, on a design team of three: Pauline (our lead), Soe and me. One week in, I was working on things with real product impact. My architecture background, turning abstract ideas into detailed, buildable systems, helped me find my feet fast and take ownership early (thanks, Pauline!).
+
+Our in-house sustainability experts were turning each requirement into simpler prompts: yes or no, material or not, short direct questions. My job was to design the flows and screens around that work.
+
+<h2><span class="no">2 · The stakes</span>Every answer had to hold up</h2>
+
+A CSRD report gets checked by an independent assurance provider. So every answer had to match what the law actually asked for, and the person giving it had to be able to show that.
+
+<Note tilt={1}>Too much law: unreadable. Too little: off to hunt through a PDF.</Note>
+
+That left two needs pulling against each other. Show too much of the law and the form becomes unreadable. Show too little and people leave to hunt through a PDF.
+
+<h2><span class="no">3 · What we decided</span>Two decisions</h2>
+
+<Decision n={1} of={2} title="The law, three layers deep">
+  <Fragment slot="call">We brought the regulation into the question in layers, instead of sending people out to read it.</Fragment>
+  <Note><s>link out to the PDF</s> bring the law to the question. The panel slides over the form, not off to a new page.</Note>
+  <p>Try it below. Open “Show more” for the full context, or switch to “Before” to see the old way.</p>
+  <GuidancePanel />
+  <Draft>Check the three reasons above against what really happened.</Draft>
+</Decision>
+
+<Say flip seed={5}>Every handoff, the same questions came back. So I went and asked the developers.</Say>
+
+<Decision n={2} of={2} title="A handoff that answers the developer’s questions first">
+  <Fragment slot="call">I interviewed developers across the company about where handoffs broke down, then designed a new handoff template in Figma around what they kept asking.</Fragment>
+  <p>The same questions came up after every handoff: where is the prototype, which ticket is this, is this screen final, how is this file organised? So every file opens on a README with the master context: the ticket and acceptance criteria, a checklist of flows and their status, what might still change, the handover recording and a guide to the file. Each page then has its own small README, so a developer who lands on any page mid-way still has the context.</p>
+  <Note tilt={1.2}>Two levels: one README for the file, one for every page. Land anywhere, still have the context.</Note>
+  <p>Inside the file, sticky notes follow one colour code, so a developer can tell at a glance whether a note starts a flow, explains an interaction or flags a change.</p>
+  <Handoff />
+  <blockquote class="kudos">
+    <p>“One of her standout contributions was creating a super helpful template for handing over designs from the UX team to the dev team, which really streamlined our workflow.”</p>
+    <footer>Soe Y Paing, UX Designer at SustainLab</footer>
+  </blockquote>
+</Decision>
+
+<h2><span class="no">4 · What shipped</span>Tested by the whole company</h2>
+
+Before the CSRD module went out, it went through company-wide user acceptance testing. I represented the design team: checking that the built screens did what the designs promised, and <span class="jhl">speaking up for the user where they didn’t</span>.
+
+I also designed the core flows for the first version of an Organization feature, which brought a company’s organisational data into the workflows people already used, shaped around the team’s personas.
+
+SustainLab’s client base grew sharply in the period after the CSRD module launched, and the module was a big part of what the company offered.
+
+<h2><span class="no">5 · What I took with me</span>Design while the ground moves</h2>
+
+<Say seed={8}>Sustainability reporting is more than a legal box to tick. The people here really believed that.</Say>
+
+Requirements changed under us and flows got reworked. The job was to keep the structure clear anyway, and to check feasibility with engineering early instead of late.
+
+What inspired me most was the people. Everyone at SustainLab cared deeply about the planet and believed sustainability reporting should go beyond legal compliance. That belief shaped the product, and it stayed with me.
+
+I can’t share the real designs, but you can see the platform for yourself: SustainLab offers a [free demo of the CSRD module](https://sustainlab.co/CSRD) :)

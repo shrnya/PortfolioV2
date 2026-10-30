@@ -1,0 +1,14 @@
+---
+// Inline word that gets a pen circle in Journal mode, plain text in Brief.
+import { ellipse } from '../lib/rough';
+interface Props { seed?: number }
+const { seed = 1 } = Astro.props;
+const d = ellipse(50, 20, 48, 17, seed, 2);
+---
+<span class="circ" data-pen><slot /><svg class="ring j-only boil" viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true"><path d={d} pathLength="1" class="ink" /></svg></span>
+
+<style>
+  .circ { position: relative; white-space: nowrap; }
+  .ring { position: absolute; left: -.45em; top: -.35em; width: calc(100% + .9em); height: calc(100% + .7em); overflow: visible; pointer-events: none; }
+  .ring path { fill: none; stroke: var(--pencil); stroke-width: 1.8; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+</style>

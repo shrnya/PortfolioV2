@@ -1,0 +1,70 @@
+---
+import Simple from '../../layouts/Simple.astro';
+const groups = [
+  {
+    id: 'hcm', title: 'Apartment, Ho Chi Minh City', line: 'Kerala at home, in Vietnam. Two bedrooms became one, behind a curved wall. Featured in Elle Decoration Vietnam.', meta: 'Kriya · 2022',
+    pics: [
+      ['hcm-living.jpg', 'Living room'],
+      ['hcm-final.jpg', 'Dining, foyer, pantry, bedroom'],
+      ['hcm-plans.jpg', 'Before and after plans'],
+      ['hcm-before-after.jpg', 'On site'],
+      ['hcm-palette.jpg', 'Two tropical cities, one palette'],
+    ],
+  },
+  {
+    id: 'ohc', title: 'One Hand Clap office, Mumbai', line: 'A “cool” office for 65 people, part of it ready in two weeks.', meta: 'Independent · 2023',
+    pics: [
+      ['ohc-pegboard.jpg', 'The logo pegboard'],
+      ['ohc-install.jpg', 'Putting it up'],
+      ['ohc-common.jpg', 'Before and now'],
+      ['ohc-foyer.jpg', 'The blue foyer'],
+      ['ohc-plan.jpg', 'Two zones: people and focus'],
+    ],
+  },
+  {
+    id: 'yurt', title: 'Bamboo yurt, Auroville', line: 'No posts, no beams, tested in 1:10 bamboo models first.', meta: 'Auroville Bamboo Centre · 2021',
+    pics: [
+      ['yurt-built.jpg', 'The frame'],
+      ['yurt-scale.jpg', '1:10 models'],
+      ['yurt-models.jpg', 'Weeks of testing'],
+      ['yurt-render.jpg', 'The finished cottage'],
+    ],
+  },
+];
+---
+<Simple
+  title="The archive"
+  eyebrow="Architecture and interiors"
+  lede="Before screens, I designed spaces. A few of them."
+>
+  <div slot="wide" class="groups">
+    {groups.map((g) => (
+      <section class="g" id={g.id} aria-labelledby={`${g.id}-h`}>
+        <header>
+          <h2 id={`${g.id}-h`}>{g.title}</h2>
+          <p class="meta">{g.meta}</p>
+          <p class="line">{g.line}</p>
+        </header>
+        <ul class="gal">
+          {g.pics.map(([src, cap]) => (
+            <li><figure><img src={`/media/arch/${src}`} alt={cap} loading="lazy" /><figcaption class="hand">{cap}</figcaption></figure></li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </div>
+</Simple>
+
+<style>
+  .groups { display: flex; flex-direction: column; gap: 3.5rem; }
+  .g header { display: flex; flex-direction: column; gap: .25rem; margin-bottom: 1.1rem; max-width: 40rem; }
+  h2 { font-size: clamp(1.35rem, 2.6vw, 1.75rem); font-weight: 800; letter-spacing: -.015em; }
+  .meta { font-family: var(--f-mono); font-size: .74rem; color: var(--muted); }
+  .line { font-size: 1.02rem; }
+  .gal { list-style: none; margin: 0; padding: 0; columns: 3 16rem; column-gap: .9rem; }
+  .gal li { break-inside: avoid; margin-bottom: .9rem; }
+  figure { margin: 0; display: flex; flex-direction: column; gap: .3rem; }
+  img { width: 100%; height: auto; display: block; border-radius: 6px; border: 1px solid var(--rule); }
+  figcaption { font-size: .98rem; }
+  @media (max-width: 520px) { .gal { columns: 2 9rem; column-gap: .6rem; } .gal li { margin-bottom: .6rem; } figcaption { font-size: .9rem; } }
+</style>

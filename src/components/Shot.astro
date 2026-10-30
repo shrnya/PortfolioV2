@@ -1,0 +1,19 @@
+---
+// A still screenshot, or a pair shown side by side.
+interface Props { src: string | string[]; alt: string | string[]; caption?: string; cols?: number }
+const { src, alt, caption, cols } = Astro.props;
+const srcs = Array.isArray(src) ? src : [src];
+const alts = Array.isArray(alt) ? alt : [alt];
+---
+<figure class="shot wide" style={`--cols:${cols ?? srcs.length}`}>
+  <div class="row">{srcs.map((s, i) => <img src={s} alt={alts[i] ?? ''} loading="lazy" decoding="async" />)}</div>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+  .shot { margin: 0; display: flex; flex-direction: column; gap: .5rem; }
+  .row { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: .75rem; align-items: start; }
+  @media (max-width: 640px) { .row { grid-template-columns: minmax(0, 1fr); } }
+  img { width: 100%; height: auto; display: block; border-radius: 8px; border: 1px solid var(--rule); }
+  figcaption { font-family: var(--f-mono); font-size: .74rem; color: var(--muted); }
+</style>

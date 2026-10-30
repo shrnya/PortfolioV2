@@ -1,0 +1,116 @@
+---
+// Design system demo 1: a legacy-style alerts widget, fixed one rule at a time.
+// Invented content and colours; no Ecolibrium UI.
+const fixes = [
+  { id: 'type', label: 'Readable text' },
+  { id: 'space', label: 'One spacing scale' },
+  { id: 'color', label: 'Colour only for status' },
+  { id: 'comp', label: 'One set of components' },
+];
+const rows = [
+  { p: 'High', what: 'Chilled water temperature above 9 °C for 15 min', when: '10:42' },
+  { p: 'Medium', what: 'Compressor 2 load above 90%', when: '09:58' },
+  { p: 'Low', what: 'Sensor CH-04 not reporting', when: '08:15' },
+];
+---
+<div class="ff wide">
+  <div class="controls" role="group" aria-label="Apply design system fixes">
+    {fixes.map((f) => <button type="button" data-fix={f.id} aria-pressed="false">{f.label}</button>)}
+    <button type="button" class="all" data-all>Apply all</button>
+  </div>
+
+  <div class="stage">
+    <div class="w" id="ff-widget">
+      <div class="w-head">
+        <span class="w-title">Chiller plant · Alerts</span>
+        <span class="w-tag">LIVE</span>
+      </div>
+      <ul class="w-rows">
+        {rows.map((r, i) => (
+          <li class={`r r${i}`}>
+            <span class={`prio p-${r.p.toLowerCase()}`}>{r.p}</span>
+            <span class="what">{r.what}</span>
+            <span class="when">{r.when}</span>
+          </li>
+        ))}
+      </ul>
+      <div class="w-foot">
+        <button type="button" tabindex="-1" class="btn b1">View all</button>
+        <button type="button" tabindex="-1" class="btn b2">Assign</button>
+      </div>
+    </div>
+    <p class="hand count" aria-live="polite"><span id="ff-n">0</span> of 4 rules applied</p>
+  </div>
+</div>
+
+<style>
+  .ff { display: flex; flex-direction: column; gap: 1.1rem; max-width: 46rem; }
+  .controls { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .controls button {
+    font: 600 .86rem var(--f-display); color: var(--ink); background: var(--sheet); cursor: pointer;
+    border: 1.5px solid var(--ink); border-radius: 999px; padding: .35rem .85rem;
+  }
+  .controls button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+  .controls button[aria-pressed="true"]::before { content: "✓ "; }
+  .controls .all { border-style: dashed; }
+  .stage { display: flex; flex-direction: column; gap: .6rem; }
+  .count { font-size: 1.02rem; }
+
+  /* the widget, before: tiny text, mixed spacing, rainbow colour, mismatched parts */
+  .w { font-family: var(--f-app); color: var(--app-text); background: var(--app-surface); border: 1px solid var(--app-line); border-radius: 3px; overflow: hidden; transition: all .3s; }
+  .w-head { display: flex; justify-content: space-between; align-items: center; padding: 5px 9px; background: #2D5DA8; color: #fff; }
+  .w-title { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .02em; }
+  .w-tag { font-size: 8px; background: #E5484D; color: #fff; padding: 1px 4px; }
+  .w-rows { list-style: none; margin: 0; padding: 0; }
+  .r { display: grid; grid-template-columns: 4.2rem minmax(0, 1fr) auto; gap: 6px; align-items: center; border-top: 1px solid var(--app-line); font-size: 9px; }
+  .r0 { padding: 3px 7px; } .r1 { padding: 9px 12px; } .r2 { padding: 5px 4px; }
+  .prio { font-size: 8px; font-weight: 700; padding: 1px 3px; color: #fff; text-align: center; }
+  .p-high { background: #9B30C9; } .p-medium { background: #14A3A3; } .p-low { background: #F08A24; }
+  .what { min-width: 0; }
+  .when { color: var(--app-sub); }
+  .w-foot { display: flex; justify-content: flex-end; gap: 4px; padding: 6px 8px; border-top: 1px solid var(--app-line); }
+  .btn { font: 600 9px var(--f-app); cursor: default; }
+  .b1 { background: #F2B705; color: #1D2330; border: 0; border-radius: 0; padding: 3px 6px; }
+  .b2 { background: transparent; color: #2D5DA8; border: 1px solid #2D5DA8; border-radius: 12px; padding: 2px 10px; }
+
+  /* rule 1: readable text */
+  .w.type .w-title { font-size: 14px; text-transform: none; letter-spacing: 0; }
+  .w.type .r, .w.type .btn { font-size: 13.5px; }
+  .w.type .prio, .w.type .w-tag { font-size: 12px; }
+  .w.type .r { grid-template-columns: 5.5rem minmax(0, 1fr) auto; }
+  /* rule 2: one spacing scale */
+  .w.space .w-head, .w.space .w-foot { padding: 12px 16px; }
+  .w.space .r { padding: 12px 16px; gap: 16px; }
+  .w.space .w-foot { gap: 8px; }
+  .w.space .prio, .w.space .w-tag { padding: 2px 8px; }
+  /* rule 3: colour only for status */
+  .w.color .w-head { background: var(--app-surface); color: var(--app-text); border-bottom: 1px solid var(--app-line); }
+  .w.color .w-tag { background: var(--app-accent-soft); color: var(--app-accent); }
+  .w.color .p-high { background: #FDECEC; color: #B42318; }
+  .w.color .p-medium { background: #FEF3E2; color: #A15C07; }
+  .w.color .p-low { background: var(--app-bg); color: var(--app-sub); }
+  /* rule 4: one set of components */
+  .w.comp { border-radius: 8px; }
+  .w.comp .prio, .w.comp .w-tag { border-radius: 999px; }
+  .w.comp .btn { border-radius: 6px; padding: 6px 14px; border: 1px solid var(--app-line); background: var(--app-surface); color: var(--app-text); }
+  .w.comp .b2 { background: var(--app-btn); color: var(--app-btn-ink); border-color: var(--app-btn); }
+</style>
+
+<script>
+  const w = document.getElementById('ff-widget');
+  const n = document.getElementById('ff-n');
+  const btns = document.querySelectorAll<HTMLButtonElement>('.ff [data-fix]');
+  if (w && n) {
+    const sync = () => {
+      let on = 0;
+      btns.forEach((b) => { const v = b.getAttribute('aria-pressed') === 'true'; w.classList.toggle(b.dataset.fix!, v); on += +v; });
+      n.textContent = String(on);
+    };
+    btns.forEach((b) => b.addEventListener('click', () => { b.setAttribute('aria-pressed', String(b.getAttribute('aria-pressed') !== 'true')); sync(); }));
+    document.querySelector('.ff [data-all]')?.addEventListener('click', () => {
+      const all = [...btns].every((b) => b.getAttribute('aria-pressed') === 'true');
+      btns.forEach((b) => b.setAttribute('aria-pressed', String(!all)));
+      sync();
+    });
+  }
+</script>

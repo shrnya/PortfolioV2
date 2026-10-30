@@ -1,0 +1,93 @@
+---
+// Drawn covers for the work cards, one per case study. Placeholder line
+// art in the brand blue; Sharanya can swap any of these for her own.
+import { rect, line, ellipse, poly, arrow } from '../../lib/rough';
+import { leaf, spokes, ring, spider, stem } from '../../lib/nature';
+interface Props { kind: 'ds' | 'sld' | 'csrd' | 'scob' | 'arch' }
+const { kind } = Astro.props;
+
+type P = { d: string; c?: string };
+const paths: P[] = [];
+const add = (d: string, c?: string) => paths.push({ d, c });
+const box = (x: number, y: number, w: number, h: number) => `M${x} ${y}h${w}v${h}h${-w}Z`;
+
+if (kind === 'ds') {
+  // two screens, dark and light, sharing the same components
+  add(box(70, 70, 170, 120), 'solid');
+  add(rect(70, 70, 170, 120, 302, 1.4));
+  add(box(170, 110, 170, 120), 'paper');
+  add(rect(170, 110, 170, 120, 304, 1.4));
+  [0, 1, 2].forEach((i) => { add(rect(88 + i * 26, 92, 20, 12, 310 + i, 0.6), 'paper-line'); });
+  [0, 1, 2].forEach((i) => { add(rect(188 + i * 50, 132, 40, 28, 320 + i, 0.8)); });
+  add(line(188, 180, 320, 180, 330, 0.8)); add(line(188, 196, 290, 196, 331, 0.8)); add(line(188, 212, 300, 212, 332, 0.8));
+  add(ellipse(110, 160, 13, 13, 333, 0.6), 'paper-line');
+  add(ellipse(318, 78, 15, 15, 334, 0.8));
+  [0, 1, 2, 3, 4, 5, 6, 7].forEach((i) => { const a = (i * Math.PI) / 4; add(line(318 + Math.cos(a) * 22, 78 + Math.sin(a) * 22, 318 + Math.cos(a) * 30, 78 + Math.sin(a) * 30, 340 + i, 0.4)); });
+} else if (kind === 'sld') {
+  // power from a source, branching down to machines; one path traced
+  add(poly([[200, 26], [186, 52], [204, 52], [190, 80]], 401, 0.6), 'bold');
+  const nodes: [number, number][] = [[200, 110], [120, 170], [280, 170], [70, 236], [160, 236], [240, 236], [330, 236]];
+  add(line(200, 82, 200, 98, 402, 0.4), 'bold');
+  [[0, 1], [0, 2], [1, 3], [1, 4], [2, 5], [2, 6]].forEach(([a, b], i) => {
+    const hot = (a === 0 && b === 2) || (a === 2 && b === 5);
+    add(line(nodes[a][0], nodes[a][1] + 12, nodes[b][0], nodes[b][1] - 12, 410 + i, 1.2), hot ? 'bold' : 'dash');
+  });
+  nodes.forEach(([x, y], i) => { if (i === 5 || i === 2 || i === 0) add(box(x - 26, y - 12, 52, 24), 'hot'); add(rect(x - 26, y - 12, 52, 24, 420 + i, 0.8)); });
+  add(ellipse(296, 236, 40, 30, 430, 1.8));
+  add(line(330, 256, 352, 276, 431, 0.5), 'bold');
+} else if (kind === 'csrd') {
+  // a thick law book turning into one simple question
+  [0, 1, 2, 3, 4].forEach((i) => { add(box(52 + i * 4, 110 - i * 5, 120, 150), 'paper'); add(rect(52 + i * 4, 110 - i * 5, 120, 150, 501 + i, 1.2)); });
+  add(box(68, 90, 120, 150), 'paper');
+  add(rect(68, 90, 120, 150, 509, 1.2));
+  add(line(86, 130, 168, 130, 510, 0.6)); add(line(86, 150, 160, 150, 511, 0.6)); add(line(86, 170, 166, 170, 512, 0.6)); add(line(86, 190, 150, 190, 513, 0.6));
+  add(arrow(200, 160, 248, 140, 514));
+  add(box(256, 70, 120, 84), 'paper');
+  add(rect(256, 70, 120, 84, 516, 1.2));
+  add(poly([[276, 154], [270, 176], [296, 154]], 517, 0.6));
+  [0, 1, 2].forEach((i) => { add(rect(274, 182 + i * 26, 14, 14, 520 + i, 0.4)); add(line(298, 190 + i * 26, 360 - i * 14, 190 + i * 26, 530 + i, 0.6)); });
+  add(poly([[276, 188], [281, 194], [290, 182]], 540, 0.3), 'bold');
+} else if (kind === 'scob') {
+  const cx = 250, cy = 120;
+  const anchors: [number, number][] = [[250, 10], [340, 20], [392, 90], [384, 170], [330, 230], [250, 244], [170, 226], [120, 160], [128, 70], [176, 18]];
+  spokes(cx, cy, anchors, 601).forEach((d) => add(d, 'thin'));
+  [0.25, 0.45, 0.65, 0.85].forEach((t, i) => add(ring(cx, cy, anchors, t, 610 + i), 'thin'));
+  const s = spider(cx, cy, 1.6, 620);
+  add(s.body, 'paper'); add(s.head, 'paper'); add(s.body); add(s.head); s.legs.forEach((d) => add(d));
+  add(stem([[40, 300], [52, 240], [44, 190]], 630));
+  const l1 = leaf(52, 240, 50, 200, 631); add(l1[0]); add(l1[1], 'thin');
+  const l2 = leaf(44, 190, 46, -40, 632); add(l2[0]); add(l2[1], 'thin');
+  add(ellipse(110, 250, 26, 26, 633, 0.6));
+  add(line(128, 268, 150, 292, 634, 0.4), 'bold');
+} else {
+  // a bamboo yurt: ring on top, triangulated dome, walls
+  const base = 250, top = 70, cx = 200;
+  const ringPts: [number, number][] = [[176, top], [224, top]];
+  add(ellipse(cx, top, 24, 8, 701, 0.6));
+  const wall: number[] = [60, 100, 140, 180, 220, 260, 300, 340];
+  wall.forEach((x, i) => {
+    add(line(x, 170, ringPts[x < cx ? 0 : 1][0] + (x - cx) * 0.08, top + 4, 710 + i, 1));
+    add(line(x, 170, x + (i % 2 ? -20 : 20), base, 720 + i, 1));
+  });
+  add(stem([[56, 170], [140, 166], [200, 168], [260, 166], [344, 170]], 730));
+  add(line(20, base, 380, base - 2, 731, 1.5));
+  add(line(40, 170, 360, 170, 732, 1.2), 'thin');
+  add(poly([[300, 40], [370, 110], [376, 104], [306, 34], [300, 40]], 740, 0.4));
+  add(line(370, 110, 382, 120, 741, 0.3), 'bold');
+}
+---
+<svg class="cover boil" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+  {paths.map((p) => <path class={p.c} d={p.d} />)}
+</svg>
+
+<style>
+  .cover { display: block; width: 100%; height: 100%; }
+  path { fill: none; stroke: var(--pencil); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .thin { stroke-width: 1.1; }
+  .bold { stroke-width: 3; }
+  .dash { stroke-dasharray: 4 6; opacity: .7; }
+  .solid { fill: var(--pencil); stroke: none; }
+  .paper { fill: var(--paper); stroke: none; }
+  .paper-line { stroke: var(--paper); }
+  .hot { fill: var(--pencil-soft); }
+</style>

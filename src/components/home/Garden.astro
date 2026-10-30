@@ -1,0 +1,64 @@
+---
+// Wide hero panel: a little drawn Sharanya with a magnifying glass,
+// watching how a web between two stems connects. Placeholder art.
+import { line, ellipse, poly, rect, arrow } from '../../lib/rough';
+import { leaf, stem, spokes, ring, spider } from '../../lib/nature';
+
+const ground = line(0, 226, 800, 222, 201, 2);
+const stems = [
+  stem([[60, 226], [66, 170], [58, 120], [70, 70]], 202),
+  stem([[96, 226], [92, 180], [104, 140]], 203),
+  stem([[470, 226], [476, 160], [468, 96], [474, 40]], 204),
+  stem([[650, 226], [644, 150], [652, 86], [646, 30]], 205),
+  stem([[720, 226], [726, 190], [716, 150]], 206),
+];
+const leaves = [
+  leaf(66, 170, 40, 200, 211), leaf(58, 120, 44, -20, 212), leaf(70, 70, 36, 230, 213), leaf(104, 140, 30, -50, 214),
+  leaf(476, 160, 40, 200, 215), leaf(468, 96, 36, -30, 216), leaf(474, 40, 30, 220, 217),
+  leaf(644, 150, 42, -20, 218), leaf(652, 86, 38, 200, 219), leaf(716, 150, 34, -60, 220), leaf(726, 190, 30, 10, 221),
+];
+const cx = 560, cy = 112;
+const anchors: [number, number][] = [[474, 52], [560, 40], [646, 44], [650, 112], [646, 176], [560, 200], [472, 176], [470, 112]];
+const web = [...spokes(cx, cy, anchors, 230), ...[0.25, 0.45, 0.65, 0.85].map((t, i) => ring(cx, cy, anchors, t, 240 + i))];
+const sp = spider(590, 96, 0.9, 250);
+
+// the observer
+const head = ellipse(250, 118, 21, 23, 261, 1.2);
+const hair = poly([[229, 134], [227, 114], [232, 100], [243, 92], [257, 92], [268, 99], [273, 112], [273, 128]], 262, 0.9);
+const fringe = line(234, 109, 264, 98, 263, 1.6);
+const smile = 'M245 127Q252 132 259 127';
+const body = poly([[214, 226], [218, 176], [232, 148], [268, 148], [282, 176], [286, 226]], 264, 1.4);
+const arm = poly([[272, 172], [300, 160], [326, 140]], 265, 1.2);
+const glass = ellipse(346, 124, 22, 22, 266, 0.6);
+const handle = line(330, 140, 316, 154, 267, 0.6);
+const book = rect(222, 186, 44, 30, 268, 1);
+const note = arrow(380, 58, 446, 96, 269);
+---
+<div class="garden surface" aria-hidden="true">
+  <svg class="boil" viewBox="0 0 800 250" preserveAspectRatio="xMidYMax slice">
+    <path d={ground} />
+    {stems.map((d) => <path d={d} />)}
+    {leaves.map(([o, r]) => <><path d={o} /><path class="thin" d={r} /></>)}
+    {web.map((d) => <path class="thin" d={d} />)}
+    <path class="fill" d={sp.body} /><path class="fill" d={sp.head} /><path d={sp.body} /><path d={sp.head} />
+    {sp.legs.map((d) => <path class="thin" d={d} />)}
+    <path class="fill" d={body} /><path d={body} />
+    <path class="fill" d={head} /><path d={head} /><path d={hair} /><path d={fringe} /><path d={smile} />
+    <circle cx="244" cy="118" r="1.9" /><circle cx="258" cy="118" r="1.9" />
+    <path class="fill" d={book} /><path d={book} />
+    <path d={arm} /><path class="lens" d={glass} /><path d={glass} /><path d={handle} />
+    <path class="thin" d={note} />
+    <text x="250" y="46">how does it all connect?</text>
+  </svg>
+</div>
+
+<style>
+  .garden { background: var(--paper); border-radius: 8px; overflow: hidden; }
+  svg { display: block; width: 100%; height: auto; aspect-ratio: 800 / 250; min-height: 11rem; }
+  path { fill: none; stroke: var(--pencil); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .thin { stroke-width: 1.1; }
+  .fill { fill: var(--paper); stroke: none; }
+  .lens { fill: var(--pencil-soft); stroke: none; opacity: .6; }
+  circle { fill: var(--pencil); }
+  text { font-family: var(--f-hand); font-size: 20px; fill: var(--pencil); }
+</style>

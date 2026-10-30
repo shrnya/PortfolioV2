@@ -1,0 +1,47 @@
+---
+// Short pages that aren't full case studies: placeholders and archives.
+import Base from './Base.astro';
+interface Props { title: string; eyebrow: string; lede: string; facts?: { k: string; v: string }[]; journal?: boolean }
+const { title, eyebrow, lede, facts = [], journal = false } = Astro.props;
+---
+<Base title={`${title} · Sharanya Jagdeeshchandran`} description={lede} journal={journal}>
+  <article class="simple sheet panel">
+    <a class="back" href="/#work">← All work</a>
+    <header class="top">
+      <p class="eyebrow">{eyebrow}</p>
+      <h1>{title}</h1>
+      <p class="lede">{lede}</p>
+    </header>
+    <div class="grid">
+      <div class="body"><slot /></div>
+      {facts.length > 0 && (
+        <dl class="facts">{facts.map((f) => <div><dt>{f.k}</dt><dd>{f.v}</dd></div>)}</dl>
+      )}
+    </div>
+    <slot name="wide" />
+  </article>
+</Base>
+
+<style>
+  .simple { margin-top: .5rem; display: flex; flex-direction: column; gap: 2.5rem; }
+  .back { font-family: var(--f-display); font-weight: 600; font-size: .92rem; text-decoration: none; align-self: flex-start; }
+  .back:hover { text-decoration: underline; }
+  .top { display: flex; flex-direction: column; gap: .9rem; max-width: 50rem; }
+  h1 { font-size: clamp(2.2rem, 5.6vw, 4rem); font-weight: 800; letter-spacing: -.03em; line-height: 1.02; }
+  .lede { font-size: 1.22rem; line-height: 1.5; max-width: 38rem; }
+  .grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2rem 3.5rem; align-items: start; }
+  @media (min-width: 860px) { .grid { grid-template-columns: minmax(0, 1fr) minmax(0, 18rem); } }
+  .body { display: flex; flex-direction: column; gap: 1.1rem; max-width: var(--col-w); min-width: 0; }
+  .body :global(h2) { font-size: 1.4rem; font-weight: 800; padding-top: 1rem; }
+  .body :global(.note) { float: none; width: auto; margin: 0; border-left: 2px solid var(--pencil); padding-left: .8rem; }
+  .body :global(.note .arw) { display: none; }
+  .facts {
+    margin: 0; background: var(--sheet); border: 1.5px solid var(--ink); border-radius: 4px; padding: .9rem 1.1rem;
+    display: flex; flex-direction: column; gap: .5rem; transform: rotate(-.8deg); position: relative;
+  }
+  .facts::before { content: ""; position: absolute; top: -9px; left: 1.2rem; width: 4.5rem; height: 1.2rem; background: var(--tape); transform: rotate(-4deg); }
+  .facts div { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); gap: .75rem; border-top: 1px solid var(--rule); padding-top: .45rem; }
+  .facts div:first-child { border-top: 0; padding-top: 0; }
+  dt { font-family: var(--f-mono); font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); padding-top: .2rem; }
+  dd { margin: 0; font-family: var(--f-hand); font-size: 1.05rem; line-height: 1.3; }
+</style>

@@ -1,0 +1,98 @@
+---
+// SCADA simulator demo: change one parameter of a chiller plant and see
+// what it does to the others. Invented plant, simplified made-up physics.
+---
+<div class="sim wide" data-sim>
+  <div class="app">
+    <div class="bar"><span class="t">Chiller plant · Simulator</span><span class="tag">Not applied to the real plant</span></div>
+    <div class="body">
+      <svg class="plant" viewBox="0 0 420 150" aria-hidden="true">
+        <path class="pipe" d="M70 75H150M250 75H330" />
+        <path class="pipe ret" d="M330 105H60V75" />
+        <circle class="eq" cx="45" cy="75" r="22" /><path class="sym" d="M33 75h24M45 63v24" />
+        <rect class="eq" x="150" y="45" width="100" height="60" rx="6" />
+        <rect class="eq" x="330" y="50" width="62" height="50" rx="6" />
+        <text x="45" y="120" text-anchor="middle">Pump</text>
+        <text x="200" y="125" text-anchor="middle">Chiller-1</text>
+        <text x="361" y="120" text-anchor="middle">AHU-3</text>
+        <text class="val" x="200" y="80" text-anchor="middle" data-o="kw">0 kW</text>
+        <text class="val sm" x="290" y="68" text-anchor="middle" data-o="sp">7 °C</text>
+      </svg>
+      <div class="ctrl">
+        <label for="sim-sp">Chilled water setpoint <output data-o="sp2">7.0 °C</output></label>
+        <input id="sim-sp" type="range" min="5" max="10" step="0.5" value="7" />
+        <div class="scale"><span>5 °C</span><span>10 °C</span></div>
+        <dl>
+          <div><dt>Chiller power</dt><dd data-o="kw2"></dd></div>
+          <div><dt>Efficiency (COP)</dt><dd data-o="cop"></dd></div>
+          <div><dt>Energy per day</dt><dd data-o="kwh"></dd></div>
+          <div><dt>Supply air temp</dt><dd data-o="air"></dd></div>
+        </dl>
+        <p class="delta" data-o="delta" aria-live="polite"></p>
+      </div>
+    </div>
+  </div>
+  <p class="hand cap">Drag the setpoint. Everything it touches updates. (Made-up plant, made-up physics.)</p>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-sim]').forEach((root) => {
+    const input = root.querySelector<HTMLInputElement>('input')!;
+    const o = (k: string) => root.querySelectorAll<HTMLElement>(`[data-o="${k}"]`);
+    const set = (k: string, v: string) => o(k).forEach((e) => { e.textContent = v; });
+    const calc = (sp: number) => {
+      const kw = 1020 * (1 - 0.03 * (sp - 7));
+      return { kw, cop: 5.2 * (1 + 0.025 * (sp - 7)), kwh: kw * 20, air: 13 + 0.6 * (sp - 7) };
+    };
+    const base = calc(7);
+    const run = () => {
+      const sp = Number(input.value);
+      const r = calc(sp);
+      set('sp', sp.toFixed(1) + ' °C'); set('sp2', sp.toFixed(1) + ' °C');
+      set('kw', Math.round(r.kw).toLocaleString('en') + ' kW'); set('kw2', Math.round(r.kw).toLocaleString('en') + ' kW');
+      set('cop', r.cop.toFixed(2));
+      set('kwh', Math.round(r.kwh).toLocaleString('en') + ' kWh');
+      set('air', r.air.toFixed(1) + ' °C');
+      const d = Math.round(r.kwh - base.kwh);
+      set('delta', d === 0 ? 'This is where the plant runs today.' : d < 0
+        ? `Saves about ${Math.abs(d).toLocaleString('en')} kWh a day, but the air leaving AHU-3 gets warmer.`
+        : `Uses about ${d.toLocaleString('en')} kWh more a day, for cooler air at AHU-3.`);
+      root.querySelector<HTMLElement>('.delta')!.classList.toggle('neg', d > 0);
+    };
+    input.addEventListener('input', run);
+    run();
+  });
+</script>
+
+<style>
+  .sim { display: flex; flex-direction: column; gap: .6rem; }
+  .app { font-family: var(--f-app); color: var(--app-text); background: var(--app-surface); border: 1px solid var(--app-line); border-radius: 10px; overflow: hidden; }
+  .bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: .4rem 1rem; padding: .6rem 1rem; border-bottom: 1px solid var(--app-line); font-size: .8rem; }
+  .bar .t { font-weight: 600; font-size: .88rem; }
+  .tag { font-size: .7rem; color: var(--app-sub); border: 1px dashed var(--app-line); border-radius: 999px; padding: .05rem .5rem; }
+  .body { display: grid; grid-template-columns: minmax(0, 1fr); }
+  @media (min-width: 760px) { .body { grid-template-columns: minmax(0, 1fr) 17rem; } }
+  .plant { display: block; width: 100%; height: auto; background: var(--app-bg); padding: 1rem; box-sizing: border-box; }
+  .pipe { fill: none; stroke: var(--app-accent); stroke-width: 4; stroke-dasharray: 8 5; }
+  .ret { stroke: var(--app-line); }
+  @media (prefers-reduced-motion: no-preference) { .pipe:not(.ret) { animation: flow 1.2s linear infinite; } }
+  @keyframes flow { to { stroke-dashoffset: -13; } }
+  .eq { fill: var(--app-surface); stroke: var(--app-text); stroke-width: 1.5; }
+  .sym { stroke: var(--app-text); stroke-width: 1.5; }
+  text { font: 500 11px var(--f-app); fill: var(--app-sub); }
+  .val { font-size: 14px; font-weight: 600; fill: var(--app-text); }
+  .val.sm { font-size: 11px; fill: var(--app-accent); }
+  .ctrl { padding: 1rem; display: flex; flex-direction: column; gap: .5rem; font-size: .84rem; border-top: 1px solid var(--app-line); }
+  @media (min-width: 760px) { .ctrl { border-top: 0; border-left: 1px solid var(--app-line); } }
+  label { font-weight: 600; display: flex; justify-content: space-between; gap: .5rem; }
+  output { color: var(--app-accent); font-variant-numeric: tabular-nums; }
+  input { width: 100%; accent-color: var(--app-accent); }
+  .scale { display: flex; justify-content: space-between; font-size: .7rem; color: var(--app-sub); margin-top: -.3rem; }
+  dl { margin: .3rem 0 0; display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+  dl div { display: flex; flex-direction: column; }
+  dt { color: var(--app-sub); font-size: .72rem; }
+  dd { margin: 0; font-variant-numeric: tabular-nums; font-weight: 600; }
+  .delta { font-size: .8rem; color: var(--app-good); }
+  .delta.neg { color: var(--app-warn); }
+  .cap { font-size: 1rem; }
+</style>

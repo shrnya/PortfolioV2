@@ -1,0 +1,92 @@
+---
+import Base from './Base.astro';
+
+interface Props {
+  frontmatter: {
+    title: string; entry: string; company: string; lede: string;
+    meta: { k: string; v: string }[];
+    summary: string[];
+    next?: { title: string; status: string; href?: string };
+    disclaimer?: string;
+  };
+}
+const { frontmatter: fm } = Astro.props;
+---
+<Base title={`${fm.title} · Sharanya Jagdeeshchandran`} description={fm.lede} journal>
+  <article class="case sheet panel">
+    <a class="back" href="/#work">← All work</a>
+    <header class="top">
+      <p class="eyebrow">{fm.company}</p>
+      <h1>{fm.title}</h1>
+      <p class="lede">{fm.lede}</p>
+    </header>
+
+    <div class="skim">
+      <dl class="meta">
+        {fm.meta.map((m) => <div><dt>{m.k}</dt><dd>{m.v}</dd></div>)}
+      </dl>
+      <div class="minute">
+        <p class="hand">If you only have a minute</p>
+        <ul>{fm.summary.map((s) => <li set:html={s} />)}</ul>
+      </div>
+    </div>
+
+    <div class="body">
+      <slot />
+    </div>
+
+    {fm.disclaimer && <p class="disclaimer">{fm.disclaimer}</p>}
+
+    {fm.next && (
+      <nav class="next" aria-label="Next project">
+        <p class="eyebrow">Next project</p>
+        {fm.next.href
+          ? <a href={fm.next.href}>{fm.next.title} →</a>
+          : <p><span class="t">{fm.next.title}</span> <span class="hand">{fm.next.status}</span></p>}
+      </nav>
+    )}
+  </article>
+</Base>
+
+<style>
+  .case { margin-top: .5rem; display: flex; flex-direction: column; gap: 2.5rem; }
+  .back { font-family: var(--f-display); font-weight: 600; font-size: .92rem; text-decoration: none; align-self: flex-start; }
+  .back:hover { text-decoration: underline; }
+  .top { display: flex; flex-direction: column; gap: .9rem; max-width: 50rem; }
+  h1 { font-size: clamp(2.2rem, 5.6vw, 4rem); font-weight: 800; letter-spacing: -.03em; line-height: 1.02; }
+  .lede { font-size: 1.22rem; line-height: 1.5; max-width: 38rem; }
+
+  .skim { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.5rem 3rem; }
+  @media (min-width: 860px) { .skim { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); } }
+  .meta {
+    margin: 0; background: var(--sheet); border: 1.5px solid var(--ink); border-radius: 4px; padding: .9rem 1.1rem;
+    display: flex; flex-direction: column; gap: .5rem; transform: rotate(-.5deg); align-self: start;
+  }
+  .meta div { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); gap: .75rem; border-top: 1px solid var(--rule); padding-top: .45rem; }
+  .meta div:first-child { border-top: 0; padding-top: 0; }
+  dt { font-family: var(--f-mono); font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); padding-top: .2rem; }
+  dd { margin: 0; font-size: .98rem; line-height: 1.45; }
+  .minute { display: flex; flex-direction: column; gap: .5rem; }
+  .minute .hand { font-size: 1.1rem; }
+  .minute ul { margin: 0; padding-left: 1.1rem; display: flex; flex-direction: column; gap: .5rem; }
+
+  .body { display: flow-root; }
+  .body > :global(* + *) { margin-top: 1.1rem; }
+  .body > :global(*) { max-width: var(--col-w); }
+  .body > :global(.wide), .body > :global(.decision) { max-width: none; }
+  .body :global(h2) {
+    font-size: clamp(1.7rem, 3.4vw, 2.3rem); font-weight: 800; letter-spacing: -.02em;
+    padding-top: 3.5rem; margin-bottom: .2rem;
+  }
+  .body :global(h2 .no) { display: block; font-family: var(--f-mono); font-size: .75rem; font-weight: 400; letter-spacing: .09em; color: var(--muted); margin-bottom: .5rem; }
+  .body :global(p strong) { font-weight: 600; }
+  .body :global(ul) { margin: 0; padding-left: 1.2rem; display: flex; flex-direction: column; gap: .4rem; }
+
+  .body :global(.kudos) { margin: 1.5rem 0 0; max-width: 36rem; border-left: 3px solid var(--pencil); padding: .2rem 0 .2rem 1.1rem; }
+  .body :global(.kudos p) { font-size: 1.12rem; font-style: italic; }
+  .body :global(.kudos footer) { margin-top: .5rem; font-family: var(--f-mono); font-size: .75rem; color: var(--muted); }
+  .disclaimer { font-family: var(--f-mono); font-size: .74rem; color: var(--muted); max-width: 46rem; padding-top: 2rem; }
+  .next { border-top: 1.5px solid var(--ink); padding-top: 1.2rem; display: flex; flex-direction: column; gap: .4rem; }
+  .next a, .next .t { font-family: var(--f-display); font-weight: 800; font-size: 1.4rem; letter-spacing: -.01em; }
+  .next .hand { font-size: 1.05rem; }
+</style>

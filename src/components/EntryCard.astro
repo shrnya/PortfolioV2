@@ -1,0 +1,38 @@
+---
+interface Props {
+  n: string; title: string; line: string; tags: string[];
+  href?: string; status: string;
+}
+const { n, title, line, tags, href, status } = Astro.props;
+const Tag = href ? 'a' : 'div';
+---
+<li class:list={['entry', { open: !!href }]}>
+  <Tag class="card" href={href}>
+    <div class="txt">
+      <h3>{title}</h3>
+      <p>{line}</p>
+      <ul class="tags">{tags.map((t) => <li>{t}</li>)}</ul>
+    </div>
+    <span class="status">{status}{href && <span aria-hidden="true"> →</span>}</span>
+  </Tag>
+</li>
+
+<style>
+  .entry { list-style: none; min-width: 0; }
+  @media (min-width: 860px) { .entry:last-child:nth-child(odd) { grid-column: 1 / -1; } .entry:last-child:nth-child(odd) .txt { max-width: 34rem; } }
+  .card {
+    position: relative; display: grid; grid-template-columns: minmax(0, 1fr); gap: .5rem; align-items: start;
+    padding: 1.4rem 0 1.5rem; border-top: 1.5px solid var(--ink); text-decoration: none; height: 100%;
+  }
+  .no { grid-column: 1 / -1; font-family: var(--f-mono); font-size: .72rem; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+  .txt { display: flex; flex-direction: column; gap: .45rem; min-width: 0; }
+  h3 { font-size: 1.3rem; font-weight: 800; letter-spacing: -.01em; }
+  .open .card:hover .status { transform: translateX(4px); }
+  .status { transition: transform .2s; }
+  .open .card:hover h3 { text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+  .txt p { color: var(--muted); font-size: 1rem; line-height: 1.45; }
+  .tags { display: flex; flex-wrap: wrap; gap: .3rem .9rem; margin: 0; padding: 0; list-style: none; font-family: var(--f-mono); font-size: .72rem; color: var(--muted); }
+  .status { font-family: var(--f-hand); font-size: 1.02rem; color: var(--pencil); }
+  .entry:not(.open) .status::before { content: "✎ "; }
+  @media (max-width: 520px) { h3 { font-size: 1.12rem; } }
+</style>

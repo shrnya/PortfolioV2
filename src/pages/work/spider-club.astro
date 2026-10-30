@@ -1,0 +1,77 @@
+---
+import Simple from '../../layouts/Simple.astro';
+import Shot from '../../components/Shot.astro';
+import Say from '../../components/Say.astro';
+import Note from '../../components/Note.astro';
+import Circle from '../../components/Circle.astro';
+const facts = [
+  { k: 'What', v: 'A database of the spiders of Belgaum' },
+  { k: 'Species', v: '55 and counting' },
+  { k: 'My part', v: 'Research, information architecture, content strategy, web design, prototype' },
+  { k: 'Status', v: 'Redesign under way' },
+];
+const prototype = 'https://www.figma.com/proto/xJiSYpkLflOBlgiNeoVx9Q/Beta-SCOB-v2?node-id=14-9&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=14%3A9&show-proto-sidebar=1';
+---
+<Simple
+  title="What do you do when Google can’t identify your spider?"
+  eyebrow="Spider Club of Belgaum · personal project"
+  lede="You build the database yourself. Spider Club of Belgaum turns four years of field research into a place where anyone can identify and learn about local spiders."
+  facts={facts}
+  journal
+>
+  <div class="works">
+    <p class="hand">Under works right now ✎</p>
+    <p>I’m redesigning SCOB with everything I’ve learned since I first built it. Here’s the story so far.</p>
+  </div>
+
+  <Say seed={21}>It all started with one spider that nobody could name.</Say>
+
+  <h2>How it began</h2>
+  <p>In 2015 we photographed a spider that neither Google’s reverse image search nor any online database could identify. We asked researchers around the world and spider groups on Facebook, and eventually it was named: <i>Araneus viridiventris</i>, identified by Alexis Bourgeois.</p>
+  <p>That search showed us a bigger gap. India had no spider documentation that was both visually engaging and scientifically credible, and Belgaum, home to an incredible variety of spiders, had nothing at all.</p>
+  <p>The Facebook group we started that year grew fast. Over four years it collected <Circle seed={23}>55+ species</Circle> and a wealth of photos and notes, but they lived across emails, posts and comment threads.</p>
+
+  <h2>The problem</h2>
+  <p>People who want to study or identify spiders face resources that are scattered, paywalled, missing local data, or full of jargon. Beginners end up relying on a few experts to identify every find, which slows down learning and documentation.</p>
+  <p class="hmw">How can we turn years of spider research into a platform that is accessible and engaging for everyone?</p>
+
+  <h2>What I learned from research</h2>
+  <p>I studied resources like the World Spider Catalog, the India Biodiversity Portal, SpiderID.com and the book <i>Spiders of Borneo</i>, spent time in spider communities, and had casual chats with researchers and enthusiasts.</p>
+  <ul>
+    <li><b>Documentation is foundational.</b> Even when a spider can’t be identified yet, recording how it looks, behaves and where it lives builds the base for future research.</li>
+    <li><b>Identification needs more than photos.</b> It takes ecological and taxonomic data too.</li>
+    <li><b>Community makes it grow, experts keep it right.</b> The group shared sightings with real enthusiasm, but needed moderation to stay scientifically sound.</li>
+    <li><b>Stories change how people feel.</b> Beautiful photos and behaviour notes turned fear into fascination.</li>
+  </ul>
+  <Note>Spiders: from scary to “wait, that’s actually beautiful”.</Note>
+
+  <h2>Three design decisions</h2>
+  <ul>
+    <li><b>Organise by taxonomy.</b> People explore by family and genus, the way researchers think, with plain-language descriptions for everyone else.</li>
+    <li><b>Lead with visuals and stories.</b> High-quality photos paired with intriguing behaviour notes, to win over casual visitors and experts alike.</li>
+    <li><b>Submissions by email, for now.</b> In the first release, new sightings come in by email so experts can verify each one. Direct uploads can come later, once we see how many people contribute.</li>
+  </ul>
+
+  <h2>What I’d take with me</h2>
+  <p>Balancing scientific accuracy with accessibility is hard, and worth it. Designing for 55+ species with growth in mind taught me to build with modular, flexible layouts. And I saw how much design can shift how people feel about something, replacing fear with curiosity.</p>
+  <p><a href={prototype} rel="noopener">Try the Figma prototype ↗</a></p>
+
+  <div slot="wide" class="gallery">
+    <Shot src="/media/scob/mockup.jpg" alt="The SCOB website on a laptop and a phone" />
+    <Shot src={['/media/scob/p-enthusiast.jpg', '/media/scob/p-researcher.jpg', '/media/scob/p-nature.jpg']} alt={['Persona: a beginner spider enthusiast', 'Persona: a researcher who needs detailed taxonomy', 'Persona: a curious nature lover']} caption="Three kinds of people SCOB is for." />
+    <Shot src="/media/scob/ia.jpg" alt="Information architecture diagram of the site" caption="Explore for enthusiasts and researchers, a blog for curious beginners." />
+    <Shot src="/media/scob/wireframes.jpg" alt="Low-fidelity wireframes of the desktop pages" caption="Lo-fi wireframes." />
+    <Shot src={['/media/scob/d-home.jpg', '/media/scob/d-families.jpg', '/media/scob/d-araneidae.jpg', '/media/scob/d-blog.jpg']} alt={['Home page', 'Exploring spider families', 'The Araneidae family page', 'The blog']} caption="Desktop: home, families, a family page and the blog." />
+    <Shot src={['/media/scob/m-home.jpg', '/media/scob/m-grid.jpg', '/media/scob/m-list.jpg']} alt={['Mobile home page', 'Spider families in a grid', 'Spider families in a list']} caption="Mobile: home, grid view and list view." cols={3} />
+  </div>
+</Simple>
+
+<style>
+  .works { border: 1.5px dashed var(--pencil); border-radius: 6px; padding: .9rem 1rem; display: flex; flex-direction: column; gap: .35rem; }
+  .works .hand { font-size: 1.2rem; }
+  .hmw { font-family: var(--f-display); font-weight: 600; font-size: 1.15rem; border-left: 3px solid var(--pencil); padding-left: 1rem; }
+  ul { margin: 0; padding-left: 1.2rem; display: flex; flex-direction: column; gap: .5rem; }
+  .gallery { display: flex; flex-direction: column; gap: 2.5rem; }
+  .gallery :global(.shot[style*="--cols:1"]) { max-width: 52rem; }
+  .gallery :global(.shot:last-child) { max-width: 36rem; }
+</style>

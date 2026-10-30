@@ -1,0 +1,126 @@
+---
+import Base from '../layouts/Base.astro';
+import Avatar from '../components/home/Avatar.astro';
+import WebPanel from '../components/home/WebPanel.astro';
+import FieldNotes from '../components/home/FieldNotes.astro';
+import Garden from '../components/home/Garden.astro';
+import Cover from '../components/home/Cover.astro';
+
+const resume = 'https://drive.google.com/file/d/15tVwUM-jkmzby2MVAa0smwRkCzmqHJ-Z/view';
+const work = [
+  { href: '/work/smartsense/', cover: 'sld', company: 'Ecolibrium · SmartSense', title: 'Can an energy dashboard do more than show numbers?', tags: ['Dashboards', 'Energy viz'] },
+  { href: '/work/design-system/', cover: 'ds', company: 'Ecolibrium · SmartSense', title: 'Evolving the SmartSense design system', tags: ['Design system', 'Theming'] },
+  { href: '/work/sustainlab/', cover: 'csrd', company: 'SustainLab', title: 'A 284-page law, one question at a time', tags: ['B2B SaaS', 'Handoff'] },
+  { href: '/work/spider-club/', cover: 'scob', company: 'Spider Club of Belgaum', title: 'A home for 55+ local spider species', tags: ['Database', 'IA'] },
+  { href: '/work/architecture/', cover: 'arch', company: 'Architecture', title: 'The archive: buildings and interiors', tags: ['Gallery'] },
+] as const;
+---
+<Base title="Sharanya JC · Product designer">
+  <section class="hero sheet">
+    <aside class="id">
+      <Avatar size="4.2rem" />
+      <h1>hi, I’m Sharanya</h1>
+      <p class="line hand">a designer who thrives at the intersection of design and impact</p>
+      <ul class="at">
+        <li><b>Product Designer @Ecolibrium</b></li>
+        <li><span>prev.</span> @SustainLab</li>
+      </ul>
+      <ul class="links">
+        <li><a href={resume} rel="noopener">résumé ↗</a></li>
+        <li><a href="https://www.linkedin.com/in/sharanyajc" rel="noopener">linkedin ↗</a></li>
+        <li><a href="mailto:sharanyajc@gmail.com?subject=Let%27s%20talk">email ↗</a></li>
+      </ul>
+    </aside>
+    <div class="stage">
+      <WebPanel />
+      <div class="fn"><FieldNotes /></div>
+      <div class="gd"><Garden /></div>
+    </div>
+  </section>
+
+  <section id="work" class="work sheet row" aria-labelledby="work-h">
+    <header class="side">
+      <p class="eyebrow">01</p>
+      <h2 id="work-h">Selected<br />Work.</h2>
+    </header>
+    <ul class="grid">
+      {work.map((w, i) => (
+        <li class:list={[i < 2 ? 'wide' : 'third']}>
+          <a class="card surface" href={w.href}>
+            <span class="pic"><Cover kind={w.cover} /></span>
+            <span class="cap">
+              <span class="co">{w.company}</span>
+              <span class="t">{w.title}</span>
+              <span class="tags">{w.tags.map((t) => <span>{t}</span>)}</span>
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="segue sheet" aria-labelledby="seg-h">
+    <a class="seg surface" href="/about/">
+      <Avatar size="4.5rem" />
+      <span class="q">
+        <h2 id="seg-h">What does building a bamboo yurt in Auroville have to do with product design?</h2>
+        <span class="hand">Probably more than you’d think. Meet the person behind the work →</span>
+      </span>
+    </a>
+  </section>
+</Base>
+
+<style>
+  .hero { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.5rem 2rem; padding-block: 1.5rem 0; }
+  @media (min-width: 900px) { .hero { grid-template-columns: minmax(0, 13rem) minmax(0, 1fr); padding-block: 2.5rem 0; } }
+  .id { display: flex; flex-direction: column; gap: .9rem; }
+  h1 { font-size: 1.6rem; font-weight: 800; letter-spacing: -.02em; line-height: 1.05; }
+  .line { font-size: 1.12rem; line-height: 1.3; }
+  .at { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .25rem; font-family: var(--f-mono); font-size: .82rem; }
+  .at b { font-family: var(--f-display); font-size: .95rem; }
+  .at span { color: var(--muted); }
+  .links { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .3rem 1rem; font-family: var(--f-mono); font-size: .82rem; }
+  .links a { text-decoration: none; border-bottom: 1px solid currentColor; }
+  .links a:hover { border-bottom-width: 2px; }
+  @media (max-width: 899px) {
+    .id { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 1rem; align-items: center; }
+    .id :global(.av) { grid-row: span 1; }
+    .id > :not(:first-child):not(h1) { grid-column: 1 / -1; }
+  }
+  .stage { display: grid; grid-template-columns: minmax(0, 1fr); gap: .8rem; }
+  @media (min-width: 640px) { .stage { grid-template-columns: repeat(2, minmax(0, 1fr)); } .gd { grid-column: 1 / -1; } }
+  @media (max-width: 639px) { .fn { display: none; } }
+
+  .row { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.25rem 2rem; padding-block: 4rem 0; }
+  @media (min-width: 900px) { .row { grid-template-columns: minmax(0, 13rem) minmax(0, 1fr); padding-block: 5rem 0; } }
+  .side h2 { font-size: clamp(1.8rem, 3.2vw, 2.3rem); font-weight: 800; letter-spacing: -.03em; line-height: 1; margin-top: .4rem; }
+  .grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: .8rem; }
+  @media (min-width: 640px) { .grid { grid-template-columns: repeat(6, minmax(0, 1fr)); } .wide { grid-column: span 3; } .third { grid-column: span 2; } }
+  @media (min-width: 640px) and (max-width: 899px) { .third { grid-column: span 3; } .third:last-child { grid-column: span 6; } }
+  .card { position: relative; display: block; height: 100%; background: var(--paper); border-radius: 8px; overflow: hidden; text-decoration: none; aspect-ratio: 4 / 3.4; }
+  .third .card { aspect-ratio: 4 / 4.6; }
+  @media (max-width: 639px) { .card, .third .card { aspect-ratio: 4 / 3.6; } }
+  .pic { position: absolute; inset: .5rem .5rem 34% .5rem; transition: transform .4s ease; }
+  .third .pic { bottom: 38%; }
+  .card:hover .pic { transform: rotate(-1.5deg) scale(1.03); }
+  .cap {
+    position: absolute; left: .9rem; bottom: .9rem; right: .9rem; max-width: 22rem; display: flex; flex-direction: column; gap: .3rem;
+    background: var(--paper); border: 1.5px solid var(--pencil); padding: .6rem .75rem .65rem; box-shadow: 4px 4px 0 var(--pencil); transition: transform .25s, box-shadow .25s;
+  }
+  .card:hover .cap { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--pencil); }
+  .co { font-family: var(--f-mono); font-size: .66rem; letter-spacing: .08em; text-transform: uppercase; color: var(--pencil); }
+  .t { font-family: var(--f-display); font-weight: 800; font-size: 1.04rem; line-height: 1.2; letter-spacing: -.01em; color: var(--ink); }
+  .tags { display: flex; flex-wrap: wrap; gap: .3rem; }
+  .tags span { font-family: var(--f-mono); font-size: .62rem; letter-spacing: .04em; text-transform: uppercase; color: var(--pencil); border: 1px solid var(--pencil-soft); padding: .05rem .4rem; }
+
+  .segue { padding-block: 4.5rem 0; }
+  .seg { display: flex; align-items: center; gap: 1.25rem; padding: clamp(1.25rem, 3vw, 2rem); border-radius: 8px; text-decoration: none; background: var(--paper); transition: transform .2s; }
+  .seg:hover { transform: translateY(-3px); }
+  .seg :global(.av) { flex-shrink: 0; }
+  .q { display: flex; flex-direction: column; gap: .5rem; }
+  .q h2 { font-size: clamp(1.25rem, 2.6vw, 1.7rem); font-weight: 800; letter-spacing: -.02em; color: var(--ink); }
+  .q .hand { font-size: 1.2rem; color: var(--pencil); }
+  .seg:hover .hand { text-decoration: underline; }
+  @media (max-width: 520px) { .seg { flex-direction: column; align-items: flex-start; } }
+  @media (prefers-reduced-motion: reduce) { .seg { transition: none; } }
+</style>

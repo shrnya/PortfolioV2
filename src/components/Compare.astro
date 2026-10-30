@@ -1,0 +1,37 @@
+---
+// Drag to compare two screenshots of the same screen.
+interface Props { a: string; b: string; aLabel: string; bLabel: string; alt: string; caption?: string }
+const { a, b, aLabel, bLabel, alt, caption } = Astro.props;
+const id = 'cmp-' + Math.random().toString(36).slice(2, 8);
+---
+<figure class="cmp wide">
+  <div class="stage" style="--p:50%">
+    <img src={a} alt={`${alt}, ${aLabel}`} />
+    <img class="top" src={b} alt={`${alt}, ${bLabel}`} />
+    <span class="lab l">{aLabel}</span><span class="lab r">{bLabel}</span>
+    <div class="handle" aria-hidden="true"><span>‹ ›</span></div>
+    <input id={id} type="range" min="0" max="100" step="any" value="50" aria-label={`Drag to compare ${aLabel} and ${bLabel}`} />
+  </div>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+  .cmp { margin: 0; display: flex; flex-direction: column; gap: .5rem; max-width: 52rem; }
+  .stage { position: relative; border-radius: 8px; overflow: hidden; border: 1px solid var(--rule); }
+  img { display: block; width: 100%; height: auto; }
+  .top { position: absolute; inset: 0; height: 100%; object-fit: cover; clip-path: inset(0 0 0 var(--p)); }
+  .lab { position: absolute; top: .6rem; font: 700 .95rem var(--f-hand); color: var(--pencil); background: var(--paper); border: 1.5px solid var(--pencil); border-radius: 1rem; padding: .1rem .6rem; }
+  .lab.l { left: .6rem; } .lab.r { right: .6rem; }
+  .handle { position: absolute; top: 0; bottom: 0; left: var(--p); border-left: 2px solid var(--pencil); pointer-events: none; }
+  .handle span { position: absolute; top: 50%; left: 0; transform: translate(-50%, -50%); width: 2.2rem; height: 2.2rem; border-radius: 50%; display: grid; place-items: center; background: var(--paper); border: 2px solid var(--pencil); color: var(--pencil); font: 800 .9rem/1 var(--f-display); }
+  input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: ew-resize; }
+  .stage:has(input:focus-visible) .handle span { outline: 2px solid var(--ink); outline-offset: 2px; }
+  figcaption { font-family: var(--f-mono); font-size: .74rem; color: var(--muted); }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.cmp .stage').forEach((s) => {
+    const r = s.querySelector('input')!;
+    r.addEventListener('input', () => s.style.setProperty('--p', r.value + '%'));
+  });
+</script>

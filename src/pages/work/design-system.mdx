@@ -1,0 +1,86 @@
+---
+layout: ../../layouts/CaseStudy.astro
+title: A new look that didn’t leave customers behind
+entry: "02"
+company: Ecolibrium
+lede: Building one design system for SmartSense 3.0, an energy management platform, so it could get a new look without losing the people who use it every day.
+meta:
+  - { k: Role, v: "Product design intern, full time from January 2026" }
+  - { k: When, v: 2026 }
+  - { k: Team, v: "Two designers, with product, engineering and sales" }
+  - { k: My part, v: "Built the new design system with my manager, standardised widgets and components, reviewed the build in Storybook, presented the system to the company" }
+summary:
+  - "<b>The problem:</b> years of growth had left the product with text as small as 9 px and no two widgets built quite the same way."
+  - "<b>What we did:</b> kept the familiar dark blue for existing users, added a light theme, and rebuilt the parts every screen is made of."
+  - "<b>Where it went:</b> the light theme became the base for SmartSense 8.0, and the components went into Storybook for engineers and AI coding tools."
+next: { title: "A 284-page law, one question at a time", status: "", href: "/work/sustainlab/" }
+disclaimer: Screens are from SmartSense 3.0 with demo data. The interactive widget is a made-up example.
+---
+import Note from '../../components/Note.astro';
+import Decision from '../../components/Decision.astro';
+import FiveFixes from '../../components/prototypes/FiveFixes.astro';
+import Shot from '../../components/Shot.astro';
+import Compare from '../../components/Compare.astro';
+import Clip from '../../components/Clip.astro';
+import BuildReview from '../../components/prototypes/BuildReview.astro';
+
+<h2><span class="no">1 · The setting</span>Nine-pixel text that still got the job done</h2>
+
+<Note>Ugly but working is a hard thing to redesign. People have learned where everything is.</Note>
+
+Ecolibrium’s SmartSense platform helps companies monitor energy, assets and alerts across their buildings. The version customers used every day had grown fast. Screens, Figma files and components had drifted apart, and some text was as small as 9 pixels.
+
+It still worked. Operations teams acted on alerts and got their jobs done. That made it risky to change.
+
+<h2><span class="no">2 · The stakes</span>Change the look without breaking the habit</h2>
+
+We had two jobs at once. The live product needed quick, safe improvements. The next version needed a proper system that every module could be built from.
+
+Both had to respect the same people: facility teams who knew the old screens by heart, and senior stakeholders who would judge the new look in a single demo.
+
+<h2><span class="no">3 · What we decided</span>Three decisions</h2>
+
+<Decision n={1} of={3} title="Fix what hurts most, first">
+  <Fragment slot="call">We audited the live product and picked the fixes with high impact and low to medium effort: navigation, component consistency, text size, spacing and colour.</Fragment>
+  <p>Modules had been built separately. Buttons, cards, tables and widgets each came in several styles, and small text and low contrast made screens hard to read.</p>
+  <Shot src={["/media/ds/before-dark-1.jpg", "/media/ds/before-dark-2.jpg", "/media/ds/before-light-2.jpg"]} alt={["Old date picker with tiny text", "Old table with mixed row styles", "Old alerts menu in light colours"]} caption="Before: three corners of the old product." />
+  <p>Here is a made-up widget with the same problems. Turn the fixes on one at a time.</p>
+  <FiveFixes />
+</Decision>
+
+<Decision n={2} of={3} title="Keep the blue, add the light">
+  <Fragment slot="call">We kept the dark blue look existing customers knew, rebuilt it to be consistent and accessible, and added a light theme drawn from the SmartSense brand.</Fragment>
+  <p>Changing everything at once would have felt like a different product to people who used it every day. The dark theme kept them on familiar ground. The light theme gave customers and senior stakeholders who preferred it a modern option, and became the visual base for SmartSense 8.0.</p>
+  <Compare a="/media/ds/after-dark.jpg" b="/media/ds/after-light.jpg" aLabel="dark" bLabel="light" alt="Regional summary dashboard" caption="The same dashboard in both themes. Drag to compare." />
+</Decision>
+
+<Decision n={3} of={3} title="Build every screen from the same parts">
+  <Fragment slot="call">We set the foundations first, type and colour, then rebuilt the components every screen is made of, in both themes.</Fragment>
+  <Shot src="/media/ds/foundations.jpg" alt="Typography and colour styles for the light theme" caption="Foundations: type styles and colour." />
+  <p>Buttons, dropdowns, breadcrumbs, priority tags and status indicators each got one definition. Scorecards got a grid with small, medium and large widths, so dashboards line up however many cards they hold.</p>
+  <Shot src={["/media/ds/scorecards-light.jpg", "/media/ds/scorecards-dark.jpg"]} alt={["Scorecard grid in the light theme", "Scorecard grid in the dark theme"]} caption="One scorecard grid, both themes." />
+  <p>The side navigation was redesigned too, so moving between products and dashboards takes fewer clicks.</p>
+  <div class="wide pair">
+    <Clip src="/media/ds/nav-before.mp4" caption="Navigation before." />
+    <Clip src="/media/ds/nav-after.mp4" caption="Navigation after." />
+  </div>
+  <p>A system only helps if the build matches it. I reviewed the components in Storybook against the designs and flagged where they drifted.</p>
+  <BuildReview />
+</Decision>
+
+<style>{`
+  .pair { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; }
+  @media (min-width: 720px) { .pair { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+`}</style>
+
+<h2><span class="no">4 · What shipped</span>Showing it to the people who sell it</h2>
+
+With my manager, I put together a presentation of the design system, ran it past two colleagues in a dry run, reworked it from their feedback, and presented it to the extended team. It was well received across the company, including Sales and Application Engineering.
+
+The light theme carried into SmartSense 8.0, and its components and tokens were set up in Storybook. Later, when we used Claude Code to rebuild the product for a large telecom customer, those tokens and components kept generated screens on-system. They did not replace judgment: we still fixed spacing, hierarchy and the order information appears in. That experience went live at the end of September 2026.
+
+<h2><span class="no">5 · What I took with me</span>Rules make it consistent. Judgment makes it good.</h2>
+
+From one manager I learned to make design decisions as rules that hold across a whole system. From another I learned visual hierarchy: what to make stand out, and how colour guides the eye.
+
+A design system needs both. Tokens made consistency cheap. Deciding what a screen should say first was still a designer’s job.
