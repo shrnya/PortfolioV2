@@ -1,23 +1,24 @@
 ---
 // SLD demo: a small facility energy network. Nodes show their health,
 // and choosing one isolates the path its power takes from the sources.
-// Invented facility and values; the real product is in the recordings.
-type Node = { id: string; label: string; kind: string; x: number; y: number; w: number; kw: number; status: 'ok' | 'warn' | 'off'; alerts: number; parents: string[] };
+// Choosing one traces its feed upstream and points at the biggest loss.
+// Invented facility and values.
+type Node = { id: string; label: string; kind: string; x: number; y: number; w: number; kw: number; status: 'ok' | 'warn' | 'off'; alerts: number; loss: number; parents: string[] };
 const nodes: Node[] = [
-  { id: 'grid', label: 'Utility grid', kind: 'Source', x: 300, y: 28, w: 104, kw: 3200, status: 'ok', alerts: 0, parents: [] },
-  { id: 'solar', label: 'Solar PV', kind: 'Source', x: 130, y: 28, w: 90, kw: 200, status: 'ok', alerts: 0, parents: [] },
-  { id: 'dg1', label: 'DG-1', kind: 'Source', x: 470, y: 28, w: 76, kw: 0, status: 'off', alerts: 0, parents: [] },
-  { id: 'main', label: 'Main incomer', kind: 'Breaker', x: 300, y: 100, w: 116, kw: 3385, status: 'ok', alerts: 0, parents: ['grid', 'solar', 'dg1'] },
-  { id: 'tr1', label: 'Transformer 1', kind: 'Transformer', x: 190, y: 172, w: 122, kw: 2140, status: 'warn', alerts: 1, parents: ['main'] },
-  { id: 'tr2', label: 'Transformer 2', kind: 'Transformer', x: 420, y: 172, w: 122, kw: 1180, status: 'ok', alerts: 0, parents: ['main'] },
-  { id: 'db1', label: 'DB-1', kind: 'Distribution board', x: 110, y: 244, w: 72, kw: 1460, status: 'ok', alerts: 0, parents: ['tr1'] },
-  { id: 'db2', label: 'DB-2', kind: 'Distribution board', x: 270, y: 244, w: 72, kw: 640, status: 'ok', alerts: 0, parents: ['tr1'] },
-  { id: 'db3', label: 'DB-3', kind: 'Distribution board', x: 440, y: 244, w: 72, kw: 1150, status: 'ok', alerts: 0, parents: ['tr2'] },
-  { id: 'ahu3', label: 'AHU-3', kind: 'Air handling unit', x: 60, y: 312, w: 76, kw: 410, status: 'warn', alerts: 2, parents: ['db1'] },
-  { id: 'ch1', label: 'Chiller-1', kind: 'Chiller', x: 160, y: 312, w: 86, kw: 1020, status: 'ok', alerts: 0, parents: ['db1'] },
-  { id: 'light', label: 'Lighting', kind: 'Lighting circuit', x: 270, y: 312, w: 86, kw: 640, status: 'ok', alerts: 0, parents: ['db2'] },
-  { id: 'ups', label: 'UPS', kind: 'UPS', x: 400, y: 312, w: 66, kw: 1150, status: 'ok', alerts: 0, parents: ['db3'] },
-  { id: 'pump', label: 'Pumps', kind: 'Pump set', x: 490, y: 312, w: 76, kw: 0, status: 'off', alerts: 0, parents: ['db3'] },
+  { id: 'grid', label: 'Utility grid', kind: 'Source', x: 300, y: 28, w: 104, kw: 3200, status: 'ok', alerts: 0, loss: 0, parents: [] },
+  { id: 'solar', label: 'Solar PV', kind: 'Source', x: 130, y: 28, w: 90, kw: 200, status: 'ok', alerts: 0, loss: 0, parents: [] },
+  { id: 'dg1', label: 'DG-1', kind: 'Source', x: 470, y: 28, w: 76, kw: 0, status: 'off', alerts: 0, loss: 0, parents: [] },
+  { id: 'main', label: 'Main incomer', kind: 'Breaker', x: 300, y: 100, w: 116, kw: 3385, status: 'ok', alerts: 0, loss: 0.4, parents: ['grid', 'solar', 'dg1'] },
+  { id: 'tr1', label: 'Transformer 1', kind: 'Transformer', x: 190, y: 172, w: 122, kw: 2140, status: 'warn', alerts: 1, loss: 9.2, parents: ['main'] },
+  { id: 'tr2', label: 'Transformer 2', kind: 'Transformer', x: 420, y: 172, w: 122, kw: 1180, status: 'ok', alerts: 0, loss: 1.1, parents: ['main'] },
+  { id: 'db1', label: 'DB-1', kind: 'Distribution board', x: 110, y: 244, w: 72, kw: 1460, status: 'ok', alerts: 0, loss: 1.3, parents: ['tr1'] },
+  { id: 'db2', label: 'DB-2', kind: 'Distribution board', x: 270, y: 244, w: 72, kw: 640, status: 'ok', alerts: 0, loss: 0.8, parents: ['tr1'] },
+  { id: 'db3', label: 'DB-3', kind: 'Distribution board', x: 440, y: 244, w: 72, kw: 1150, status: 'ok', alerts: 0, loss: 0.9, parents: ['tr2'] },
+  { id: 'ahu3', label: 'AHU-3', kind: 'Air handling unit', x: 60, y: 312, w: 76, kw: 410, status: 'warn', alerts: 2, loss: 2.1, parents: ['db1'] },
+  { id: 'ch1', label: 'Chiller-1', kind: 'Chiller', x: 160, y: 312, w: 86, kw: 1020, status: 'ok', alerts: 0, loss: 1.0, parents: ['db1'] },
+  { id: 'light', label: 'Lighting', kind: 'Lighting circuit', x: 270, y: 312, w: 86, kw: 640, status: 'ok', alerts: 0, loss: 0.6, parents: ['db2'] },
+  { id: 'ups', label: 'UPS', kind: 'UPS', x: 400, y: 312, w: 66, kw: 1150, status: 'ok', alerts: 0, loss: 0.7, parents: ['db3'] },
+  { id: 'pump', label: 'Pumps', kind: 'Pump set', x: 490, y: 312, w: 76, kw: 0, status: 'off', alerts: 0, loss: 0, parents: ['db3'] },
 ];
 const byId = Object.fromEntries(nodes.map((n) => [n.id, n]));
 const H = 22;
@@ -25,7 +26,7 @@ const edges = nodes.flatMap((n) => n.parents.map((p) => {
   const a = byId[p], mid = (a.y + n.y) / 2;
   return { id: `${p}-${n.id}`, from: p, to: n.id, d: `M${a.x} ${a.y + H / 2}V${mid}H${n.x}V${n.y - H / 2}`, status: n.status === 'off' || a.status === 'off' ? 'off' : n.id === 'ahu3' ? 'warn' : 'ok' };
 }));
-const data = JSON.stringify(nodes.map(({ id, label, kind, kw, status, alerts, parents }) => ({ id, label, kind, kw, status, alerts, parents })));
+const data = JSON.stringify(nodes.map(({ id, label, kind, kw, status, alerts, loss, parents }) => ({ id, label, kind, kw, status, alerts, loss, parents })));
 ---
 <div class="pi wide" data-nodes={data}>
   <div class="app">
@@ -55,14 +56,15 @@ const data = JSON.stringify(nodes.map(({ id, label, kind, kw, status, alerts, pa
         <p class="pill" id="pi-status"></p>
         <dl>
           <div><dt>Load now</dt><dd id="pi-kw"></dd></div>
-          <div><dt>Open alerts</dt><dd id="pi-alerts"></dd></div>
+          <div><dt>Loss on its own feed</dt><dd id="pi-loss"></dd></div>
           <div><dt>Fed from</dt><dd id="pi-path"></dd></div>
+          <div class="worst"><dt>Biggest loss on this path</dt><dd id="pi-worst"></dd></div>
         </dl>
         <button type="button" id="pi-clear">Show the whole network</button>
       </aside>
     </div>
   </div>
-  <p class="hand cap">Click any box. Everything off its path fades away.</p>
+  <p class="hand cap">AHU-3 is getting less power than it should. Its path is traced already: look at where the biggest loss is. Then click any other box.</p>
 </div>
 
 <style>
@@ -91,6 +93,8 @@ const data = JSON.stringify(nodes.map(({ id, label, kind, kw, status, alerts, pa
   .n .badge { fill: var(--warn); font-size: 10px; }
   .n:hover rect, .n:focus-visible rect { stroke: var(--app-accent); stroke-width: 2; }
   .n.sel rect { stroke: var(--app-accent); stroke-width: 2.4; }
+  .n.worst rect { stroke: var(--warn); stroke-width: 3; stroke-dasharray: 4 3; }
+  .worst dd { color: var(--warn); font-weight: 600; }
   .isolating .n:not(.on), .isolating .e:not(.on) { opacity: .14; }
 
   .side { border-top: 1px solid var(--app-line); padding: 1rem; display: flex; flex-direction: column; gap: .5rem; font-size: .84rem; }
@@ -109,7 +113,7 @@ const data = JSON.stringify(nodes.map(({ id, label, kind, kw, status, alerts, pa
 </style>
 
 <script>
-  type N = { id: string; label: string; kind: string; kw: number; status: string; alerts: number; parents: string[] };
+  type N = { id: string; label: string; kind: string; kw: number; status: string; alerts: number; loss: number; parents: string[] };
   const root = document.querySelector<HTMLElement>('.pi');
   if (root) {
     const nodes: N[] = JSON.parse(root.dataset.nodes!);
@@ -137,7 +141,11 @@ const data = JSON.stringify(nodes.map(({ id, label, kind, kw, status, alerts, pa
       st.className = 'pill ' + s;
       st.textContent = n ? (s === 'warn' ? 'Needs attention' : s === 'off' ? 'Disconnected' : 'Healthy') : '2 need attention';
       $('pi-kw').textContent = n ? (n.kw ? n.kw.toLocaleString('en') + ' kW' : 'No load') : '3,385 kW';
-      $('pi-alerts').textContent = n ? String(n.alerts) : '3';
+      $('pi-loss').textContent = n ? (n.loss ? n.loss + '%' : 'None') : '';
+      let worst: N | null = null;
+      on.forEach((x) => { if (by[x].loss && (!worst || by[x].loss > worst.loss)) worst = by[x]; });
+      svg.querySelectorAll<SVGGElement>('.n').forEach((g) => g.classList.toggle('worst', !!worst && g.dataset.id === worst.id && worst.id !== id));
+      $('pi-worst').textContent = worst ? `${(worst as N).label}, ${(worst as N).loss}%` : n ? 'Nothing upstream' : 'Pick a node to trace it';
       $('pi-path').textContent = n ? (chain(n.id) || 'This is a source') : 'Pick a node to trace it';
       ($('pi-clear') as HTMLElement).hidden = !id;
     };

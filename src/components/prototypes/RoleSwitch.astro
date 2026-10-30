@@ -1,0 +1,128 @@
+---
+// Dashboard demo: one template, three roles. Each role sees a different
+// scope in the hierarchy and a different mix of actionable and strategic
+// widgets. Widget names are reconstructions; the splits are design intent.
+type W = { t: string; a: boolean; viz: 'list' | 'bars' | 'line' | 'map' | 'big'; span?: 2 };
+const roles: { id: string; label: string; act: number; scope: number; who: string; ws: W[] }[] = [
+  { id: 'fm', label: 'Facility manager', act: 80, scope: 2, who: 'Keeps one facility running, every day.', ws: [
+    { t: 'Open alerts', a: true, viz: 'list', span: 2 },
+    { t: 'Assets offline', a: true, viz: 'big' },
+    { t: 'Load right now', a: true, viz: 'line', span: 2 },
+    { t: 'Insights to act on', a: true, viz: 'list' },
+    { t: 'This month vs target', a: false, viz: 'bars', span: 2 },
+    { t: 'Energy by asset type', a: true, viz: 'bars' },
+  ] },
+  { id: 'opco', label: 'OpCo manager', act: 50, scope: 1, who: 'Looks after every facility in one country.', ws: [
+    { t: 'Facilities needing attention', a: true, viz: 'list', span: 2 },
+    { t: 'Open alerts by facility', a: true, viz: 'bars' },
+    { t: 'SEC by facility', a: false, viz: 'bars', span: 2 },
+    { t: 'Savings opportunities', a: false, viz: 'list' },
+    { t: 'Monthly trend', a: false, viz: 'line', span: 2 },
+    { t: 'Offline assets', a: true, viz: 'big' },
+  ] },
+  { id: 'cxo', label: 'Portfolio manager / CXO', act: 20, scope: 0, who: 'Oversees OpCos across countries.', ws: [
+    { t: 'Portfolio energy and cost', a: false, viz: 'line', span: 2 },
+    { t: 'Cost leakage by OpCo', a: false, viz: 'bars' },
+    { t: 'Facility ranking', a: false, viz: 'list', span: 2 },
+    { t: 'Savings potential', a: false, viz: 'big' },
+    { t: 'OpCos on the map', a: false, viz: 'map', span: 2 },
+    { t: 'Where attention is needed', a: true, viz: 'list' },
+  ] },
+];
+const levels = ['Portfolio', 'OpCo', 'Facility', 'Asset'];
+---
+<div class="rs wide" data-rs>
+  <div class="tabs" role="tablist" aria-label="Role">
+    {roles.map((r, i) => <button type="button" role="tab" aria-selected={i === 0 ? 'true' : 'false'} data-tab={r.id}>{r.label}</button>)}
+  </div>
+  {roles.map((r, i) => (
+    <div class="role" role="tabpanel" data-panel={r.id} hidden={i !== 0}>
+      <div class="frame">
+        <div class="mix">
+          <p class="who">{r.who}</p>
+          <div class="split" aria-label={`${r.act}% actionable, ${100 - r.act}% strategic`}>
+            <span class="act" style={`flex:${r.act}`}>{r.act}% actionable</span>
+            <span class="str" style={`flex:${100 - r.act}`}>{100 - r.act}% strategic</span>
+          </div>
+        </div>
+        <ol class="crumbs" aria-label="What this role can open">
+          {levels.map((l, j) => <li class:list={{ off: j < r.scope, here: j === r.scope }}>{l}</li>)}
+        </ol>
+      </div>
+      <div class="app">
+        <div class="grid">
+          {r.ws.map((w) => (
+            <div class:list={['w', { a: w.a, s2: w.span === 2 }]}>
+              <p class="t"><i aria-hidden="true"></i>{w.t}</p>
+              {w.viz === 'list' && <ul aria-hidden="true"><li /><li /><li /></ul>}
+              {w.viz === 'bars' && <div class="bars" aria-hidden="true"><span style="height:70%" /><span style="height:45%" /><span style="height:85%" /><span style="height:30%" /><span style="height:60%" /></div>}
+              {w.viz === 'line' && <svg viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true"><path d="M0 22L12 18L24 20L36 12L48 15L60 9L72 13L84 7L100 10" /></svg>}
+              {w.viz === 'big' && <p class="big" aria-hidden="true"><span /></p>}
+              {w.viz === 'map' && <div class="map" aria-hidden="true"><span /><span /><span /></div>}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  ))}
+  <p class="hand cap">Switch roles. The scope changes, and so does what comes first. <span class="key"><i class="ka"></i> act on it <i class="ks"></i> think about it</span></p>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-rs]').forEach((root) => {
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[data-tab]')];
+    tabs.forEach((t) => t.addEventListener('click', () => {
+      tabs.forEach((x) => x.setAttribute('aria-selected', String(x === t)));
+      root.querySelectorAll<HTMLElement>('[data-panel]').forEach((p) => { p.hidden = p.dataset.panel !== t.dataset.tab; });
+    }));
+  });
+</script>
+
+<style>
+  .rs { display: flex; flex-direction: column; gap: .7rem; --act: var(--app-warn); --str: var(--app-accent); }
+  .tabs { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .tabs button { font: 600 .85rem var(--f-display); color: var(--ink); background: none; border: 1.5px solid var(--pencil); border-radius: 999px; padding: .3rem .85rem; cursor: pointer; }
+  .tabs button[aria-selected="true"] { background: var(--pencil); color: var(--paper); }
+  .role { display: flex; flex-direction: column; gap: .7rem; }
+  .frame { display: grid; grid-template-columns: minmax(0, 1fr); gap: .7rem 1.5rem; align-items: end; }
+  @media (min-width: 760px) { .frame { grid-template-columns: minmax(0, 1fr) auto; } }
+  .mix { display: flex; flex-direction: column; gap: .35rem; }
+  .who { font-family: var(--f-hand); font-size: 1.1rem; color: var(--pencil); }
+  .split { display: flex; height: 1.7rem; border: 1.5px solid var(--pencil); border-radius: 6px; overflow: hidden; font: 600 .72rem var(--f-mono); }
+  .split span { display: flex; align-items: center; padding: 0 .5rem; white-space: nowrap; overflow: hidden; transition: flex .4s; }
+  .act { background: var(--act); color: #fff; }
+  .str { background: color-mix(in srgb, var(--str) 16%, transparent); color: var(--ink); justify-content: flex-end; }
+  .crumbs { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .25rem; font: .74rem var(--f-mono); }
+  .crumbs li { padding: .15rem .5rem; border: 1px solid var(--pencil); border-radius: 4px; }
+  .crumbs .here { background: var(--pencil); color: var(--paper); }
+  .crumbs .off { opacity: .35; text-decoration: line-through; }
+  .app { font-family: var(--f-app); color: var(--app-text); background: var(--app-bg); border: 1px solid var(--app-line); border-radius: 10px; padding: .8rem; }
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .6rem; }
+  @media (min-width: 700px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } .s2 { grid-column: span 2; } }
+  .w { background: var(--app-surface); border: 1px solid var(--app-line); border-radius: 8px; padding: .6rem .7rem; display: flex; flex-direction: column; gap: .45rem; min-height: 5.4rem; min-width: 0; }
+  .w.a { border-top: 3px solid var(--act); }
+  .w:not(.a) { border-top: 3px solid var(--str); }
+  .t { font-size: .76rem; font-weight: 600; display: flex; gap: .35rem; align-items: center; }
+  .t i { width: .45rem; height: .45rem; border-radius: 50%; background: var(--str); flex: none; }
+  .a .t i { background: var(--act); }
+  ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .3rem; }
+  ul li { height: .45rem; border-radius: 3px; background: var(--app-line); }
+  ul li:nth-child(2) { width: 80%; } ul li:nth-child(3) { width: 60%; }
+  .a ul li:first-child { background: color-mix(in srgb, var(--act) 45%, var(--app-line)); }
+  .bars { display: flex; align-items: flex-end; gap: 4px; height: 2.6rem; }
+  .bars span { flex: 1; background: color-mix(in srgb, var(--str) 35%, var(--app-surface)); border-radius: 2px 2px 0 0; }
+  .a .bars span { background: color-mix(in srgb, var(--act) 40%, var(--app-surface)); }
+  svg { width: 100%; height: 2.6rem; }
+  svg path { fill: none; stroke: var(--str); stroke-width: 2; vector-effect: non-scaling-stroke; }
+  .a svg path { stroke: var(--act); }
+  .big span { display: block; width: 3rem; height: 1.6rem; border-radius: 4px; background: var(--app-line); }
+  .a .big span { background: color-mix(in srgb, var(--act) 45%, var(--app-line)); }
+  .map { position: relative; height: 2.6rem; border-radius: 4px; background: var(--app-bg); }
+  .map span { position: absolute; width: .6rem; height: .6rem; border-radius: 50%; background: var(--str); }
+  .map span:nth-child(1) { left: 20%; top: 30%; } .map span:nth-child(2) { left: 55%; top: 55%; } .map span:nth-child(3) { left: 78%; top: 20%; }
+  .cap { font-size: 1rem; }
+  .key { display: inline-flex; align-items: center; gap: .3rem; font-size: .95rem; white-space: nowrap; }
+  .key i { width: .6rem; height: .6rem; border-radius: 50%; display: inline-block; margin-left: .4rem; }
+  .ka { background: var(--act); } .ks { background: var(--str); }
+  @media (prefers-reduced-motion: reduce) { .split span { transition: none; } }
+</style>

@@ -1,0 +1,64 @@
+---
+// Drawn figure: the same small network as a simple flowchart (left) and
+// as a technical single-line diagram (right). Placeholder line art.
+import { rect, line, ellipse, arrow } from '../../lib/rough';
+const P: { d: string; c?: string }[] = [];
+const add = (d: string, c?: string) => P.push({ d, c });
+const T: { x: number; y: number; t: string; c?: string }[] = [];
+const txt = (x: number, y: number, t: string, c?: string) => T.push({ x, y, t, c });
+
+// left: flowchart
+const box = (x: number, y: number, w: number, t: string, s: number, hot = false) => { add(rect(x, y, w, 26, s, 1.2), hot ? 'hot' : undefined); txt(x + w / 2, y + 17, t, 'sm'); };
+box(30, 40, 70, 'Grid', 1); box(130, 40, 70, 'Solar', 2);
+box(70, 100, 90, 'Main', 3);
+box(20, 160, 90, 'TR-1', 4, true); box(130, 160, 90, 'TR-2', 5);
+box(10, 220, 60, 'AHU', 6, true); box(80, 220, 60, 'Chiller', 7); box(150, 220, 60, 'UPS', 8);
+add(arrow(65, 68, 105, 98, 11), 'flow'); add(arrow(165, 68, 125, 98, 12), 'flow');
+add(arrow(100, 128, 70, 158, 13), 'flow hot'); add(arrow(130, 128, 170, 158, 14), 'flow');
+add(arrow(55, 188, 42, 218, 15), 'flow hot'); add(arrow(75, 188, 105, 218, 16), 'flow'); add(arrow(175, 188, 180, 218, 17), 'flow');
+txt(115, 22, 'simplified flowchart', 'hand');
+
+// right: electrical
+const ox = 360;
+add(ellipse(ox + 40, 52, 13, 13, 21)); add(line(ox + 33, 52, ox + 47, 52, 22, .6));
+add(ellipse(ox + 140, 52, 13, 13, 23)); add(line(ox + 134, 48, ox + 146, 56, 24, .6));
+add(line(ox + 40, 65, ox + 40, 92, 25, .8)); add(line(ox + 140, 65, ox + 140, 92, 26, .8));
+add(line(ox + 10, 95, ox + 220, 95, 27, .8), 'bus');
+add(rect(ox + 55, 105, 12, 12, 28, .6)); add(rect(ox + 165, 105, 12, 12, 29, .6));
+add(line(ox + 61, 95, ox + 61, 105, 30, .4)); add(line(ox + 171, 95, ox + 171, 105, 31, .4));
+add(line(ox + 61, 117, ox + 61, 135, 32, .4)); add(line(ox + 171, 117, ox + 171, 135, 33, .4));
+add(ellipse(ox + 61, 145, 10, 10, 34), 'hot'); add(ellipse(ox + 61, 157, 10, 10, 35), 'hot');
+add(ellipse(ox + 171, 145, 10, 10, 36)); add(ellipse(ox + 171, 157, 10, 10, 37));
+add(line(ox + 61, 167, ox + 61, 190, 38, .4)); add(line(ox + 171, 167, ox + 171, 190, 39, .4));
+add(line(ox + 25, 192, ox + 110, 192, 40, .6), 'bus'); add(line(ox + 140, 192, ox + 215, 192, 41, .6), 'bus');
+[[ox + 35, 'AHU', true], [ox + 90, 'CH', false], [ox + 180, 'UPS', false]].forEach(([x, t, h], i) => {
+  add(line(x as number, 192, x as number, 222, 42 + i, .4), h ? 'hot' : undefined);
+  add(arrow(x as number, 214, x as number, 230, 45 + i), h ? 'hot' : undefined);
+  txt(x as number, 248, t as string, 'sm');
+});
+txt(ox + 40, 30, 'G', 'sm'); txt(ox + 140, 30, 'PV', 'sm'); txt(ox + 110, 148, 'TR-1', 'sm'); txt(ox + 200, 148, 'TR-2', 'sm');
+txt(ox + 115, 12, 'technical diagram', 'hand');
+add(arrow(250, 140, 330, 140, 50), 'thin'); add(arrow(330, 150, 250, 150, 51), 'thin');
+txt(290, 175, 'same network,', 'hand sm2'); txt(290, 192, 'same selection', 'hand sm2');
+---
+<figure class="tv wide">
+  <div class="scroll"><svg class="boil" viewBox="0 0 600 262" role="img" aria-label="The same network drawn twice: as a simple flowchart of boxes and arrows, and as a technical electrical diagram with transformer and breaker symbols. The trouble spot is highlighted in both.">
+    {P.map((p) => <path class={p.c} d={p.d} />)}
+    {T.map((t) => <text x={t.x} y={t.y} class={t.c} text-anchor="middle">{t.t}</text>)}
+  </svg></div>
+  <figcaption class="hand">Left: the main view. Right: the one engineers prefer. Pick a node in one and it stays picked in the other.</figcaption>
+</figure>
+
+<style>
+  .scroll { overflow-x: auto; }
+  .tv { margin: 1.5rem 0; display: flex; flex-direction: column; gap: .5rem; }
+  svg { width: 100%; min-width: 560px; max-width: 46rem; height: auto; overflow: visible; padding: 0 .5rem; box-sizing: border-box; }
+  path { fill: none; stroke: var(--pencil); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .hot { stroke: #E07A12; stroke-width: 2.2; }
+  .bus { stroke-width: 3.2; }
+  .thin { stroke-width: 1.1; }
+  text { font: 500 11px var(--f-app); fill: var(--ink); }
+  .hand { font-family: var(--f-hand); font-size: 17px; fill: var(--pencil); }
+  .sm2 { font-size: 14px; }
+  figcaption { font-size: 1rem; }
+</style>
