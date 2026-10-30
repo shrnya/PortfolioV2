@@ -79,7 +79,7 @@ const levels = ['Portfolio', 'Region', 'Site', 'Asset'];
 </script>
 
 <style>
-  .rs { display: flex; flex-direction: column; gap: .7rem; --act: #1D2330; --str: var(--app-accent); }
+  .rs { display: flex; flex-direction: column; gap: .7rem; --act: var(--app-text); --str: var(--app-accent); }
   .tabs { display: flex; flex-wrap: wrap; gap: .4rem; }
   .tabs button { font: 600 .85rem var(--f-display); color: var(--ink); background: none; border: 1.5px solid var(--pencil); border-radius: 999px; padding: .3rem .85rem; cursor: pointer; }
   .tabs button[aria-selected="true"] { background: var(--pencil); color: var(--paper); }
@@ -90,7 +90,7 @@ const levels = ['Portfolio', 'Region', 'Site', 'Asset'];
   .who { font-family: var(--f-hand); font-size: 1.1rem; color: var(--pencil); }
   .split { display: flex; height: 1.7rem; border: 1.5px solid var(--pencil); border-radius: 6px; overflow: hidden; font: 600 .72rem var(--f-mono); }
   .split span { display: flex; align-items: center; padding: 0 .5rem; white-space: nowrap; overflow: hidden; transition: flex .4s; }
-  .act { background: var(--act); color: #fff; }
+  .act { background: var(--act); color: var(--app-surface); }
   .str { background: color-mix(in srgb, var(--str) 16%, transparent); color: var(--ink); justify-content: flex-end; }
   .crumbs { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .25rem; font: .74rem var(--f-mono); }
   .crumbs li { padding: .15rem .5rem; border: 1px solid var(--pencil); border-radius: 4px; }
