@@ -1,6 +1,8 @@
 ---
 // Drawn figure: the same small network as a simple flowchart (left) and
-// as a technical single-line diagram (right). Placeholder line art.
+// as a technical single-line diagram (right). Orange marks unhealthy
+// nodes and paths, and only the flowchart shows it; the technical view
+// stays one colour. Placeholder line art.
 import { rect, line, ellipse, arrow } from '../../lib/rough';
 const P: { d: string; c?: string }[] = [];
 const add = (d: string, c?: string) => P.push({ d, c });
@@ -27,26 +29,26 @@ add(line(ox + 10, 95, ox + 220, 95, 27, .8), 'bus');
 add(rect(ox + 55, 105, 12, 12, 28, .6)); add(rect(ox + 165, 105, 12, 12, 29, .6));
 add(line(ox + 61, 95, ox + 61, 105, 30, .4)); add(line(ox + 171, 95, ox + 171, 105, 31, .4));
 add(line(ox + 61, 117, ox + 61, 135, 32, .4)); add(line(ox + 171, 117, ox + 171, 135, 33, .4));
-add(ellipse(ox + 61, 145, 10, 10, 34), 'hot'); add(ellipse(ox + 61, 157, 10, 10, 35), 'hot');
+add(ellipse(ox + 61, 145, 10, 10, 34)); add(ellipse(ox + 61, 157, 10, 10, 35));
 add(ellipse(ox + 171, 145, 10, 10, 36)); add(ellipse(ox + 171, 157, 10, 10, 37));
 add(line(ox + 61, 167, ox + 61, 190, 38, .4)); add(line(ox + 171, 167, ox + 171, 190, 39, .4));
 add(line(ox + 25, 192, ox + 110, 192, 40, .6), 'bus'); add(line(ox + 140, 192, ox + 215, 192, 41, .6), 'bus');
-[[ox + 35, 'AHU', true], [ox + 90, 'CH', false], [ox + 180, 'UPS', false]].forEach(([x, t, h], i) => {
-  add(line(x as number, 192, x as number, 222, 42 + i, .4), h ? 'hot' : undefined);
-  add(arrow(x as number, 214, x as number, 230, 45 + i), h ? 'hot' : undefined);
+[[ox + 35, 'AHU'], [ox + 90, 'CH'], [ox + 180, 'UPS']].forEach(([x, t], i) => {
+  add(line(x as number, 192, x as number, 222, 42 + i, .4));
+  add(arrow(x as number, 214, x as number, 230, 45 + i));
   txt(x as number, 248, t as string, 'sm');
 });
 txt(ox + 40, 30, 'G', 'sm'); txt(ox + 140, 30, 'PV', 'sm'); txt(ox + 110, 148, 'TR-1', 'sm'); txt(ox + 200, 148, 'TR-2', 'sm');
 txt(ox + 115, 12, 'technical diagram', 'hand');
 add(arrow(250, 140, 330, 140, 50), 'thin'); add(arrow(330, 150, 250, 150, 51), 'thin');
-txt(290, 175, 'same network,', 'hand sm2'); txt(290, 192, 'same selection', 'hand sm2');
+txt(290, 175, 'same network,', 'hand sm2'); txt(290, 192, 'same sidebar', 'hand sm2');
 ---
 <figure class="tv wide">
-  <div class="scroll"><svg class="boil" viewBox="0 0 600 262" role="img" aria-label="The same network drawn twice: as a simple flowchart of boxes and arrows, and as a technical electrical diagram with transformer and breaker symbols. The trouble spot is highlighted in both.">
+  <div class="scroll"><svg class="boil" viewBox="0 0 600 262" role="img" aria-label="The same network drawn twice: as a simple flowchart of boxes and arrows, and as a technical electrical diagram with transformer and breaker symbols. In the flowchart, the unhealthy transformer and air handling unit and the path between them are orange. The technical diagram is all one colour.">
     {P.map((p) => <path class={p.c} d={p.d} />)}
     {T.map((t) => <text x={t.x} y={t.y} class={t.c} text-anchor="middle">{t.t}</text>)}
   </svg></div>
-  <figcaption class="hand">Left: the main view. Right: the one engineers prefer. Pick a node in one and it stays picked in the other.</figcaption>
+  <figcaption class="hand">Left: the main view, where orange means a node or path needs a look. Right: the technical view stays one colour, but click any part and you get the same sidebar.</figcaption>
 </figure>
 
 <style>

@@ -4,7 +4,7 @@
 // widgets. Widget names are reconstructions; the splits are design intent.
 type W = { t: string; a: boolean; viz: 'list' | 'bars' | 'line' | 'map' | 'big'; span?: 2 };
 const roles: { id: string; label: string; act: number; scope: number; who: string; ws: W[] }[] = [
-  { id: 'fm', label: 'Facility manager', act: 80, scope: 2, who: 'Keeps one facility running, every day.', ws: [
+  { id: 'fm', label: 'Site level', act: 80, scope: 2, who: 'Keeping one site running, every day.', ws: [
     { t: 'Open alerts', a: true, viz: 'list', span: 2 },
     { t: 'Assets offline', a: true, viz: 'big' },
     { t: 'Load right now', a: true, viz: 'line', span: 2 },
@@ -12,27 +12,27 @@ const roles: { id: string; label: string; act: number; scope: number; who: strin
     { t: 'This month vs target', a: false, viz: 'bars', span: 2 },
     { t: 'Energy by asset type', a: true, viz: 'bars' },
   ] },
-  { id: 'opco', label: 'OpCo manager', act: 50, scope: 1, who: 'Looks after every facility in one country.', ws: [
-    { t: 'Facilities needing attention', a: true, viz: 'list', span: 2 },
-    { t: 'Open alerts by facility', a: true, viz: 'bars' },
-    { t: 'SEC by facility', a: false, viz: 'bars', span: 2 },
+  { id: 'opco', label: 'Region level', act: 50, scope: 1, who: 'Looking after every site in one country.', ws: [
+    { t: 'Sites needing attention', a: true, viz: 'list', span: 2 },
+    { t: 'Open alerts by site', a: true, viz: 'bars' },
+    { t: 'SEC by site', a: false, viz: 'bars', span: 2 },
     { t: 'Savings opportunities', a: false, viz: 'list' },
     { t: 'Monthly trend', a: false, viz: 'line', span: 2 },
     { t: 'Offline assets', a: true, viz: 'big' },
   ] },
-  { id: 'cxo', label: 'Portfolio manager / CXO', act: 20, scope: 0, who: 'Oversees OpCos across countries.', ws: [
+  { id: 'cxo', label: 'Portfolio level', act: 20, scope: 0, who: 'Overseeing every region at once.', ws: [
     { t: 'Portfolio energy and cost', a: false, viz: 'line', span: 2 },
-    { t: 'Cost leakage by OpCo', a: false, viz: 'bars' },
-    { t: 'Facility ranking', a: false, viz: 'list', span: 2 },
+    { t: 'Cost leakage by region', a: false, viz: 'bars' },
+    { t: 'Site ranking', a: false, viz: 'list', span: 2 },
     { t: 'Savings potential', a: false, viz: 'big' },
-    { t: 'OpCos on the map', a: false, viz: 'map', span: 2 },
+    { t: 'Regions on the map', a: false, viz: 'map', span: 2 },
     { t: 'Where attention is needed', a: true, viz: 'list' },
   ] },
 ];
-const levels = ['Portfolio', 'OpCo', 'Facility', 'Asset'];
+const levels = ['Portfolio', 'Region', 'Site', 'Asset'];
 ---
 <div class="rs wide" data-rs>
-  <div class="tabs" role="tablist" aria-label="Role">
+  <div class="tabs" role="tablist" aria-label="Level of responsibility">
     {roles.map((r, i) => <button type="button" role="tab" aria-selected={i === 0 ? 'true' : 'false'} data-tab={r.id}>{r.label}</button>)}
   </div>
   {roles.map((r, i) => (
@@ -65,7 +65,7 @@ const levels = ['Portfolio', 'OpCo', 'Facility', 'Asset'];
       </div>
     </div>
   ))}
-  <p class="hand cap">Switch roles. The scope changes, and so does what comes first. <span class="key"><i class="ka"></i> act on it <i class="ks"></i> think about it</span></p>
+  <p class="hand cap">Switch levels. The scope changes, and so does what comes first. <span class="key"><i class="ka"></i> act on it <i class="ks"></i> think about it</span></p>
 </div>
 
 <script>
@@ -79,7 +79,7 @@ const levels = ['Portfolio', 'OpCo', 'Facility', 'Asset'];
 </script>
 
 <style>
-  .rs { display: flex; flex-direction: column; gap: .7rem; --act: var(--app-warn); --str: var(--app-accent); }
+  .rs { display: flex; flex-direction: column; gap: .7rem; --act: #1D2330; --str: var(--app-accent); }
   .tabs { display: flex; flex-wrap: wrap; gap: .4rem; }
   .tabs button { font: 600 .85rem var(--f-display); color: var(--ink); background: none; border: 1.5px solid var(--pencil); border-radius: 999px; padding: .3rem .85rem; cursor: pointer; }
   .tabs button[aria-selected="true"] { background: var(--pencil); color: var(--paper); }

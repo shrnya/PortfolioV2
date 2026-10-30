@@ -1,21 +1,22 @@
 ---
 // Dashboard demo: one scorecard structure, KPIs swapped per industry.
-// Telecom adds the one dedicated widget (grid vs diesel). Invented values.
+// Industry C adds the one dedicated widget (grid vs diesel). Industries
+// are anonymised; values are invented.
 type Kpi = { k: string; v: string; u: string; d: string; good: boolean; trend: number[]; swap?: boolean };
 const sets: { id: string; label: string; kpis: Kpi[]; extra?: boolean }[] = [
-  { id: 'cre', label: 'Commercial building', kpis: [
+  { id: 'cre', label: 'Industry A', kpis: [
     { k: 'Energy used', v: '41,280', u: 'kWh', d: '−4% vs last month', good: true, trend: [8, 9, 7, 8, 6, 7, 6] },
     { k: 'SEC', v: '12.6', u: 'kWh/m²', d: '−3% vs last month', good: true, trend: [7, 8, 8, 7, 6, 6, 5], swap: true },
     { k: 'Energy cost', v: '₹3.9L', u: '', d: '−2% vs last month', good: true, trend: [6, 7, 7, 6, 6, 6, 5] },
     { k: 'Carbon', v: '29.3', u: 't CO₂e', d: '−4% vs last month', good: true, trend: [8, 8, 7, 7, 6, 6, 6] },
   ] },
-  { id: 'dc', label: 'Data centre', kpis: [
+  { id: 'dc', label: 'Industry B', kpis: [
     { k: 'Energy used', v: '1.92', u: 'GWh', d: '+1% vs last month', good: false, trend: [6, 6, 7, 7, 7, 7, 8] },
     { k: 'PUE', v: '1.48', u: '', d: '−0.04 vs last month', good: true, trend: [8, 8, 7, 7, 6, 6, 6], swap: true },
     { k: 'Energy cost', v: '₹1.6Cr', u: '', d: '+1% vs last month', good: false, trend: [6, 6, 6, 7, 7, 7, 7] },
     { k: 'Carbon', v: '1,363', u: 't CO₂e', d: '+1% vs last month', good: false, trend: [6, 6, 7, 7, 7, 8, 8] },
   ] },
-  { id: 'tel', label: 'Telecom site', extra: true, kpis: [
+  { id: 'tel', label: 'Industry C', extra: true, kpis: [
     { k: 'Energy used', v: '6,410', u: 'kWh', d: '−1% vs last month', good: true, trend: [7, 7, 7, 6, 7, 6, 6] },
     { k: 'Diesel share', v: '18', u: '%', d: '+5 pts vs last month', good: false, trend: [4, 4, 5, 5, 6, 7, 7], swap: true },
     { k: 'Energy cost', v: '₹71K', u: '', d: '+6% vs last month', good: false, trend: [5, 5, 6, 6, 6, 7, 7] },
@@ -23,7 +24,7 @@ const sets: { id: string; label: string; kpis: Kpi[]; extra?: boolean }[] = [
   ] },
 ];
 const spark = (t: number[]) => 'M' + t.map((v, i) => `${i * 10} ${24 - v * 2.4}`).join('L');
-// 24 hours of grid / diesel / both, for the telecom widget
+// 24 hours of grid / diesel / both, for the Industry C widget
 const hours = 'ggggggdddggggggbbgggggdd'.split('');
 ---
 <div class="sc wide" data-sc>
@@ -54,7 +55,7 @@ const hours = 'ggggggdddggggggbbgggggdd'.split('');
       )}
     </div>
   ))}
-  <p class="hand cap">Same cards, same places. Only the highlighted KPI changes, and telecom gets one extra widget.</p>
+  <p class="hand cap">Same cards, same places. Only the highlighted KPI changes, and Industry C gets one extra widget.</p>
 </div>
 
 <script>

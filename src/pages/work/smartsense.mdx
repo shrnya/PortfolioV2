@@ -1,17 +1,17 @@
 ---
 layout: ../../layouts/CaseStudy.astro
-title: "SmartSense: Making complex energy data actionable"
+title: "Can an energy dashboard do more than show numbers?"
 entry: "01"
 company: Ecolibrium · SmartSense 8.0
-lede: What do you do when every new customer needs a dashboard built just for them, and the diagram meant to explain a facility’s energy can’t tell you what’s wrong? You redesign both.
+lede: Redesigning SmartSense 8.0 to make energy data actionable, scalable and easier to investigate.
 meta:
   - { k: Role, v: Product Designer }
   - { k: When, v: "2026, launched September 2026" }
   - { k: Team, v: "Product design, product management, engineering and cross-functional teams" }
   - { k: My part, v: "Dashboards with the design team. The Single Line Diagram end to end." }
 summary:
-  - "<b>The problem:</b> every customer had a bespoke dashboard, and the energy diagram showed the network without helping anyone act on it."
-  - "<b>Dashboards:</b> we built reusable templates around three roles, with industry KPIs inside one shared structure."
+  - "<b>The problem:</b> every customer had a dashboard set up just for them, and the energy diagram showed the network without helping anyone act on it."
+  - "<b>Dashboards:</b> we built reusable templates around three levels of responsibility, with industry KPIs inside one shared structure."
   - "<b>The SLD:</b> I turned it into a diagnostic tool, where you can spot a problem, trace it upstream and test a fix."
 next: { title: "Evolving the SmartSense design system", status: "", href: "/work/design-system/" }
 disclaimer: "Everything you see here is a reconstruction. Customer identities and data are left out or made up, and the demos run on an invented facility. The case study is about the design decisions, not the product’s internals."
@@ -25,7 +25,7 @@ import Simulator from '../../components/prototypes/Simulator.astro';
 import TwoViews from '../../components/figures/TwoViews.astro';
 import NodeAnatomy from '../../components/figures/NodeAnatomy.astro';
 
-SmartSense is Ecolibrium’s energy management platform. Commercial buildings, connected factories, data centres and telecom sites use it to keep an eye on how much energy they use, where it goes and what it costs.
+SmartSense is Ecolibrium’s energy management platform. Customers across several industries use it to keep an eye on how much energy they use, where it goes and what it costs.
 
 SmartSense 8.0 was our chance to rethink two things: how dashboards get set up for each customer, and how people make sense of the energy flowing through their facility.
 
@@ -35,11 +35,11 @@ SmartSense 8.0 was our chance to rethink two things: how dashboards get set up f
 
 SmartSense 3.0 had grown one feature at a time, as new customers asked for new things. Years of that left legacy code, patchwork development and a product that felt bulky and hard to extend.
 
-The dashboards were the clearest sign. Each customer got their own, with widgets and scorecards set up by the onboarding team to match how that customer worked. Lovely for the customer. Not so lovely when every new customer meant another round of bespoke setup.
+The dashboards were the clearest sign. Each customer got their own, with widgets and scorecards set up by the onboarding team to match how that customer worked. Lovely for the customer. Not so lovely when every new customer meant setting it all up again from scratch.
 
 <Note>Great for the customer. Less great for the onboarding team’s calendar.</Note>
 
-The customers weren’t all alike either. A commercial building might care most about Specific Energy Consumption (SEC). A data centre lives and breathes Power Usage Effectiveness (PUE). Same energy questions underneath, different numbers on top.
+The customers weren’t all alike either. One industry might care most about Specific Energy Consumption (SEC). Another lives and breathes Power Usage Effectiveness (PUE). Same energy questions underneath, different numbers on top.
 
 So the question became: **how do you build one structure that fits all of them, without making anyone feel squeezed in?**
 
@@ -47,33 +47,33 @@ So the question became: **how do you build one structure that fits all of them, 
 
 We looked across existing customers for the patterns they shared, listened to their feedback and day-to-day needs, and turned those into reusable dashboard templates.
 
-The layout of each scorecard, where it sits and how its trend is drawn stay the same. The KPIs inside change with the industry. Switch between them below.
+The layout of each scorecard, where it sits and how its trend is drawn stay the same. The KPIs inside change with the industry. Switch between three (anonymised) industries below.
 
 <Scorecard />
 
 <Note>Same frame, different picture. My favourite kind of system.</Note>
 
-We didn’t want to swap bespoke chaos for rigid sameness either. So each template came with:
+We didn’t want to swap one-off setups for rigid sameness either. So each template came with:
 
 - KPIs and information that fit the customer’s industry.
 - One custom dashboard per customer, where people can add, remove and rearrange widgets themselves.
 - Extra widgets for specific needs, only where there was a clear case for one.
 
-A major telecom infrastructure client, for example, needed to compare energy from the grid with energy from diesel generators, and see when both ran at once. Instead of a one-off dashboard, we gave them one dedicated widget inside the standard structure. It’s the extra card on the telecom tab above.
+One client, for example, needed to compare energy from the grid with energy from diesel generators, and see when both ran at once. Instead of a one-off dashboard, we gave them one dedicated widget inside the standard structure. It’s the extra card under Industry C above.
 
 <h2><span class="no">Part A · 3</span>Same data, three very different questions</h2>
 
-A facility manager keeping one site running and an executive overseeing facilities in several countries don’t open a dashboard for the same reason. So we built the templates around three roles, each with its own balance of “act on this now” and “think about this later”.
+Someone keeping one site running and someone overseeing sites across several countries don’t open a dashboard for the same reason. So we built the templates around three levels of responsibility, each with its own balance of “act on this now” and “think about this later”.
 
 <RoleSwitch />
 
 <Note>These splits were our design intent, a way to decide what goes first. Not something we measured.</Note>
 
-- **Facility manager:** keeps one facility healthy every day. Issues and actions come first, strategy second.
-- **OpCo manager:** looks after all the facilities in one operating country, balancing daily oversight with finding improvements.
-- **Portfolio manager or CXO:** oversees OpCos across countries. Mostly big picture: cost leakage, comparisons, savings and where attention is needed. There’s still an action path, so spotting a problem can lead straight to doing something about it.
+- **Site level:** keeping one site healthy every day. Issues and actions come first, strategy second.
+- **Region level:** looking after all the sites in one country, balancing daily oversight with finding improvements.
+- **Portfolio level:** overseeing every region. Mostly big picture: cost leakage, comparisons, savings and where attention is needed. There’s still an action path, so spotting a problem can lead straight to doing something about it.
 
-The structure follows the organisation itself: **Portfolio → OpCo → Facility → Asset.** You can go down from wherever you sit. A portfolio user can drill all the way to a single asset. A facility manager sees their own facility and everything in it.
+The structure follows the organisation itself: **Portfolio → Region → Site → Asset.** You can go down from wherever you sit. Someone at portfolio level can drill all the way to a single asset. Someone at site level sees their own site and everything in it.
 
 <Say seed={33} flip>One hierarchy for both navigation and access. Easier to learn, easier to explain.</Say>
 
@@ -125,7 +125,7 @@ For those assets, there’s also a simulator. Change a parameter and see how it 
 
 <Note>Only works where the customer has the infrastructure for it. Not every asset has a SCADA view, so not every node gets a simulator.</Note>
 
-<h2><span class="no">What changed</span>From bespoke and static to scalable and actionable</h2>
+<h2><span class="no">What changed</span>From one-off and static to scalable and actionable</h2>
 
 SmartSense 8.0 launched in September 2026, and fixes and integrations have kept coming since.
 
@@ -135,7 +135,7 @@ The user interviews we ran after the designs were done backed up the hierarchy: 
 
 ### What I’m taking with me
 
-- **Scalability is a design problem too.** If every new customer needs something bespoke, the product can’t grow. Designing for the common patterns reduces that work without taking flexibility away.
+- **Scalability is a design problem too.** If every new customer needs a setup of their own, the product can’t grow. Designing for the common patterns reduces that work without taking flexibility away.
 - **The best dashboard isn’t the fullest one.** It’s the one that shows a particular person what matters and what to do next.
 - **Data is only useful once you can act on it.** Capturing it is the easy part. Helping people read it, question it and decide is the design work.
 - **Let people start broad and go deep.** Begin with the whole system, dig into the parts, and never lose your place along the way.
